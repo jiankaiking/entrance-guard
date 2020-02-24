@@ -30,7 +30,7 @@
                         v-loading = "loading"
                         element-loading-text = "数据正在加载中"
                         element-loading-spinner = "el-icon-loading"
-                        header-row-style="color:#000000"
+                        :headerRowStyle="{color:'#000000'}"
                         :data="tableData"
                         border
                         style="width: 100%;">
