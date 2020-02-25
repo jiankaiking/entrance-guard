@@ -29,11 +29,12 @@
     margin: 0;
     padding: 0;
   }
+
   body {
     background: #ffffff;
   }
-  body, html,#app {
 
+  body, html,#app {
     width: 100%;
     height: auto;
   }
@@ -186,5 +187,39 @@
   .el-date-editor.el-input, .el-date-editor.el-input__inner{
     width:auto;
   }
+  .equipment-total ul {
+    display: flex;
+  }
 
+  .equipment-total li {
+    background: #ffffff;
+    color: #000000;
+    font-size: 20px;
+    width: 225px;
+    line-height: 30px;
+    box-shadow: 0px 1px 6px 4px rgba(242, 242, 242, 1);
+    border-radius: 8px;
+    text-align: center;
+    height: 131px;
+    margin-right: 30px;
+    padding: 28px 0;
+    cursor: pointer;
+    box-sizing: border-box;
+    position: relative
+  }
+
+  .equipment-total p:first-child {
+    font-size: 16px;
+
+  }
+
+  .equipment-total li::before {
+    position: absolute;
+    content: "";
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: red;
+  }
 </style>

@@ -13,7 +13,7 @@ const router = new Router({
             redirect: '/home/index',
             meta: {
                 keepAlive: true
-                
+
             },
             children: [
 
@@ -172,6 +172,64 @@ const router = new Router({
                     path: '/accounts/dataimporting',
                     name: 'dataimporting',
                     component: () => import('@/views/Settleaccounts/Dataimporting'),
+                },
+                //商户管理
+                {
+                    path: '/merchant/list',
+                    name: 'MerchantList',
+                    component: () => import('@/views/Merchant/MerchantList'),
+                },
+                //设备列表
+                {
+                    path: '/equipment/list',
+                    name: 'MerchantList',
+                    component: () => import('@/views/Equipment/EquipmentList'),
+                },
+                //设备配置
+                {
+                    path: '/equipment/config',
+                    name: 'EquipmentConfig',
+                    component: () => import('@/views/Equipment/EquipmentConfig'),
+                },
+                //设备配置
+                {
+                    path: '/equipment/data',
+                    name: 'EquipmentData',
+                    component: () => import('@/views/Equipment/EquipmentData'),
+                },
+                //收银设备绑定
+                {
+                    path: '/equipment/cashierbind',
+                    name: 'EquipmentData',
+                    component: () => import('@/views/Equipment/CashierBind'),
+                },
+                //库存管理
+                {
+                    path:'/entrepot',
+                    component:() => import('@/components/EntrepotHeader'),
+                    redirect: '/entrepot/outrecord',
+                    children:[
+                        //出库
+                        {
+                            path:'/entrepot/outrecord',
+                            component:() => import('@/views/Equipment/EntrepotOut'),
+                        },
+                        //入库
+                        {
+                            path:'/entrepot/getrecord',
+                            component:() => import('@/views/Equipment/EntrepotGet'),
+                        },
+                        //未发货
+                        {
+                            path:'/entrepot/unshipped',
+                            component:() => import('@/views/Equipment/Unshipped'),
+                        },
+                        //设备库存
+                        {
+                            path:'/entrepot/repertory',
+                            component:() => import('@/views/Equipment/Repertory'),
+                        }
+                    ],
                 }
             ]
 
