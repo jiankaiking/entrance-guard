@@ -191,7 +191,7 @@ const router = new Router({
                     name: 'EquipmentConfig',
                     component: () => import('@/views/Equipment/EquipmentConfig'),
                 },
-                //设备配置
+                //设备数据
                 {
                     path: '/equipment/data',
                     name: 'EquipmentData',
@@ -207,7 +207,7 @@ const router = new Router({
                 {
                     path:'/entrepot',
                     component:() => import('@/components/EntrepotHeader'),
-                    redirect: '/entrepot/outrecord',
+                    redirect: '/entrepot/unshipped',
                     children:[
                         //出库
                         {

@@ -172,7 +172,6 @@
                 httpRequest('/organManage/getOrganInfo', 'get')
             },
 
-
             //正面照
             handleAvatarSuccess(res) {
                 this.modelFromdata.staffPhotos = res.data
@@ -204,7 +203,6 @@
                     .then((res) => {
                         if(res.success){
                             that.$message.success("修改成功")
-                            that.$emit('ok');
                         }
                     })
                     .finally(() => {

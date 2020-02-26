@@ -20,7 +20,9 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
-                        <el-button @click="agentAdd" type="success" plain>新增</el-button>
+                        <el-button @click="agentAdd" type="success" plain>重置</el-button>
+                        <el-button @click="headAdd" type="success" plain>新增入库</el-button>
+                        <el-button @click="agentAdd" type="success" plain>导出</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -97,11 +99,21 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog
+                title="提示"
+                align="center"
+                :visible.sync="dialogTableVisible"
+                :lock-scroll="false"
+                width="40%"
+                :before-close="handleClose">
+            <EntrepotAddModel style="padding: 0 150px; box-sizing: border-box"  ref="modalForm" @close="modalClose" @ok="modalFormOk"></EntrepotAddModel>
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import {myMixins} from "../../mixins/mixin";
+    import EntrepotAddModel from "./moduleModel/EntrepotAddModel";
     import httpRequest from "../../api/api";
     export default {
         name: "EntrepotGet",
@@ -121,6 +133,9 @@
                 tableData: [],
                 listUrl: '/agentManage/getAgentList',   //表格数据接口
             }
+        },
+        components:{
+            EntrepotAddModel
         },
     }
 </script>

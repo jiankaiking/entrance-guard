@@ -23,7 +23,7 @@
                 <el-form-item>
                     <el-button type="primary" @click="searchClick">搜索</el-button>
                     <el-button>导入设备号</el-button>
-                    <el-button>绑定</el-button>
+                    <el-button @click="headAdd">绑定</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -83,7 +83,7 @@
                             align="center"
                             label="操作">
                         <template slot-scope="scope">
-                            <el-button type="text">解绑</el-button>
+                            <el-button type="text" @click="headEdit">解绑</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -100,11 +100,20 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog
+                align="center"
+                width="500px"
+                :visible.sync="dialogTableVisible"
+                :lock-scroll="false"
+                :before-close="handleClose">
+            <CashierBindModel></CashierBindModel>
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import httpRequest from "../../api/api";
+    import CashierBindModel from "./moduleModel/CashierBindModel";
     import {myMixins} from "../../mixins/mixin";
     export default {
         name: "CashierBind",
@@ -120,14 +129,15 @@
                     page:1,
                     size:10
                 },
+                dialogTableVisible:false,
                 value:'',
                 total:0,
                 listUrl:'/log/getSysLoginLog',
-                tableData: []
+                tableData: [{}]
             }
         },
-        mounted(){
-
+        components:{
+            CashierBindModel
         },
         methods: {
 

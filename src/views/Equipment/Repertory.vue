@@ -29,23 +29,37 @@
                             <p>出库总量: 0</p>
                         </div>
                         <div class="item-btn">
-                            <el-button type="primary" plain size="mini">入库记录</el-button>
+                            <el-button type="primary" plain size="mini" >入库记录</el-button>
                             <el-button type="primary" plain size="mini">出库记录</el-button>
-                            <el-button type="primary" plain size="mini">赠送</el-button>
-                            <el-button type="primary" plain size="mini">补货</el-button>
+                            <el-button type="primary" plain size="mini"  @click="showPresent(1)">赠送</el-button>
+                            <el-button type="primary" plain size="mini"  @click="showPresent(2)">补货</el-button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <el-dialog
+                title="提示"
+                align="center"
+                :visible.sync="dialogTableVisible"
+                :lock-scroll="false"
+                width="40%"
+                :before-close="handleClose">
+            <PresentModel style="padding: 0 50px; box-sizing: border-box" v-if="cliIndex == 1" ref="modalForm" @close="modalClose" @ok="modalFormOk"></PresentModel>
+            <EntrepotAddModel v-if="cliIndex == 2" style="padding: 0 150px; box-sizing: border-box"  ref="modalForm" @close="modalClose" @ok="modalFormOk"></EntrepotAddModel>
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import httpRequest from "../../api/api";
+    import EntrepotAddModel from "./moduleModel/EntrepotAddModel";
+    import {myMixins} from "../../mixins/mixin";
+    import PresentModel from "./moduleModel/PresentModel";
 
     export default {
         name: "Repertory",
+        mixins:[myMixins],
         data() {
             return {
                 searchData: {
@@ -57,9 +71,20 @@
                     {name: 123, age: 123},
                     {name: 123, age: 123}
                 ],
+                dialogTableVisible:false,
+                cliIndex:0,
             }
         },
-        methods: {},
+        methods: {
+            showPresent(index){
+                this.cliIndex = index
+                this.dialogTableVisible = true
+            },
+        },
+        components:{
+            PresentModel,
+            EntrepotAddModel
+        }
     }
 </script>
 

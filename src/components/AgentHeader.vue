@@ -7,7 +7,7 @@
                     <li  @click="agentcheck($event,1)" :class="{active:cli == 1}">代理信息</li>
                     <li  @click="agentcheck($event,2)" v-if="pageType != 'add'" :class="{active:cli == 2}">子代信息</li>
                 </ul>
-                <div class="line" :style="{left:left}"></div>
+
             </div>
         </div>
         <router-view v-if="routerFlag" />
@@ -96,8 +96,6 @@
                     for (var i = 0; i < route.length - 1; i++) {
                         routes = routes.children.find((e) => (e.name == route[i].name));
                     }
-                    let widtha = e.target.getBoundingClientRect().width;
-                    this.left = widtha * num + 100 * num + 'px'
                     this.cli = num;
                     this.$router.push(routes.children[num].path)
                 }
@@ -132,15 +130,5 @@
     }
     .tabsNav li.active{
         color: #409EFF
-    }
-    .tabsNav .line {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 56px;
-        content: '';
-        transition: left .5s;
-        height: 4px;
-        background: rgba(56, 184, 238, 1);
     }
 </style>

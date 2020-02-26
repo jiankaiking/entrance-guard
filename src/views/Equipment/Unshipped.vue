@@ -1,6 +1,6 @@
 <template>
-    <div class="equipment-lsit">
-        <div class="tableData">
+    <div class="overspread-parent">
+        <div v-if="!parentTest.dialogTableVisible" class="tableData">
             <div class="searchData">
                 <el-form ref="form" :model="searchData" label-width="25px">
                     <el-form-item>
@@ -20,9 +20,9 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
-                        <el-button  type="success" plain>重置</el-button>
+                        <el-button type="success" plain>重置</el-button>
                         <el-button @click="searchClick" type="primary" plain>导出</el-button>
-                        <el-button  type="success" plain>新增发货</el-button>
+                        <el-button type="success" @click="showAdd" plain>新增发货</el-button>
                         <el-button @click="searchClick" type="primary" plain>批量审核</el-button>
 
                     </el-form-item>
@@ -111,7 +111,11 @@
                             align="center"
                             label="操作">
                         <template slot-scope="scope">
-                            <el-button type="info" plain size="mini" @click="showModel(scope.row)">详情</el-button>
+                            <el-button type="text" @click="showModel(scope.row)">详情</el-button>
+                            <el-button type="text" @click="showModel(scope.row)">确认发货</el-button>
+                            <el-button type="text" @click="showModel(scope.row)">审核</el-button>
+                            <el-button type="text" @click="showModel(scope.row)">修改</el-button>
+                            <el-button type="text" @click="acccc">完款</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -128,15 +132,32 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog
+                align="center"
+                custom-class="shipped-class"
+                width="400px"
+                :title="dialogTitle"
+                :visible.sync="dialogTableVisible"
+                :lock-scroll="false"
+                :before-close="handleClose">
+            <MessagesBox></MessagesBox>
+        </el-dialog>
+
+        <ShippedAddModel v-if="parentTest.dialogTableVisible" @backrank="backrank"
+                         class="overspread-model"></ShippedAddModel>
     </div>
 </template>
 
 <script>
     import {myMixins} from "../../mixins/mixin";
+    import ShippedAddModel from "./moduleModel/ShippedAddModel";
+    import MessagesBox from "./moduleModel/MessagesBox";
     import httpRequest from "../../api/api";
+
     export default {
         name: "Unshipped",
         mixins: [myMixins],
+        inject: ['parentTest'],
         data() {
             return {
                 searchData: {
@@ -146,14 +167,37 @@
                     size: 10,
                     page: 1
                 },
+                dialogTitle: '',
+                dialogTableVisible: false,
                 multipleSelection: [],
                 total: 1,
-                dialogTableVisible: false,
                 tableData: [{}],
                 listUrl: '/agentManage/getAgentList',   //表格数据接口
             }
         },
-        methods:{
+        components: {
+            ShippedAddModel,
+            MessagesBox
+        },
+        //组件卸载后关闭
+        beforeDestroy() {
+            this.parentTest.hiddDialogTableVisible()
+        },
+        methods: {
+            modelMessage() {
+
+            },
+            acccc() {
+                this.dialogTableVisible = true
+            },
+            //新增点击
+            showAdd() {
+                this.parentTest.changeDialogTableVisible()
+            },
+            // 去除新增组件
+            backrank() {
+                this.parentTest.hiddDialogTableVisible()
+            },
             toggleSelection(rows) {
                 if (rows) {
                     rows.forEach(row => {
@@ -171,10 +215,10 @@
 </script>
 
 <style scoped>
-    .searchData{
-        box-shadow: none; margin-bottom: 0; padding-top: 25px;
+    .searchData {
+        box-shadow: none;
+        margin-bottom: 0;
+        padding-top: 25px;
     }
-
-
 
 </style>

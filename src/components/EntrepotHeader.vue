@@ -1,6 +1,6 @@
 <template>
     <div class="agentContenner">
-        <div class="tabsCard">
+        <div class="tabsCard" v-if="!dialogTableVisible">
             <div class="tabsNav">
                 <ul class="clear">
                     <li @click="agentcheck($event,0)" :class="{active:cli == 0}">
@@ -16,7 +16,6 @@
                         <router-link to="/entrepot/repertory" tag="span">设备库存</router-link>
                     </li>
                 </ul>
-                <div class="line" :style="{left:left}"></div>
             </div>
         </div>
         <router-view/>
@@ -26,11 +25,17 @@
 <script>
     import httpRequest from "../api/api";
     import BASE_URL from '../api/config'
-
     export default {
         name: "EntrepotHeader",
+        provide(){
+            return{
+                parentTest: this
+            }
+        },
+
         data() {
             return {
+                dialogTableVisible: false,
                 routerFlag: false,
                 left: 0,
                 pageType: '',  //新增，详情 类型判断
@@ -44,10 +49,20 @@
 
         },
         methods: {
+            //打开新增
+            changeDialogTableVisible(){
+                this.$nextTick(()=>{
+                    this.dialogTableVisible =true;
+                });
+            },
+            //关闭新增
+            hiddDialogTableVisible(){
+                this.$nextTick(()=>{
+                    this.dialogTableVisible =false;
+                });
+            },
             agentcheck(e, num) {
                 if (num != this.cli) {
-                    let widtha = e.target.getBoundingClientRect().width;
-                    this.left = widtha * num + 100 * num + 'px'
                     this.cli = num;
                 }
             }
@@ -87,14 +102,4 @@
     }
 
     .tabsNav span{ display: block; width: 100%;height: 100%}
-    .tabsNav .line {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 56px;
-        content: '';
-        transition: left .5s;
-        height: 4px;
-        background: rgba(56, 184, 238, 1);
-    }
 </style>
