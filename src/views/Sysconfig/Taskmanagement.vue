@@ -19,52 +19,17 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        empty-text
-                        header-row-style="color:#000000"
-                        v-loading = "loading"
-                        :data="tableData"
-                        border
-                        style="width: 99.9%;">
-                    <el-table-column
-                            align="center"
-                            prop="taskId"
-                            label="序号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="taskName"
-                            label="任务名称"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="taskClass"
-                            label="执行类">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="taskRunCron"
-                            label="任务执行规则">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="taskDesc"
-                            label="任务描述">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="taskRunTime"
-                            label="执行时间(分)">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="任务状态">
+                <el-table empty-text header-row-style="color:#000000"
+                        v-loading = "loading" :data="tableData" border style="width: 99.9%;">
+                    <el-table-column align="center" prop="taskId" label="序号"></el-table-column>
+                    <el-table-column align="center" prop="taskName" label="任务名称"></el-table-column>
+                    <el-table-column align="center" prop="taskClass" label="执行类"></el-table-column>
+                    <el-table-column align="center" prop="taskRunCron" label="任务执行规则"></el-table-column>
+                    <el-table-column align="center" prop="taskDesc" label="任务描述"></el-table-column>
+                    <el-table-column align="center" prop="taskRunTime" label="执行时间(分)"></el-table-column>
+                    <el-table-column align="center" label="任务状态">
                         <template slot-scope="scope">
-                            <el-button
-                                    type="text"
-                                    @click="changeTaskStatus(scope.row,scope.$index)">
+                            <el-button type="text" @click="changeTaskStatus(scope.row,scope.$index)">
                                 <el-switch
                                         :active-value="1"
                                         :inactive-value="0"
@@ -75,9 +40,7 @@
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button type="info" plain size="mini" @click="headEdit(scope.row)">修改</el-button>
                         </template>

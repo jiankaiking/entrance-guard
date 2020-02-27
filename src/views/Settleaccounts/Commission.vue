@@ -27,63 +27,19 @@
         <div style="line-height: 48px;padding-left: 35px">共dasdaskjdhasdkjhaskjdhaskjdhas</div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        @row-click="rowClinck"
-                        empty-text
-                        header-row-style="color:#000000"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
-                    <el-table-column
-                            align="center"
-                            prop="date"
-                            label="序号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="name"
-                            label="代理商名称"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="结算日期">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="状态">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="结算金额(元)">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="交易笔数">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="间连分润(元)">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="直连分润(元)">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="总分润(元)">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                <el-table @row-click="rowClinck" empty-text
+                        header-row-style="color:#000000" :data="tableData"
+                        border style="width: 100%;">
+                    <el-table-column align="center" prop="date" label="序号"></el-table-column>
+                    <el-table-column align="center" prop="name" label="代理商名称"></el-table-column>
+                    <el-table-column align="center" prop="address" label="结算日期"></el-table-column>
+                    <el-table-column align="center" prop="address" label="状态"></el-table-column>
+                    <el-table-column align="center" prop="address" label="结算金额(元)"></el-table-column>
+                    <el-table-column align="center" prop="address" label="交易笔数"></el-table-column>
+                    <el-table-column align="center" prop="address" label="间连分润(元)"></el-table-column>
+                    <el-table-column align="center" prop="address" label="直连分润(元)"></el-table-column>
+                    <el-table-column align="center" prop="address" label="总分润(元)"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template>
                             <el-button type="text" @click="showModel">详情</el-button>
                         </template>

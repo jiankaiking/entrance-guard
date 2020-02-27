@@ -24,92 +24,28 @@
                         <el-button @click="searchClick" type="primary" plain>导出</el-button>
                         <el-button type="success" @click="showAdd" plain>新增发货</el-button>
                         <el-button @click="searchClick" type="primary" plain>批量审核</el-button>
-
                     </el-form-item>
                 </el-form>
             </div>
             <div class="tableBox">
-                <el-table
-                        empty-text
-                        ref="multipleTable"
-
-                        tooltip-effect="dark"
-                        @selection-change="handleSelectionChange"
-                        element-loading-text="数据正在加载中"
-                        element-loading-spinner="el-icon-loading"
-                        :headerRowStyle="{color:'#000000'}"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
-                    <el-table-column
-                            type="selection"
-                            width="55">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="agentId"
-                            label="订单号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="agentName"
-                            label="代理商名称"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="设备型号">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="responsibleName"
-                            label="数量">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="responsibleName"
-                            label="总价">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="agentScope"
-                            label="收货人">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="createTime"
-                            label="支付类型">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="sellerCount"
-                            label="预存款可用余额">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="sellerCount"
-                            label="已发货数量">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="sellerCount"
-                            label="申请时间">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="sellerCount"
-                            label="申请人">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="sellerCount"
-                            label="订单状态">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                <el-table empty-text ref="multipleTable" tooltip-effect="dark"
+                          @selection-change="handleSelectionChange" element-loading-text="数据正在加载中"
+                          element-loading-spinner="el-icon-loading" :headerRowStyle="{color:'#000000'}"
+                          :data="tableData" border style="width: 100%;">
+                    <el-table-column type="selection" width="55"></el-table-column>
+                    <el-table-column align="center" prop="agentId" label="订单号"></el-table-column>
+                    <el-table-column align="center" prop="agentName" label="代理商名称"></el-table-column>
+                    <el-table-column align="center" prop="address" label="设备型号"></el-table-column>
+                    <el-table-column align="center" prop="responsibleName" label="数量"></el-table-column>
+                    <el-table-column align="center" prop="responsibleName" label="总价"></el-table-column>
+                    <el-table-column align="center" prop="agentScope" label="收货人"></el-table-column>
+                    <el-table-column align="center" prop="createTime" label="支付类型"></el-table-column>
+                    <el-table-column align="center" prop="sellerCount" label="预存款可用余额"></el-table-column>
+                    <el-table-column align="center" prop="sellerCount" label="已发货数量"></el-table-column>
+                    <el-table-column align="center" prop="sellerCount" label="申请时间"></el-table-column>
+                    <el-table-column align="center" prop="sellerCount" label="申请人"></el-table-column>
+                    <el-table-column align="center" prop="sellerCount" label="订单状态"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button type="text" @click="showModel(scope.row)">详情</el-button>
                             <el-button type="text" @click="showModel(scope.row)">确认发货</el-button>
@@ -127,19 +63,12 @@
                         :page-sizes="[10, 20, 50, 100]"
                         :page-size="searchData.size"
                         :total="total"
-                        layout=" sizes, prev, pager, next, jumper"
-                >
+                        layout=" sizes, prev, pager, next, jumper">
                 </el-pagination>
             </div>
         </div>
-        <el-dialog
-                align="center"
-                custom-class="shipped-class"
-                width="400px"
-                :title="dialogTitle"
-                :visible.sync="dialogTableVisible"
-                :lock-scroll="false"
-                :before-close="handleClose">
+        <el-dialog align="center" custom-class="shipped-class" width="400px" :title="dialogTitle"
+                   :visible.sync="dialogTableVisible" :lock-scroll="false" :before-close="handleClose">
             <MessagesBox></MessagesBox>
         </el-dialog>
 

@@ -30,43 +30,13 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        :data="tableData"
-                        border
-                        empty-text
-                        style="width: 100%">
-                    <el-table-column
-                            align="center"
-                            prop="date"
-                            label="日志编号"
-                           >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="name"
-                            label="操作模块"
-                           >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="操作结果">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="IP">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="操作时间">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="操作内容">
-                    </el-table-column>
+                <el-table :data="tableData" border empty-text style="width: 100%">
+                    <el-table-column align="center" prop="date" label="日志编号"></el-table-column>
+                    <el-table-column align="center" prop="name" label="操作模块"></el-table-column>
+                    <el-table-column align="center" prop="address" label="操作结果"></el-table-column>
+                    <el-table-column align="center" prop="address" label="IP"></el-table-column>
+                    <el-table-column align="center" prop="address" label="操作时间"></el-table-column>
+                    <el-table-column align="center" prop="address" label="操作内容"></el-table-column>
                 </el-table>
             </div>
             <div class="pagination">

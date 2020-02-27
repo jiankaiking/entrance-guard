@@ -31,51 +31,19 @@
             </div>
             <div class="tableData">
                 <div class="tableBox">
-                    <el-table
-                            v-loading="loading"
-                            element-loading-text="拼命加载中"
-                            :data="tableData"
-                            style="width: 99.9%;margin-bottom: 20px;"
-                            row-key="id"
-                            border
-                            default-expand-all
-                            :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                        <el-table-column
-                                prop="staffFullName"
-                                label="姓名"
-                                align="center">
-                        </el-table-column>
-                        <el-table-column
-                                prop="loginPhone"
-                                label="电话"
-                                align="center">
-                        </el-table-column>
-                        <el-table-column
-                                align="center"
-                                prop="organName"
-                                label="所属部门">
-                        </el-table-column>
-                        <el-table-column
-                                align="center"
-                                prop="position"
-                                label="职位">
-                        </el-table-column>
-                        <el-table-column
-                                align="center"
-                                prop="roleName"
-                                label="角色">
-                        </el-table-column>
-                        <el-table-column
-                                align="center"
-                                label="状态">
+                    <el-table v-loading="loading" element-loading-text="拼命加载中" :data="tableData" style="width: 99.9%;margin-bottom: 20px;"
+                            row-key="id" border default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                        <el-table-column prop="staffFullName" label="姓名" align="center"></el-table-column>
+                        <el-table-column prop="loginPhone" label="电话" align="center"></el-table-column>
+                        <el-table-column align="center" prop="organName" label="所属部门"></el-table-column>
+                        <el-table-column align="center" prop="position" label="职位"></el-table-column>
+                        <el-table-column align="center" prop="roleName" label="角色"></el-table-column>
+                        <el-table-column align="center" label="状态">
                             <template slot-scope="scope">
                                 <span>{{scope.row.staffStatus == '1'?'启动':'停止'}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                                width="200"
-                                align="center"
-                                label="操作">
+                        <el-table-column width="200" align="center" label="操作">
                             <template slot-scope="scope">
                                 <el-button type="text" @click="headEdit(scope.row)">编辑</el-button>
                                 <el-button type="text" @click="changeStatus(scope.row.staffId,scope.row.staffStatus)">
@@ -109,8 +77,7 @@
             </div>
         </div>
 
-        <el-dialog :lock-scroll="false" class="organnizaDia" title="新建员工" width="43%" center
-                   :visible.sync="dialogTableVisible">
+        <el-dialog :lock-scroll="false" class="organnizaDia" title="新建员工" width="43%" center :visible.sync="dialogTableVisible">
             <PersonnelModel ref="modalForm" @close="modalClose" @ok="modalFormOk"></PersonnelModel>
         </el-dialog>
     </div>

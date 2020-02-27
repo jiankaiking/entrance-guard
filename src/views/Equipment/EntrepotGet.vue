@@ -27,60 +27,17 @@
                 </el-form>
             </div>
             <div class="tableBox">
-                <el-table
-                        empty-text
-
-                        element-loading-text="数据正在加载中"
-                        element-loading-spinner="el-icon-loading"
-                        :headerRowStyle="{color:'#000000'}"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
-                    <el-table-column
-                            align="center"
-                            prop="agentId"
-                            label="入库单号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="agentName"
-                            label="设备型号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="数量">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="responsibleName"
-                            label="单价">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="responsibleName"
-                            label="厂商">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="agentScope"
-                            label="操作人">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="createTime"
-                            label="入库时间">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="sellerCount"
-                            label="备注">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                <el-table empty-text element-loading-text="数据正在加载中" element-loading-spinner="el-icon-loading"
+                          :headerRowStyle="{color:'#000000'}" :data="tableData" border style="width: 100%;">
+                    <el-table-column align="center" prop="agentId" label="入库单号"></el-table-column>
+                    <el-table-column align="center" prop="agentName" label="设备型号"></el-table-column>
+                    <el-table-column align="center" prop="address" label="数量"></el-table-column>
+                    <el-table-column align="center" prop="responsibleName" label="单价"></el-table-column>
+                    <el-table-column align="center" prop="responsibleName" label="厂商"></el-table-column>
+                    <el-table-column align="center" prop="agentScope" label="操作人"></el-table-column>
+                    <el-table-column align="center" prop="createTime" label="入库时间"></el-table-column>
+                    <el-table-column align="center" prop="sellerCount" label="备注"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button type="info" plain size="mini" @click="showModel(scope.row)">详情</el-button>
                         </template>

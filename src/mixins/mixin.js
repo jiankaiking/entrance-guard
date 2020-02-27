@@ -14,7 +14,7 @@ export const myMixins = {
             loading:false,
         }
     },
-
+     //获取表格数据
     mounted() {
         this.getTableData()
     },
@@ -33,6 +33,8 @@ export const myMixins = {
                         this.total = res.data.total;
                         this.tableData = res.data.rows;
                     }
+                })
+                .finally(res=>{
                     this.loading = false;
                 })
         },
@@ -91,7 +93,6 @@ export const myMixins = {
         },
         //错误信息
         errorMessages(data) {
-
             Message.error({
                 type: 'error',
                 message: data

@@ -15,48 +15,15 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        empty-text
-                        :data="tableData"
-                        border
-                        style="width: 99.9%">
-                    <el-table-column
-                            align="center"
-                            prop="paramId"
-                            label="参数ID"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="paramName"
-                            label="参数名"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="paramValue"
-                            label="参数值">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="paramModule"
-                            label="所属模块">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="paramDesc"
-                            label="说明">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                <el-table empty-text :data="tableData" border style="width: 99.9%">
+                    <el-table-column align="center" prop="paramId" label="参数ID"></el-table-column>
+                    <el-table-column align="center" prop="paramName" label="参数名"></el-table-column>
+                    <el-table-column align="center" prop="paramValue" label="参数值"></el-table-column>
+                    <el-table-column align="center" prop="paramModule" label="所属模块"></el-table-column>
+                    <el-table-column align="center" prop="paramDesc" label="说明"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                            <el-button
-                                    size="mini"
-                                    type="info"
-                                    plain
-                                    @click="headEdit(scope.row)">修改
-                            </el-button>
+                            <el-button size="mini" type="info" plain @click="headEdit(scope.row)">修改</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

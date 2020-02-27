@@ -15,44 +15,15 @@
             </div>
             <div class="tableData">
                 <div class="tableBox">
-                    <el-table
-                            :data="tableData"
-                            border
-                            empty-text
-                            style="width: 100%">
-                        <el-table-column
-                                prop="loginUserName"
-                                align="center"
-                                label="序号">
+                    <el-table :data="tableData" border empty-text style="width: 100%">
+                        <el-table-column prop="loginUserName" align="center" label="序号">
                         </el-table-column>
-                        <el-table-column
-                                prop="organName"
-                                label="设备型号"
-                                align="center">
-                        </el-table-column>
-                        <el-table-column
-                                prop="loginIp"
-                                align="center"
-                                label="厂商">
-                        </el-table-column>
-                        <el-table-column
-                                prop="loginStatus"
-                                align="center"
-                                label="价格(元)">
-                        </el-table-column>
-                        <el-table-column
-                                prop="operResult"
-                                align="center"
-                                label="状态">
-                        </el-table-column>
-                        <el-table-column
-                                align="center"
-                                prop="loginTime"
-                                label="操作时间">
-                        </el-table-column>
-                        <el-table-column
-                                align="center"
-                                label="操作">
+                        <el-table-column prop="organName" label="设备型号" align="center"></el-table-column>
+                        <el-table-column prop="loginIp" align="center" label="厂商"></el-table-column>
+                        <el-table-column prop="loginStatus" align="center" label="价格(元)"></el-table-column>
+                        <el-table-column prop="operResult" align="center" label="状态"></el-table-column>
+                        <el-table-column align="center" prop="loginTime" label="操作时间"></el-table-column>
+                        <el-table-column align="center" label="操作">
                             <template slot-scope="scope">
                                 <button type="text">详情</button>
                                 <button type="text">下载</button>

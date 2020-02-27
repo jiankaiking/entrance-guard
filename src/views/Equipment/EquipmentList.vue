@@ -42,65 +42,21 @@
                 </el-form>
             </div>
             <div class="tableBox">
-                <el-table
-                        empty-text
-                        v-loading="loading"
-                        element-loading-text="数据正在加载中"
-                        element-loading-spinner="el-icon-loading"
-                        :headerRowStyle="{color:'#000000'}"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
-                    <el-table-column
-                            align="center"
-                            prop="agentId"
-                            label="代理商号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="agentName"
-                            label="代理商名称"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="代理商等级">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="responsibleName"
-                            label="联系人">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="responsibleName"
-                            label="所属运营">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="agentScope"
-                            label="代理区域">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="createTime"
-                            label="创建时间">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="sellerCount"
-                            label="商户数量">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="150"
-                            label="状态">
+                <el-table empty-text v-loading="loading" element-loading-text="数据正在加载中"
+                          element-loading-spinner="el-icon-loading"
+                          :headerRowStyle="{color:'#000000'}"
+                          :data="tableData" border style="width: 100%;">
+                    <el-table-column align="center" prop="agentId" label="代理商号"></el-table-column>
+                    <el-table-column align="center" prop="agentName" label="代理商名称"></el-table-column>
+                    <el-table-column align="center" prop="address" label="代理商等级"></el-table-column>
+                    <el-table-column align="center" prop="responsibleName" label="联系人"></el-table-column>
+                    <el-table-column align="center" prop="responsibleName" label="所属运营"></el-table-column>
+                    <el-table-column align="center" prop="agentScope" label="代理区域"></el-table-column>
+                    <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
+                    <el-table-column align="center" prop="sellerCount" label="商户数量"></el-table-column>
+                    <el-table-column align="center" width="150" label="状态">
                         <template slot-scope="scope">
-                            <el-button
-                                    type="text"
-                                    @click="changeSonStatus(scope.row,scope.$index,0)">
+                            <el-button type="text" @click="changeSonStatus(scope.row,scope.$index,0)">
                                 <el-switch
                                         :active-value="1"
                                         :inactive-value="0"
@@ -111,14 +67,9 @@
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="150"
-                            label="子代功能">
+                    <el-table-column align="center" width="150" label="子代功能">
                         <template slot-scope="scope">
-                            <el-button
-                                    type="text"
-                                    @click="changeSonStatus(scope.row,scope.$index,1)">
+                            <el-button type="text" @click="changeSonStatus(scope.row,scope.$index,1)">
                                 <el-switch
                                         :active-value="1"
                                         :inactive-value="0"
@@ -129,9 +80,7 @@
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button type="info" plain size="mini" @click="showModel(scope.row)">详情</el-button>
                         </template>
@@ -156,6 +105,7 @@
 <script>
     import {myMixins} from "../../mixins/mixin";
     import httpRequest from "../../api/api";
+
     export default {
         name: "EquipmentKList",
         mixins: [myMixins],
@@ -179,9 +129,12 @@
 </script>
 
 <style scoped>
-    .searchData{
-        box-shadow: none; margin-bottom: 0; padding-top: 25px;
+    .searchData {
+        box-shadow: none;
+        margin-bottom: 0;
+        padding-top: 25px;
     }
+
     .status-options {
         width: 100%;
         background: #fff;

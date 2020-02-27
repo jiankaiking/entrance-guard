@@ -24,47 +24,14 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        :data="tableData"
-                        border
-                        empty-text
-                        style="width: 99.9%">
-                    <el-table-column
-                            prop="logId"
-                            align="center"
-                            label="日志编号"
-                           >
-                    </el-table-column>
-                    <el-table-column
-                            prop="logModule"
-                            label="操作模块"
-                            align="center">
-                    </el-table-column>
-                    <el-table-column
-                            prop="operResult"
-                            align="center"
-                            label="操作结果">
-                    </el-table-column>
-                    <el-table-column
-                            prop="operatorName"
-                            align="center"
-                            label="姓名">
-                    </el-table-column>
-                    <el-table-column
-                            prop="clientIp"
-                            align="center"
-                            label="IP">
-                    </el-table-column>
-                    <el-table-column
-                            prop="operTime"
-                            align="center"
-                            label="操作时间">
-                    </el-table-column>
-                    <el-table-column
-                            prop="operContent"
-                            align="center"
-                            label="操作内容">
-                    </el-table-column>
+                <el-table :data="tableData" border empty-text style="width: 99.9%">
+                    <el-table-column prop="logId" align="center" label="日志编号"></el-table-column>
+                    <el-table-column prop="logModule" label="操作模块" align="center"></el-table-column>
+                    <el-table-column prop="operResult" align="center" label="操作结果"></el-table-column>
+                    <el-table-column prop="operatorName" align="center" label="姓名"></el-table-column>
+                    <el-table-column prop="clientIp" align="center" label="IP"></el-table-column>
+                    <el-table-column prop="operTime" align="center" label="操作时间"></el-table-column>
+                    <el-table-column prop="operContent" align="center" label="操作内容"></el-table-column>
                 </el-table>
             </div>
             <div class="pagination">

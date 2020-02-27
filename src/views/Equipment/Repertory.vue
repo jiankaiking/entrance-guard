@@ -38,13 +38,8 @@
                 </div>
             </div>
         </div>
-        <el-dialog
-                title="提示"
-                align="center"
-                :visible.sync="dialogTableVisible"
-                :lock-scroll="false"
-                width="40%"
-                :before-close="handleClose">
+        <el-dialog title="提示" align="center" :visible.sync="dialogTableVisible"
+                :lock-scroll="false" width="40%" :before-close="handleClose">
             <PresentModel style="padding: 0 50px; box-sizing: border-box" v-if="cliIndex == 1" ref="modalForm" @close="modalClose" @ok="modalFormOk"></PresentModel>
             <EntrepotAddModel v-if="cliIndex == 2" style="padding: 0 150px; box-sizing: border-box"  ref="modalForm" @close="modalClose" @ok="modalFormOk"></EntrepotAddModel>
         </el-dialog>

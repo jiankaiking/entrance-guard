@@ -19,53 +19,16 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        :data="tableData"
-                        style="width: 100%;margin-bottom: 20px;"
-                        row-key="id"
-                        border
-                        default-expand-all
-                        :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                    <el-table-column
-                            prop="date"
-                            label="组织机构层级"
-                            sortable
-                            align="center">
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="分类"
-                            sortable
-                            align="center">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="主要负责人">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="电话">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="人数">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="状态">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="备注">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" row-key="id"
+                        border default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                    <el-table-column prop="date" label="组织机构层级" sortable align="center"></el-table-column>
+                    <el-table-column prop="name" label="分类" sortable align="center"></el-table-column>
+                    <el-table-column align="center" prop="address" label="主要负责人"></el-table-column>
+                    <el-table-column align="center" prop="address" label="电话"></el-table-column>
+                    <el-table-column align="center" prop="address" label="人数"></el-table-column>
+                    <el-table-column align="center" prop="address" label="状态"></el-table-column>
+                    <el-table-column align="center" prop="address" label="备注"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template>
                             <el-button type="text" @click="edit">编辑</el-button>
                             <el-button type="text">停用</el-button>

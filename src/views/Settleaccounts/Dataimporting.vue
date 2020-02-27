@@ -25,43 +25,15 @@
 
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        @row-click="rowClinck"
-                        empty-text
-                        header-row-style="color:#000000"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
-                    <el-table-column
-                            align="center"
-                            prop="date"
-                            label="序号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="name"
-                            label="导入时间"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="月份">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="类型">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="导入数据">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                <el-table @row-click="rowClinck" empty-text
+                        header-row-style="color:#000000" :data="tableData"
+                        border style="width: 100%;">
+                    <el-table-column align="center" prop="date" label="序号"></el-table-column>
+                    <el-table-column align="center" prop="name" label="导入时间"></el-table-column>
+                    <el-table-column align="center" prop="address" label="月份"></el-table-column>
+                    <el-table-column align="center" prop="address" label="类型"></el-table-column>
+                    <el-table-column align="center" prop="address" label="导入数据"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template>
                             <el-button type="text" @click="showModel">详情</el-button>
                         </template>

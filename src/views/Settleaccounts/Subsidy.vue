@@ -34,57 +34,18 @@
         <div class="tableData">
             <div class="tableBox">
                 <el-table
-                        @row-click="rowClinck"
-                        empty-text
-                        header-row-style="color:#000000"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
-                    <el-table-column
-                            align="center"
-                            prop="date"
-                            label="序号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="name"
-                            label="代理商名称"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="结算日期">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="状态">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="补贴类型">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="交易有效笔数(元)">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="交易有效金额(元)">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="补贴金额(元)">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                        @row-click="rowClinck" empty-text
+                        header-row-style="color:#000000" :data="tableData"
+                        border style="width: 100%;">
+                    <el-table-column align="center" prop="date" label="序号"></el-table-column>
+                    <el-table-column align="center" prop="name" label="代理商名称"></el-table-column>
+                    <el-table-column align="center" prop="address" label="结算日期"></el-table-column>
+                    <el-table-column align="center" prop="address" label="状态"></el-table-column>
+                    <el-table-column align="center" prop="address" label="补贴类型"></el-table-column>
+                    <el-table-column align="center" prop="address" label="交易有效笔数(元)"></el-table-column>
+                    <el-table-column align="center" prop="address" label="交易有效金额(元)"></el-table-column>
+                    <el-table-column align="center" prop="address" label="补贴金额(元)"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template>
                             <el-button type="text" @click="showModel">详情</el-button>
                         </template>

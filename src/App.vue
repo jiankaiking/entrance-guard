@@ -233,4 +233,22 @@
 
     padding:0 0 25px 0 !important;
   }
+  .title {
+    position: relative;
+    color: #000000;
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 30px;
+    margin-bottom: 25px;
+  }
+  .title::before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 2px;
+    width: 9px;
+    height: 21px;
+    background: linear-gradient(180deg, rgba(255, 42, 0, 1) 0%, rgba(237, 115, 70, 1) 100%);
+    border-radius: 5px;
+  }
 </style>

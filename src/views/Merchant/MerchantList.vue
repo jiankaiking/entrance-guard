@@ -169,7 +169,6 @@
                 this.$router.push({path: '/agentmessges', query: {type: 'add'}})
             },
         },
-
     }
 </script>
 

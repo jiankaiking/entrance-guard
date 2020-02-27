@@ -179,6 +179,11 @@ const router = new Router({
                     name: 'MerchantList',
                     component: () => import('@/views/Merchant/MerchantList'),
                 },
+                {
+                    path: '/merchant/list1',
+                    name: 'MerchantInfo',
+                    component: () => import('@/views/Merchant/MerchantInfo'),
+                },
                 //设备列表
                 {
                     path: '/equipment/list',

@@ -109,6 +109,52 @@
 
             </el-col>
         </el-row>
+        <div class="title">物流信息</div>
+        <el-row >
+            <el-col :span="5">
+                <el-form-item label="支付方式" >
+                    <el-input placeholder="银行卡"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="5"  :offset="1">
+                <el-form-item label="实付金额">
+                    <el-input placeholder="请输入实付金额(元)"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="5"  :offset="1">
+                <el-form-item label="付款时间" >
+                    <el-date-picker
+                            type="date"
+                            placeholder="选择日期">
+                    </el-date-picker>
+                </el-form-item>
+            </el-col>
+            <el-col :span="5"  :offset="1">
+                <el-form-item label="收款账户" >
+                    <el-input placeholder="请输入收款账户" ></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="5">
+                <el-form-item label="代理商名称" >
+                    <el-input placeholder="请选择"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="5"  :offset="1">
+                <el-form-item label="预存款可用余额">
+                    <el-input placeholder="请输入收货电话号码"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="5"  :offset="1">
+                <el-form-item label="支付类型" >
+                    <el-input placeholder="请选择支付状态"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="5"  :offset="1">
+                <el-form-item label="备注信息" >
+                    <el-input placeholder="请输入备注信息" ></el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
         <el-row>
             <el-col :span="5" :offset="9">
                 <el-button @click="backrank">返回</el-button>

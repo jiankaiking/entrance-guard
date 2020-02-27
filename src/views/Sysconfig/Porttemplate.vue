@@ -22,50 +22,16 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        @row-click="rowClinck"
-                        empty-text
-                        header-row-style="color:#000000"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
-                    <el-table-column
-                            align="center"
-                            prop="date"
-                            label="序号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="name"
-                            label="通道ID"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="通道名称">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="使用说明">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="模版内容">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                <el-table @row-click="rowClinck" empty-text header-row-style="color:#000000" :data="tableData"
+                        border style="width: 100%;">
+                    <el-table-column align="center" prop="date" label="序号"></el-table-column>
+                    <el-table-column align="center" prop="name" label="通道ID"></el-table-column>
+                    <el-table-column align="center" prop="address" label="通道名称"></el-table-column>
+                    <el-table-column align="center" prop="address" label="使用说明"></el-table-column>
+                    <el-table-column align="center" prop="address" label="模版内容"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                            <el-button
-                                    size="mini"
-                                    type="info"
-                                    plain
-                                    @click="showModel">编辑
-                            </el-button>
+                            <el-button size="mini" type="info" plain @click="showModel">编辑</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
