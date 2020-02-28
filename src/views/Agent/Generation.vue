@@ -6,7 +6,7 @@
                         header-row-style="color:#000000"
                         :data="tableData"
                         border
-                        style="width:99.9%;">
+                        style="width:99.8%;">
                     <el-table-column
                             align="center"
                             prop="date"

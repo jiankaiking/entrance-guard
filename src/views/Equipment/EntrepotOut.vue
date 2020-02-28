@@ -25,14 +25,8 @@
                 </el-form>
             </div>
             <div class="tableBox">
-                <el-table
-                        empty-text
-                        element-loading-text="数据正在加载中"
-                        element-loading-spinner="el-icon-loading"
-                        :headerRowStyle="{color:'#000000'}"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
+                <el-table empty-text element-loading-text="数据正在加载中" element-loading-spinner="el-icon-loading"
+                          :headerRowStyle="{color:'#000000'}" :data="tableData" border style="width: 100%;">
                     <el-table-column align="center" prop="agentId" label="订单号"></el-table-column>
                     <el-table-column align="center" prop="agentName" label="代理商名称"></el-table-column>
                     <el-table-column align="center" prop="address" label="设备型号"></el-table-column>

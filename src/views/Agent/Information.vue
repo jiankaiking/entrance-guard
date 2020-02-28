@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-form class="agent-from from-shadow">
+        <el-form class="agent-from from-shadow" label-width="100px">
             <el-form-item label="代理费">
                 <el-row :gutter="24">
                     <el-col :span="2">
@@ -19,24 +19,28 @@
                 </el-row>
             </el-form-item>
             <el-form-item label="代理等级">
-                <el-select v-model="agentManage.agentLevel" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+                <el-col :span="4">
+                    <el-select v-model="agentManage.agentLevel" placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-col>
             </el-form-item>
             <el-form-item label="代理位置">
-                <el-select v-model="agentManage.agentRegion" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+                <el-col :span="4">
+                    <el-select v-model="agentManage.agentRegion" placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-col>
             </el-form-item>
         </el-form>
 
@@ -194,7 +198,7 @@
                     contractFile: '', // 合同文件
                     channelInfoList: '', // json格式的渠道、产品、费率信息列表
                 },
-                agentlevel: ['国','省','市','区县','街道'],
+                agentlevel: ['国', '省', '市', '区县', '街道'],
                 form: {},
                 options: [],
                 value: ''
@@ -228,6 +232,7 @@
         width: 350px;
         margin: 0 auto;
     }
+
     .formsubmit-btn button:first-child {
         margin-right: 150px;
     }
@@ -235,12 +240,14 @@
     .agent-from2 {
         padding: 23px 35px;
     }
+
     .agent-from2 .agent-table {
         text-align: center;
         border-radius: 8px;
         margin-bottom: 30px;
         border: 1px solid #CACACA;
     }
+
     .agent-from2 .agent-table th {
         padding: 19px 0;
         color: #000000;
@@ -248,10 +255,12 @@
         font-size: 14px;
         text-align: center;
     }
+
     .agent-from2 .agent-table td {
         color: #666666;
         padding: 15px;
     }
+
     .agent-from2 .agent-table .tdInput {
         width: 75px;
         margin: 0 auto 10px;
@@ -259,21 +268,27 @@
         background: #fcfcfc;
         border-radius: 4px;
     }
+
     .agent-from2 .agent-table .tdInput:last-child {
         margin-bottom: 0;
     }
+
     .agent-from2 .agent-table .tdrate {
         margin: 0 auto 20px;
     }
+
     .agent-from2 .agent-table .tdrate:last-child {
         margin-bottom: 0;
     }
+
     .agent-from2 .agent-table .tdcheckbox {
         margin-bottom: 28px;
     }
+
     .agent-from2 .agent-table .tdcheckbox:last-child {
         margin-bottom: 0;
     }
+
     .agent-from2 .title {
         position: relative;
         color: #000000;
@@ -282,6 +297,7 @@
         padding-left: 30px;
         margin-bottom: 25px;
     }
+
     .agent-from2 .title:before {
         position: absolute;
         content: "";

@@ -126,7 +126,7 @@
         color: #000000;
         margin-right: 100px;
         cursor: pointer;
-        transition: color .5s;
+
     }
     .tabsNav li.active{
         color: #409EFF

@@ -161,12 +161,12 @@
   .el-pager li {
     height: 24px !important;
     min-width: 24px !important;
-    line-height: 24px;
+    line-height: 24px !important;;
     border-radius: 4px;
     border: 1px solid rgba(202, 202, 202, 1);
     color: #666666 !important;
     font-weight: normal;
-    margin: 0 5px;
+    margin: 0 5px !important;;
   }
   .el-pager li.active {
     background: rgba(56, 184, 238, 1) !important;

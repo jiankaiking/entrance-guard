@@ -125,22 +125,6 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 
-
-
-    .tableData {
-        background: #ffffff;
-        box-shadow: 0px 1px 6px 4px rgba(242, 242, 242, 1);
-
-        .tableBox {
-            padding: 30px;
-            box-sizing: border-box;
-
-        }
-
-        .pagination {
-            padding-bottom: 30px;
-        }
-    }
 </style>

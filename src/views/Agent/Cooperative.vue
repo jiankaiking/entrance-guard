@@ -14,36 +14,12 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        :data="tableData"
-                        empty-text
-                        border
-                        style="width: 99.9%">
-                    <el-table-column
-                            align="center"
-                            prop="date"
-                            label="合作商"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="联系方式"
-                            align="center">
-                    </el-table-column>
-                    <el-table-column
-                            prop="address"
-                            align="center"
-                            label="安全密钥">
-                    </el-table-column>
-                    <el-table-column
-                            prop="address"
-                            align="center"
-                            label="回调地址">
-                    </el-table-column>
-                    <el-table-column
-                            prop="address"
-                            align="center"
-                            label="操作">
+                <el-table :data="tableData" empty-text border style="width: 99.9%">
+                    <el-table-column align="center" prop="date" label="合作商"></el-table-column>
+                    <el-table-column prop="name" label="联系方式" align="center"></el-table-column>
+                    <el-table-column prop="address" align="center" label="安全密钥"></el-table-column>
+                    <el-table-column prop="address" align="center" label="回调地址"></el-table-column>
+                    <el-table-column prop="address" align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button @click="handleClick(scope.row)" type="text">查看密钥</el-button>
                             <el-button type="text" @click="headEdit(scope)">修改</el-button>
