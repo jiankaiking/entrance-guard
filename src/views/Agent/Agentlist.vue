@@ -102,7 +102,7 @@
 
                 total: '',
                 dialogTableVisible: false,
-                tableData: [],
+                tableData: [{}],
                 listUrl: '/agentManage/getAgentList',   //表格数据接口
             }
         },

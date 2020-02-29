@@ -34,14 +34,6 @@
                                 path: "/agent",
                                 title: "代理商",
                                 children: []
-                            }, {
-                                path: "/agentmessges/basic",
-                                title: "子代管理",
-                                children: []
-                            }, {
-                                path: '/agentmessges/information',
-                                title: '代理商信息',
-                                children: []
                             }]
                     },
                     {
@@ -118,27 +110,19 @@
                     {
                         path: "/func2",
                         title: "日志管理",
-                        children: [{
-                            path: "/log/loginlog",
-                            title: "功能3-1",
-                            children: []
-                        },
+                        children: [
+
+                            {
+                                path: "/log/loginlog",
+                                title: "登录日志",
+                                children: []
+                            },
                             {
                                 path: "/log/operation",
                                 title: "操作日志",
                                 children: []
                                 //是否有子菜单，若没有，则为[]
-                            },
-                            {
-                                path: "/func32",
-                                title: "功能3-2",
-                                children: []
-                            },
-                            {
-                                path: "/func33",
-                                title: "功能3-3",
-                                children: []
-                            },]
+                            }]
                     },
                 ],
 

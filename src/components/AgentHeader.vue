@@ -3,19 +3,21 @@
         <div class="tabsCard">
             <div class="tabsNav">
                 <ul class="clear">
-                    <li  @click="agentcheck($event,0)" :class="{active:cli == 0}">基础信息</li>
-                    <li  @click="agentcheck($event,1)" :class="{active:cli == 1}">代理信息</li>
-                    <li  @click="agentcheck($event,2)" v-if="pageType != 'add'" :class="{active:cli == 2}">子代信息</li>
+                    <li v-for="(item,index) in componentArr"
+                        @click="agentcheck(index)"
+                        :class="{'active':componentIs == item.value}">{{item.name}}</li>
                 </ul>
-
             </div>
         </div>
-        <router-view v-if="routerFlag" />
+        <component :is="componentIs"></component>
     </div>
 </template>
 
 <script>
     import httpRequest from "../api/api";
+    import Agentmessgesbasic from "../views/Agent/Agentmessgesbasic";
+    import Information from "../views/Agent/Information";
+    import Generation from "../views/Agent/Generation";
     import BASE_URL from '../api/config'
     export default {
         name: "AgentHeader",
@@ -24,9 +26,20 @@
                 parentTest: this
             }
         },
+        components:{
+            Agentmessgesbasic,
+            Information,
+            Generation
+        },
 
         data() {
             return {
+                componentArr:[
+                    {name:'基础信息',value:'Agentmessgesbasic'},
+                    {name:'代理信息',value:'Information'},
+                    {name:'子代信息',value:'Generation'}
+                ],
+                componentIs:'Agentmessgesbasic',
                 agentMessges: {
                     cooperType: '',//合作方式
                     agentType: '',//代理商类型 个人 or 企业
@@ -59,46 +72,25 @@
                     comBusUrl: '',//营业执照照片
                 },
                 uploadImg:BASE_URL + '/upload/uploadImg',
-                routerFlag:false,
                 left: 0,
                 pageType: '',  //新增，详情 类型判断
-                cli: 0
             };
         },
         created() {
-            console.log(process)
             this.pageType = this.$route.query.type;
             if(this.pageType != 'add'){
                 httpRequest('/agentManage/getAgentBasicInfo', 'GET', {agentId: this.$route.query.agentId})
                     .then(res=>{
                         this.agentMessges = res.data;
-
-                    })
-                    .finally(res=>{
-                        this.routerFlag = true
                     })
             }else{
-                this.routerFlag = true
+                this.componentArr.pop()
             }
-
-
         },
-        mounted() {
 
-        },
         methods: {
-            agentcheck(e, num) {
-                if (num != this.cli) {
-                    var routes = {
-                        children: this.$router.options.routes
-                    };
-                    var route = this.$route.matched;
-                    for (var i = 0; i < route.length - 1; i++) {
-                        routes = routes.children.find((e) => (e.name == route[i].name));
-                    }
-                    this.cli = num;
-                    this.$router.push(routes.children[num].path)
-                }
+            agentcheck(index) {
+                    this.componentIs = this.componentArr[index].value;
             }
         }
     }

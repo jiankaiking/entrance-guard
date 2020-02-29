@@ -92,24 +92,24 @@ const router = new Router({
                 {
                     path: '/agentmessges',
                     component: () => import('@/components/AgentHeader'),
-                    redirect: '/agentmessges/basic',
-                    children: [
-                        {
-                            path: '/agentmessges/basic',
-                            name: 'agentmessgesbasic',
-                            component: () => import('@/views/Agent/Agentmessgesbasic')
-                        },
-                        {
-                            path: '/agentmessges/information',
-                            name: 'information',
-                            component: () => import('@/views/Agent/Information'),
-                        },
-                        {
-                            path: '/agentmessges/generation',
-                            name: 'generation',
-                            component: () => import('@/views/Agent/Generation'),
-                        }
-                    ]
+                    // redirect: '/agentmessges/basic',
+                    // children: [
+                    //     {
+                    //         path: '/agentmessges/basic',
+                    //         name: 'agentmessgesbasic',
+                    //         component: () => import('@/views/Agent/Agentmessgesbasic')
+                    //     },
+                    //     {
+                    //         path: '/agentmessges/information',
+                    //         name: 'information',
+                    //         component: () => import('@/views/Agent/Information'),
+                    //     },
+                    //     {
+                    //         path: '/agentmessges/generation',
+                    //         name: 'generation',
+                    //         component: () => import('@/views/Agent/Generation'),
+                    //     }
+                    // ]
                 },
                 //合作商
                 {

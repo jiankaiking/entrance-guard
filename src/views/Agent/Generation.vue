@@ -1,52 +1,16 @@
 <template>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        empty-text
-                        header-row-style="color:#000000"
-                        :data="tableData"
-                        border
-                        style="width:99.8%;">
-                    <el-table-column
-                            align="center"
-                            prop="date"
-                            label="子代理名称"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="name"
-                            label="代理商等级"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="联系人">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="代理区域">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="创建时间">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="商户数量">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="状态">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                <el-table empty-text header-row-style="color:#000000"
+                        :data="tableData" border style="width:99.8%;">
+                    <el-table-column align="center" prop="date" label="子代理名称"></el-table-column>
+                    <el-table-column align="center" prop="name" label="代理商等级"></el-table-column>
+                    <el-table-column align="center" prop="address" label="联系人"></el-table-column>
+                    <el-table-column align="center" prop="address" label="代理区域"></el-table-column>
+                    <el-table-column align="center" prop="address" label="创建时间"></el-table-column>
+                    <el-table-column align="center" prop="address" label="商户数量"></el-table-column>
+                    <el-table-column align="center" prop="address" label="状态"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <div style=" color:#419FFF">详情</div>
                         </template>

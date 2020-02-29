@@ -9,26 +9,26 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item style="width: 140px">
-                    <el-select v-model="form.region" placeholder="选择市">
+                    <el-select v-model="searchData.province" placeholder="选择市">
                         <el-option label="区域一" value="shanghai"></el-option>
                         <el-option label="区域二" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item style="width: 218px">
-                    <el-select v-model="form.region" placeholder="代理人名称/联系人/联系方">
+                    <el-select v-model="searchData.province" placeholder="代理人名称/联系人/联系方">
                         <el-option label="区域一" value="shanghai"></el-option>
                         <el-option label="区域二" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item style="width: 160px" label="状态" label-width="60px">
-                    <el-select v-model="form.region" placeholder="请选择活动区域">
+                    <el-select v-model="searchData.province" placeholder="请选择活动区域">
                         <el-option label="区域一" value="shanghai"></el-option>
                         <el-option label="区域二" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="申请结算时间" label-width="120px">
                     <el-date-picker
-                            v-model="value1"
+                            v-model="searchData.province"
                             type="daterange"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
