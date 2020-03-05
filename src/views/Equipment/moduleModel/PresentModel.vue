@@ -11,15 +11,7 @@
             </el-col>
             <el-col :span="10" :offset="4">
                 <el-form-item label="快递单图">
-                    <el-upload
-                            class="avatar-uploader"
-                            :action="uploadImg"
-                            :show-file-list="false"
-                            :on-success="handleAvatarSuccess"
-                            >
-                        <img v-if="modelFromdata.expressOrderImg" :src="modelFromdata.expressOrderImg" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
+                    <uploadImg :imgUrl.sync="modelFromdata.expressOrderImg"></uploadImg>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -92,13 +84,13 @@
 
 <script>
     import httpRequest from "../../../api/api";
-    import BASE_URL from '../../../api/config'
+    import uploadImg from "../../../components/uploadImg/uploadImg";
+
     export default {
         name: "PresentModel",
         props:["deviceTypeId"],
         data(){
             return{
-                uploadImg:BASE_URL + '/upload/uploadImg',
                 modelFromdata:{
                     deviceTypeId:this.deviceTypeId, //设备类型id
                     agentId:'',//代理商ID
@@ -115,14 +107,12 @@
                     consigneeAdds:'',//收货人详细地址
                     snCode:'', //sn码
                 },
-
             }
         },
-
+        components:{
+            uploadImg
+        },
         methods:{
-            handleAvatarSuccess(e){
-                this.modelFromdata.expressOrderImg = e.data;
-            },
             //赠送
             saveBtn(){
                 httpRequest("/deviceManage/deviceOutbound/saveDeviceGive","POST",this.modelFromdata)

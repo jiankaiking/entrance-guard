@@ -42,7 +42,6 @@
                 </ul>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -86,7 +85,7 @@
             }
         },
         components: {
-            vuedraggable
+            vuedraggable,
         },
         computed: {
             getWidth(useData) {

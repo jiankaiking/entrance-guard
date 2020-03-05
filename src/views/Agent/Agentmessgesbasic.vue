@@ -151,32 +151,15 @@
             <el-form-item>
                 <el-row :gutter="10">
                     <el-col :span="3">
-                        <el-upload
-                                class="avatar-uploader"
-                                :action="this.parentTest.uploadImg"
-                                :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload">
-                            <img v-if="form.idCardFront" :src="form.idCardFront" class="avatar">
-                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
+                        <UploadImg :imgUrl.sync="form.idCardFront"></UploadImg>
                     </el-col>
                     <el-col :span="3">
-                        <el-upload
-                                class="avatar-uploader"
-                                :action="this.parentTest.uploadImg"
-                                :show-file-list="false"
-                                :on-success="handleAvatarSuccess1"
-                                :before-upload="beforeAvatarUpload">
-                            <img v-if="form.idCardReverse" :src="form.idCardReverse" class="avatar">
-                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
+                        <UploadImg :imgUrl.sync="form.idCardReverse"></UploadImg>
                     </el-col>
                 </el-row>
             </el-form-item>
             <el-form-item>
                 <div style="margin: 0 auto; width: 200px">
-
                     <el-button>取消</el-button>
                     <el-button type="primary" @click="onSubmit('form')">保存</el-button>
                 </div>
@@ -188,7 +171,7 @@
 <script>
     import httpRequest from "../../api/api";
     import validate from "../../mixins/validate";
-
+    import UploadImg from "../../components/uploadImg/uploadImg"
     export default {
         name: "Agentmessgesbasic",
         inject: ['parentTest'],
@@ -246,6 +229,9 @@
                 },
             }
         },
+        components:{
+            UploadImg
+        },
         created() {
             this.form = Object.assign(this.form, this.parentTest.agentMessges)
 
@@ -284,6 +270,7 @@
             },
             //提交按钮  先表单验证 必填项 再提交操作
             onSubmit(fromName) {
+                console.log(this.form)
                 this.$refs[fromName].validate((valid) => {
                     console.log(valid)
                     if (valid) {

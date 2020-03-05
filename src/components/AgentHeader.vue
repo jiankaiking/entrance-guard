@@ -18,7 +18,6 @@
     import Agentmessgesbasic from "../views/Agent/Agentmessgesbasic";
     import Information from "../views/Agent/Information";
     import Generation from "../views/Agent/Generation";
-    import BASE_URL from '../api/config'
     export default {
         name: "AgentHeader",
         provide() {
@@ -71,7 +70,6 @@
                     comBusLicNo: '',//统一社会信用代码 / 营业执照号
                     comBusUrl: '',//营业执照照片
                 },
-                uploadImg:BASE_URL + '/upload/uploadImg',
                 left: 0,
                 pageType: '',  //新增，详情 类型判断
             };

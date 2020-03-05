@@ -21,7 +21,7 @@
                 <el-form v-show="!sweepLogin" label-width="0" ref="loginForm" :model="userInfor" :rules="rules"
                          style="padding-top: 20px">
                     <el-form-item prop="username">
-                        <el-input placeholder="请输入账号" v-model="userInfor.username">
+                        <el-input placeholder="请输入账号" v-model="userInfor.userName">
                             <i slot="prefix" class="el-icon-user"></i>
                         </el-input>
                     </el-form-item>
@@ -31,10 +31,10 @@
                         </el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-input placeholder="请输入验证码" v-model="userInfor.loginCode">
+                        <el-input placeholder="请输入验证码" v-model="userInfor.validateCode">
                             <i slot="prefix" class="el-icon-lock"></i>
                             <template slot="suffix">
-                                <div class="login-code"><img src="../assets/images/logo.png" alt=""></div>
+                                <div class="login-code"><img @click="getCode" :src="codeImg" alt=""></div>
                             </template>
                         </el-input>
                     </el-form-item>
@@ -62,29 +62,29 @@
 <script>
     import {mapActions} from 'vuex'
    import httpRequest from "../api/api";
-
+    import BASE_URL from '../api/config'
     export default {
         name: "Login",
         data() {
             return {
                 rules: {  //用户名密码验证
-                    username: [{required: true, message: '账号不可为空', trigger: 'blur'}],
+                    userName: [{required: true, message: '账号不可为空', trigger: 'blur'}],
                     password: [{required: true, message: '密码不可为空', trigger: 'blur'}]
                 },
                 saveAccount: false,
+                codeImg:BASE_URL + '/login/getValidateCode',
                 sweepLogin: false,  //扫码登录切换
                 userInfor: {  //用户名密码，验证码
-                    username: '',  //用户名
+                    userName: '',  //用户名
                     password: '', //密码
-                    loginCode: '' //验证码
+                    loginClient:'PC',
+                    loginSncode:'dhaskdj132132',
+                    validateCode: '' //验证码
                 },
             }
         },
         mounted() {
-            httpRequest('/login/getValidateCode','POST')
-            .then(res=>{
-                console.log(res)
-            })
+
         },
         methods: {
             //登录按钮  表单验证，验证成功 action提交
@@ -93,13 +93,19 @@
                 this.$refs[fromName].validate((valid) => {
                     if (valid) {
                         this.$store.dispatch('Login', this.userInfor)
-                        this.$router.push('/')
+                            .then(res=>{
+                                if(res.success){
+                                    this.$router.push("/")
+                                }
+                            })
                     } else {
                         return false;
                     }
                 });
             },
-
+            getCode(){
+                this.codeImg = BASE_URL + '/login/getValidateCode?'+Math.random()
+            },
             //切换登录方式
             checkLogin() {
                 this.sweepLogin = !this.sweepLogin
