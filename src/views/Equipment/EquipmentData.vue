@@ -1,9 +1,9 @@
 <template>
     <div class="main-contenner">
         <div class="searchData">
-            <el-form ref="form" :model="searchData" label-width="80px">
+            <el-form ref="form" label-width="80px">
                 <el-form-item label="设备型号" style="width: 220px">
-                    <el-input v-model="searchData.loginStaffName"></el-input>
+                    <EquimentSelect :deviceTypeId.sync="deviceTypeId"></EquimentSelect>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="searchClick">搜索</el-button>
@@ -28,9 +28,9 @@
                 </div>
                 <div class="title">累计数据</div>
                 <div class="searchData">
-                    <el-form ref="form" :model="searchData" label-width="80px">
+                    <el-form ref="form"  label-width="80px">
                         <el-form-item label="设备型号" style="width: 220px">
-                            <el-input v-model="searchData.loginStaffName"></el-input>
+                            <el-input></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="searchClick">搜索</el-button>
@@ -54,28 +54,18 @@
 
 <script>
     import httpRequest from "../../api/api";
-    import {myMixins} from "../../mixins/mixin";
-
+    import EquimentSelect from "../../components/select/EquimentSelect";
     export default {
         name: "EquipmentData",
-        mixins: [myMixins],
         data() {
             return {
-                //搜索数据
-                searchData: {
-                    loginStaffName: '',
-                    loginClientIp: '',
-                    loginTime: null,
-                    loginStatus: '',
-                    page: 1,
-                    size: 10
-                },
+                deviceTypeId:'',
                 value: '',
-                total: 0,
-                listUrl: '/log/getSysLoginLog',
-                tableData: []
             }
         },
+        components:{
+            EquimentSelect,
+        }
     }
 </script>
 

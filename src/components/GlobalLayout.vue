@@ -84,6 +84,17 @@
                         ]
                     },
                     {
+                        path:"123",
+                        title:"设备管理",
+                        children:[
+                            {path:'/equipment/list',title:'设备列表', children: []},
+                            {path:'/equipment/config',title:'设备配置', children: []},
+                            {path:'/equipment/data',title:'设备数据', children: []},
+                            {path:'/equipment/cashierbind',title:'收银设备绑定', children: []},
+                            {path:'/entrepot',title:'库存管理', children: []}
+                        ],
+                    },
+                    {
                         path: "/home/index1",
                         title: "结算管理",
                         children: [

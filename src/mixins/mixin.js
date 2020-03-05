@@ -31,7 +31,7 @@ export const myMixins = {
                 .then((res) => {
                     if (res.code == 200) {
                         this.total = res.data.total;
-                        this.tableData = res.data.rows;
+                        this.tableData = res.data.records?res.data.records:res.data.rows;
                     }
                 })
                 .finally(res=>{
@@ -81,6 +81,13 @@ export const myMixins = {
                 this.$refs.modalForm.add();
             })
 
+        },
+        //搜索重置
+        resetSearch() {
+            Object.keys(this.searchData).forEach(key => this.searchData[key] = '');
+            this.searchData.size = 10;
+            this.searchData.page = 1;
+            this.getTableData()
         },
         //删除单挑数据
         delData(id) {

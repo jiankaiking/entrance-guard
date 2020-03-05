@@ -3,14 +3,14 @@
         <div class="searchData">
             <el-form ref="form" :model="searchData" label-width="80px">
                 <el-form-item label="操作人员" style="width: 220px">
-                    <el-input v-model="searchData.loginStaffName"></el-input>
+                    <el-input v-model="searchData.name"></el-input>
                 </el-form-item>
                 <el-form-item label-width="20px">
-                    <el-input v-model="searchData.loginClientIp"></el-input>
+                    <el-input v-model="searchData.name"></el-input>
                 </el-form-item>
                 <el-form-item label="登录时间">
                     <el-date-picker
-                            v-model="searchData.loginTime"
+                            v-model="searchData.searchTime"
                             type="daterange"
                             format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd"
@@ -76,17 +76,16 @@
             return {
                 //搜索数据
                 searchData: {
-                    loginStaffName: '',
-                    loginClientIp: '',
-                    loginTime: null,
-                    loginStatus: '',
+                    name: '', //代理商、商户、门店
+                    deviceNo: '', //设备号
+                    searchTime:'',//时间
                     page: 1,
                     size: 10
                 },
                 dialogTableVisible: false,
                 value: '',
                 total: 0,
-                listUrl: '/log/getSysLoginLog',
+                listUrl: '/deviceManage/deviceYrBind/cashierList',
                 tableData: [{}]
             }
         },

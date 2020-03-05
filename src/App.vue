@@ -194,6 +194,7 @@
     padding: 28px 0;
     cursor: pointer;
     box-sizing: border-box;
+    overflow: hidden;
     position: relative
   }
 
@@ -202,14 +203,14 @@
 
   }
 
-  .equipment-total li::before {
+  .equipment-total li.active::before {
     position: absolute;
     content: "";
-    height: 3px;
+    height: 4px;
     bottom: 0;
     left: 0;
     width: 100%;
-    background: red;
+    background: #38B8EE;
   }
   .overspread-parent{
     position: relative;

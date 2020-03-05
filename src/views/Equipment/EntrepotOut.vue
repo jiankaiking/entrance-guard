@@ -2,43 +2,41 @@
     <div class="equipment-lsit">
         <div class="tableData">
             <div class="searchData">
-                <el-form ref="form" :model="searchData" label-width="25px">
+                <el-form ref="form" :model="searchData" label-width="80px">
+                    <el-form-item label="设备型号">
+                        <EquimentSelect :deviceTypeId.sync="searchData.deviceTypeId"></EquimentSelect>
+                    </el-form-item>
                     <el-form-item>
-                        <el-select v-model="searchData.agentArea" placeholder="选择省">
+                        <el-select v-model="searchData.agentArea" placeholder="支付方式">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item>
-                        <el-select v-model="searchData.agentArea" placeholder="选择市">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item>
+                    <el-form-item label="发货人">
                         <el-input placeholder="代理商名称/联系人/联系方式" v-model="searchData.queryCriteria"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
-                        <el-button @click="agentAdd" type="success" plain>新增</el-button>
+                        <el-button @click="resetSearch" type="success" plain>重置</el-button>
+                        <el-button @click="resetSearch" type="success" plain>导出</el-button>
                     </el-form-item>
                 </el-form>
             </div>
             <div class="tableBox">
-                <el-table empty-text element-loading-text="数据正在加载中" element-loading-spinner="el-icon-loading"
+                <el-table empty-text v-loading="loading" element-loading-text="数据正在加载中" element-loading-spinner="el-icon-loading"
                           :headerRowStyle="{color:'#000000'}" :data="tableData" border style="width: 100%;">
-                    <el-table-column align="center" prop="agentId" label="订单号"></el-table-column>
+                    <el-table-column align="center" prop="orderNo" label="订单号"></el-table-column>
                     <el-table-column align="center" prop="agentName" label="代理商名称"></el-table-column>
-                    <el-table-column align="center" prop="address" label="设备型号"></el-table-column>
-                    <el-table-column align="center" prop="responsibleName" label="数量"></el-table-column>
-                    <el-table-column align="center" prop="responsibleName" label="总价"></el-table-column>
-                    <el-table-column align="center" prop="agentScope" label="支付方式"></el-table-column>
-                    <el-table-column align="center" prop="createTime" label="发货时间"></el-table-column>
+                    <el-table-column align="center" prop="deviceTypeCode" label="设备型号"></el-table-column>
+                    <el-table-column align="center" prop="deliveryCount" label="数量"></el-table-column>
+                    <el-table-column align="center" prop="orderAmount" label="总价"></el-table-column>
+                    <el-table-column align="center" prop="payChannelName" label="支付方式"></el-table-column>
+                    <el-table-column align="center" prop="sendTime" label="发货时间"></el-table-column>
                     <el-table-column align="center" prop="sellerCount" label="收货人"></el-table-column>
-                    <el-table-column align="center" prop="sellerCount" label="发货人"></el-table-column>
+                    <el-table-column align="center" prop="consignor" label="发货人"></el-table-column>
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                            <el-button type="info" plain size="mini" @click="showModel(scope.row)">详情</el-button>
+                            <el-button type="text"  @click="showModel(scope.row)">详情</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -50,8 +48,7 @@
                         :page-sizes="[10, 20, 50, 100]"
                         :page-size="searchData.size"
                         :total="total"
-                        layout=" sizes, prev, pager, next, jumper"
-                >
+                        layout=" sizes, prev, pager, next, jumper">
                 </el-pagination>
             </div>
         </div>
@@ -60,6 +57,7 @@
 
 <script>
     import {myMixins} from "../../mixins/mixin";
+    import EquimentSelect from "../../components/select/EquimentSelect";
     import httpRequest from "../../api/api";
     export default {
         name: "EntrepotOut",
@@ -67,19 +65,29 @@
         data() {
             return {
                 searchData: {
-                    agentArea: '', //代理区域
+                    deviceTypeId: '', //设备型号
                     queryCriteria: '',  //查询条件
                     agent_pid: '',  //上级代理商id
                     size: 10,
                     page: 1
                 },
-
+                deviceType:[],
                 total: 1,
                 dialogTableVisible: false,
                 tableData: [],
-                listUrl: '/agentManage/getAgentList',   //表格数据接口
+                listUrl: '/deviceManage/deviceOutbound/queryDeviceOutbound',   //表格数据接口
             }
         },
+        mounted() {
+            if(this.$route.query.deviceTypeId != undefined){
+                this.searchData.deviceTypeId = this.$route.query.deviceTypeId
+            }
+
+        },
+        components:{
+            EquimentSelect
+        },
+
     }
 </script>
 
@@ -87,7 +95,4 @@
     .searchData{
         box-shadow: none; margin-bottom: 0; padding-top: 25px;
     }
-
-
-
 </style>

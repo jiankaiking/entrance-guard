@@ -4,35 +4,32 @@
             <div class="searchData">
                 <el-form ref="form" :model="searchData" label-width="120px">
                     <el-form-item label="设备型号">
-                        <el-select v-model="searchData.value" placeholder="选择省">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
+                        <EquimentSelect :deviceTypeId.sync="searchData.deviceTypeId"></EquimentSelect>
                     </el-form-item>
                     <el-form-item>
-                        <el-button @click="searchClick" type="primary" plain>搜索</el-button>
+                        <el-button @click="resetValue" type="primary" plain>重置</el-button>
                     </el-form-item>
                 </el-form>
             </div>
             <div class="repertory-list">
                 <div class="repertory-item" v-for="(item,index) in repertoryData">
                     <div class="item-left">
-                        <img class="item-image" src="../../assets/images/loginlogo.png" alt="">
+                        <img class="item-image" :src="item.imgUrl" alt="">
                     </div>
                     <div class="item-right">
                         <div class="item-top">
-                            <span class="item-name">蜻蜓plus</span>
-                            <span class="item-num">蜻蜓plus</span>
+                            <span class="item-name">{{item.deviceTypeCode}}</span>
+                            <span class="item-num">当前库存:{{item.stockDeviceCount}}</span>
                         </div>
                         <div class="total-num">
-                            <p>入库总量: 0</p>
-                            <p>出库总量: 0</p>
+                            <p>入库总量:{{item.surplusDeviceCount}}</p>
+                            <p>出库总量:{{item.sendDeviceCount}}</p>
                         </div>
                         <div class="item-btn">
-                            <el-button type="primary" plain size="mini" >入库记录</el-button>
-                            <el-button type="primary" plain size="mini">出库记录</el-button>
-                            <el-button type="primary" plain size="mini"  @click="showPresent(1)">赠送</el-button>
-                            <el-button type="primary" plain size="mini"  @click="showPresent(2)">补货</el-button>
+                            <el-button type="primary" plain size="mini" @click="goGetrecord(item.deviceTypeId)">入库记录</el-button>
+                            <el-button type="primary" plain size="mini" @click="goOutrecord(item.deviceTypeId)">出库记录</el-button>
+                            <el-button type="primary" plain size="mini"  @click="showPresent(1,item.deviceTypeId)">赠送</el-button>
+                            <el-button type="primary" plain size="mini"  @click="showPresent(2,item.deviceTypeId)">补货</el-button>
                         </div>
                     </div>
                 </div>
@@ -40,43 +37,71 @@
         </div>
         <el-dialog title="提示" align="center" :visible.sync="dialogTableVisible"
                 :lock-scroll="false" width="40%" :before-close="handleClose">
-            <PresentModel style="padding: 0 50px; box-sizing: border-box" v-if="cliIndex == 1" ref="modalForm" @close="modalClose" @ok="modalFormOk"></PresentModel>
-            <EntrepotAddModel v-if="cliIndex == 2" style="padding: 0 150px; box-sizing: border-box"  ref="modalForm" @close="modalClose" @ok="modalFormOk"></EntrepotAddModel>
+            <PresentModel :deviceTypeId="deviceTypeId" style="padding: 0 50px; box-sizing: border-box" v-if="cliIndex == 1"  @close="modalClose" @ok="modalFormOk"></PresentModel>
+            <EntrepotAddModel v-if="cliIndex == 2" style="padding: 0 150px; box-sizing: border-box"  @close="modalClose" @ok="modalFormOk"></EntrepotAddModel>
         </el-dialog>
     </div>
 </template>
 
 <script>
+
     import httpRequest from "../../api/api";
+    import EquimentSelect from "../../components/select/EquimentSelect";
     import EntrepotAddModel from "./moduleModel/EntrepotAddModel";
-    import {myMixins} from "../../mixins/mixin";
     import PresentModel from "./moduleModel/PresentModel";
 
     export default {
         name: "Repertory",
-        mixins:[myMixins],
+
         data() {
             return {
                 searchData: {
-                    value: 123
+                    deviceTypeId: ''
                 },
-                repertoryData: [
-                    {name: 123, age: 123},
-                    {name: 123, age: 123},
-                    {name: 123, age: 123},
-                    {name: 123, age: 123}
-                ],
+                repertoryData: [{}],
+                deviceType:[],
+                deviceTypeId:'',
                 dialogTableVisible:false,
                 cliIndex:0,
             }
         },
+        mounted(){
+            this.getDeviceInStorehouse()
+        },
         methods: {
-            showPresent(index){
-                this.cliIndex = index
+            showPresent(index,deviceTypeId){
+                this.cliIndex = index;
+                this.deviceTypeId = deviceTypeId;
                 this.dialogTableVisible = true
             },
+            //入库记录
+            goGetrecord(deviceTypeId){
+                this.$router.push({path:"/entrepot/getrecord",query:{deviceTypeId:deviceTypeId}})
+            },
+            //出库记录
+            goOutrecord(deviceTypeId){
+                this.$router.push({path:"/entrepot/outrecord",query:{deviceTypeId:deviceTypeId}})
+            },
+            //类型变化
+            changeType(){
+                this.getDeviceInStorehouse()
+            },
+            //重置
+            resetValue(){
+                this.searchData.deviceTypeId = ""
+                this.getDeviceInStorehouse()
+            },
+            //获取库存
+            getDeviceInStorehouse(){
+                httpRequest("/deviceManage/deviceInStorehouse/sumDeviceCountOrderByDeviceTypeId","GET",this.searchData)
+                    .then(res=>{
+                        this.repertoryData = res.data;
+                    })
+            },
         },
+
         components:{
+            EquimentSelect,
             PresentModel,
             EntrepotAddModel
         }

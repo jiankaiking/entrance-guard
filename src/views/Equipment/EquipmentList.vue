@@ -2,19 +2,16 @@
     <div class="equipment-lsit">
         <div class="equipment-total">
             <ul>
-                <li><p>已绑定设备</p>
-                    <p>123213</p></li>
-                <li><p>绑定设备申请</p>
-                    <p>123213</p></li>
-                <li><p>已发货设备</p>
-                    <p>123213</p></li>
+                <li @click="equipmentClick(0)" :class="{'active':equipmentIndex == 0}"><p>已绑定设备</p><p>{{dataInfo.boundDeviceCount}}</p></li>
+                <li @click="equipmentClick(1)" :class="{'active':equipmentIndex == 1}"><p>绑定设备申请</p><p>{{dataInfo.auditDeviceCount}}</p></li>
+                <li @click="equipmentClick(2)" :class="{'active':equipmentIndex == 2}"><p>已发货设备</p><p>{{dataInfo.deliverDeviceCount}}</p></li>
             </ul>
         </div>
         <div class="status-options">
             <ul>
-                <li>已绑定设备</li>
-                <li>待绑定设备</li>
-                <li>解除绑定申请</li>
+                <li @click="bindStatuschange(index)" :class="{'active': activeIndex == index}" v-for="(item,index) in bindStatusArr">
+                    {{item.name}}
+                </li>
             </ul>
         </div>
         <div class="tableData">
@@ -118,13 +115,40 @@
                     size: 10,
                     page: 1
                 },
-
+                activeIndex: 0,  //绑定状态下标
+                equipmentIndex:0, // 总数状态下标
+                bindStatusArr: [
+                    {name: "已绑定设备", value: "1"},
+                    {name: "待绑定设备", value: "2"},
+                    {name: "解除绑定申请", value: "3"}
+                ],
+                dataInfo: {},
                 total: '',
                 dialogTableVisible: false,
                 tableData: [],
                 listUrl: '/agentManage/getAgentList',   //表格数据接口
             }
         },
+        mounted() {
+            this.getdevice()
+        },
+        methods: {
+            equipmentClick(index){
+                this.equipmentIndex = index
+            },
+            //点击切换绑定状态
+            bindStatuschange(index){
+                this.activeIndex = index
+            },
+            //获取总设备数量
+            getdevice() {
+                httpRequest("/deviceManage/device/selectCountByDeviceStatus", "GET")
+                    .then(res => {
+                        this.dataInfo = res.data;
+                    })
+            }
+
+        }
     }
 </script>
 
@@ -153,7 +177,22 @@
     .status-options li {
         display: inline-block;
         margin-right: 100px;
-        color: #000000
+        color: #000000;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .status-options li.active {
+        color: #38B8EE;
+    }
+
+    .status-options li.active::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 2px;
+        background: #38B8EE;
+        bottom: 0; left: 0;
     }
 
 </style>

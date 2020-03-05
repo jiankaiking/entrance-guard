@@ -1,4 +1,4 @@
-const PREFIX = process.env.NODE_ENV === 'production' ? 'http://hean.vipgz1.idcfengye.com' : 'hhtp://test.com';
+const PREFIX = process.env.NODE_ENV === 'production' ? 'http://192.168.0.147:8701' : 'hhtp://test.com';
 
 
 export default PREFIX

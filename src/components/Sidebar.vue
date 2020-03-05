@@ -1,6 +1,7 @@
 <template>
     <div class="sidebar-container">
         <el-menu
+                :default-active="this.$route.path"
                 unique-opened
                 router
                 mode="vertical"
