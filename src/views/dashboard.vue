@@ -31,7 +31,7 @@
 </script>
 <style lang="scss">
     .el-main{
-        padding: 0; overflow: visible;
+        padding: 0;
     }
     .centerCont{
         padding: 40px; box-sizing: border-box; height: auto;

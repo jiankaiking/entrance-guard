@@ -4,7 +4,7 @@
             <el-input v-model="modelFromdata.orderNum"></el-input>
         </el-form-item>
         <el-form-item label="设备型号">
-            <EquimentSelect :deviceTypeId.sync="modelFromdata.deviceTypeId"></EquimentSelect>
+            <EquimentSelect  :deviceTypeId.sync="modelFromdata.deviceTypeId" disabled></EquimentSelect>
         </el-form-item>
         <el-form-item label="厂商名称">
             <el-input  v-model="modelFromdata.factory"></el-input>
@@ -44,7 +44,7 @@
         data(){
             return{
                 modelFromdata:{
-                    deviceTypeId:'', //设备类型
+                     deviceTypeId:'', //设备类型
                     orderNum:'',//入库订单号
                     introductionCount:'',//入库数量
                     buyingPrice:'',//进货价格
@@ -59,18 +59,21 @@
                 },
             }
         },
+        mounted(){
 
+        },
         methods:{
             //取消
             close(){
                this.$emit('close')
             },
             //添加
-            add() {
+            add(id) {
                 this.saveBtnfalg = true
                 for(var key in this.modelFromdata){
                     this.modelFromdata[key] = ""
                 }
+                this.modelFromdata.deviceTypeId = id;
             },
             //详情
             edit(record) {
@@ -94,7 +97,7 @@
         },
         components:{
             EquimentSelect
-        }
+        },
     }
 </script>
 

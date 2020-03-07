@@ -29,7 +29,8 @@
                             <el-col>
                                 <el-checkbox v-model="modelFromdata.isLadder" :true-label="1" :false-label="0"
                                              label="是否设置阶梯价格"></el-checkbox>
-                                <el-button type="text" style="margin-left: 50px" @click="addRules" v-if="modelFromdata.isLadder == 1">
+                                <el-button type="text" style="margin-left: 50px" @click="addRules"
+                                           v-if="modelFromdata.isLadder == 1">
                                     <i class="el-icon-circle-plus-outline el-icon--left"></i>新增一条规则
                                 </el-button>
                             </el-col>
@@ -38,7 +39,8 @@
                                 <el-input style="width: 100px;" v-model="item.deviceNumber"></el-input>
                                 件,每件价格为￥
                                 <el-input style="width: 100px;" v-model="item.devicePrice"></el-input>
-                                <i class="del-image" @click="delRules(index)"><img src="../../../assets/images/del.png" alt=""/></i>
+                                <i class="del-image" @click="delRules(index)"><img src="../../../assets/images/del.png"
+                                                                                   alt=""/></i>
                             </el-col>
                         </el-row>
                     </el-form-item>
@@ -62,7 +64,9 @@
             </el-row>
             <el-form-item style="margin-top: 67px;">
                 <el-button @click="backrank">返回</el-button>
-                <el-button style="margin-left: 60px" @click="addEquiment">确认</el-button>
+                <el-button style="margin-left: 60px" type="danger" @click="addEquiment">
+                    {{modelFromdata.deviceTypeId?'修改':'确认'}}
+                </el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -85,24 +89,26 @@
                     description: '',//描述
                     deviceLadderList: [], //阶梯类型
                 },
-                deviceLadderList:[
-                    {deviceNumber:'',devicePrice:''},
+                deviceLadderList: [
+                    {deviceNumber: '', devicePrice: ''},
                 ],
-                url:{
-                    add:'/deviceManage/deviceType/insert',
-                    info:'/deviceManage/deviceType/findOne',
-                    edit:'/deviceManage/deviceType/update'
+                url: {
+                    add: '/deviceManage/deviceType/insert',
+                    info: '/deviceManage/deviceType/findOne',
+                    edit: '/deviceManage/deviceType/update'
                 }
             }
         },
         methods: {
             //清空填充项
-            modelDatanull(){
-                for(var key in this.modelFromdata){
+            modelDatanull() {
+                for (var key in this.modelFromdata) {
                     this.modelFromdata[key] = ""
                 }
+                this.modelFromdata.isLadder = 0;
             },
-            add(){
+
+            add() {
                 this.modelDatanull()
             },
             edit(record) {
@@ -110,20 +116,24 @@
                 this.modelDatanull()
                 httpRequest(this.url.info, 'get', {deviceTypeId: record})
                     .then(res => {
-                        Object.assign(this.modelFromdata,res.data)
-                        if(res.data.deviceLadderList){
+                        Object.assign(this.modelFromdata, res.data)
+                        if (res.data.deviceLadderList) {
                             this.deviceLadderList = res.data.deviceLadderList
                         }
                     })
             },
             //新增设备
-            addEquiment(){
-                this.modelFromdata.deviceLadderList = JSON.stringify(this.deviceLadderList)
+            addEquiment() {
+                if(this.modelFromdata.isLadder == 1){
+                    this.modelFromdata.deviceLadderList = JSON.stringify(this.deviceLadderList)
+                }else{
+                    this.modelFromdata.deviceLadderList = ""
+                }
                 //有设备id就是修改 没有就是新增
-                let url = this.modelFromdata.deviceTypeId?this.url.edit:this.url.add
-                httpRequest(url,"POST",this.modelFromdata)
-                    .then(res=>{
-                        if(res.success){
+                let url = this.modelFromdata.deviceTypeId ? this.url.edit : this.url.add
+                httpRequest(url, "POST", this.modelFromdata)
+                    .then(res => {
+                        if (res.success) {
                             this.$message.success(res.msg)
                             this.$emit('ok')
                         }
@@ -134,12 +144,12 @@
                 this.$emit('backrank')
             },
             //新增规则
-            addRules(){
-               this.deviceLadderList.push(JSON.parse(JSON.stringify({deviceNumber:'',devicePrice:''})))
+            addRules() {
+                this.deviceLadderList.push(JSON.parse(JSON.stringify({deviceNumber: '', devicePrice: ''})))
             },
             //删除规则
-            delRules(index){
-                this.deviceLadderList.splice(index,1)
+            delRules(index) {
+                this.deviceLadderList.splice(index, 1)
             }
         },
         components: {
@@ -150,11 +160,12 @@
                 return this.modelFromdata.isLadder;
             }
         },
-        watch:{
-            isLadder(val){
-                if(val == 0){
+        watch: {
+            isLadder(val) {
+                if (val == 0) {
                     this.modelFromdata.deviceLadderList = ""
                 }
+
             }
         },
     }
@@ -195,7 +206,8 @@
         margin-top: 10px;
         margin-left: 30px;
     }
-.el-input__inner{
-    padding: 0 5px;
-}
+
+    .el-input__inner {
+        padding: 0 5px;
+    }
 </style>

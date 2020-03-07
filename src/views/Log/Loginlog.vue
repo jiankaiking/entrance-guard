@@ -36,11 +36,11 @@
             <div class="tableBox">
                 <el-table :data="tableData" border empty-text style="width: 100%">
                     <el-table-column prop="loginUserName" align="center" label="姓名"></el-table-column>
-                    <el-table-column prop="organName" label="所属部门" align="center"></el-table-column>
-                    <el-table-column prop="loginIp" align="center" label="IP"></el-table-column>
+                    <el-table-column prop="loginOrganName" label="所属部门" align="center"></el-table-column>
+                    <el-table-column prop="loginClientIp" align="center" label="IP"></el-table-column>
                     <el-table-column prop="loginStatus" align="center" label="状态"></el-table-column>
-                    <el-table-column prop="operResult" align="center" label="操作信息"></el-table-column>
-                    <el-table-column align="center" prop="loginTime" label="操作时间"></el-table-column>
+                    <el-table-column prop="loginInfo" align="center" label="操作信息"></el-table-column>
+                    <el-table-column align="loginTime" prop="loginTime" label="操作时间"></el-table-column>
                 </el-table>
             </div>
             <div class="pagination">

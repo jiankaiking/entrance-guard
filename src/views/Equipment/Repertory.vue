@@ -38,7 +38,7 @@
         <el-dialog title="提示" align="center" :visible.sync="dialogTableVisible"
                 :lock-scroll="false" width="40%" :before-close="handleClose">
             <PresentModel :deviceTypeId="deviceTypeId" style="padding: 0 50px; box-sizing: border-box" v-if="cliIndex == 1"  @close="modalClose" @ok="modalFormOk"></PresentModel>
-            <EntrepotAddModel v-if="cliIndex == 2" style="padding: 0 150px; box-sizing: border-box"  @close="modalClose" @ok="modalFormOk"></EntrepotAddModel>
+            <EntrepotAddModel ref="modalForm" v-if="cliIndex == 2" style="padding: 0 150px; box-sizing: border-box"  @close="modalClose" @ok="modalFormOk"></EntrepotAddModel>
         </el-dialog>
     </div>
 </template>
@@ -72,7 +72,10 @@
             showPresent(index,deviceTypeId){
                 this.cliIndex = index;
                 this.deviceTypeId = deviceTypeId;
-                this.dialogTableVisible = true
+                this.dialogTableVisible = true;
+                this.$nextTick(()=>{
+                    this.$refs.modalForm.add(deviceTypeId)
+                })
             },
             //补货成功
             modalFormOk(){
@@ -108,7 +111,20 @@
             EquimentSelect,
             PresentModel,
             EntrepotAddModel
+        },
+        computed:{
+            devId(){
+                return this.searchData.deviceTypeId
+            }
+        },
+        watch:{
+            devId(val,oldval){
+                if(val !== oldval){
+                    this.getDeviceInStorehouse()
+                }
+            }
         }
+
     }
 </script>
 

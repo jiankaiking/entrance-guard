@@ -51,6 +51,7 @@
         methods: {
             //打开新增
             changeDialogTableVisible(){
+                this.dialogTableVisible =true;
                 this.$nextTick(()=>{
                     this.dialogTableVisible =true;
                 });

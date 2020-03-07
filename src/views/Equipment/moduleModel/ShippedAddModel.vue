@@ -1,10 +1,10 @@
 <template>
     <el-form label-width="90px" :model="modelFromdata">
-        <div class="title">身份证照片</div>
+        <div class="title">设备信息</div>
         <el-row>
             <el-col :span="5">
                 <el-form-item label="设备型号" >
-                    <EquimentSelect :deviceTypeId.sync="modelFromdata.deviceTypeId"></EquimentSelect>
+                    <EquimentSelect  :deviceTypeId.sync="modelFromdata.deviceTypeId"></EquimentSelect>
                 </el-form-item>
             </el-col>
             <el-col :span="5" :offset="1">
@@ -19,7 +19,7 @@
             </el-col>
             <el-col :span="5" :offset="1">
                 <el-form-item label="总价(元)" >
-                    <el-input placeholder="14990" ></el-input>
+                    <el-input placeholder="14990" disabled v-model="totalPrices" ></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -35,25 +35,31 @@
                     <el-input placeholder="请输入收货电话号码" v-model="modelFromdata.consigneePhone"></el-input>
                 </el-form-item>
             </el-col>
-            <el-col :span="11"  :offset="1">
+            <el-col :span="5"  :offset="1" v-if="modelFromdata.deviceApplyId">
+                <el-form-item label="收货地址" >
+                    <el-input placeholder="请输入收货电话号码" v-model="modelFromdata.consigneeArea"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="11"  :offset="1" v-if="!modelFromdata.deviceApplyId">
                 <el-form-item label="收货地址" >
                     <CitySelect @selectCode="selectCode"></CitySelect>
                 </el-form-item>
             </el-col>
-            <el-col :span="5" >
+            <el-col :span="5" :offset="modelFromdata.deviceApplyId?1:0">
                 <el-form-item label="详细地址" >
                     <el-input placeholder="请输入详细地址" v-model="modelFromdata.consigneeAdds"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
         <div class="title">付款信息</div>
-        <el-row >
+        <el-row>
             <el-col :span="5">
                 <el-form-item label="支付方式" >
                     <el-select v-model="modelFromdata.payChannel">
                         <el-option :value="1" label="支付宝"></el-option>
                         <el-option :value="2" label="预存款"></el-option>
                         <el-option :value="3" label="银行卡"></el-option>
+                        <el-option :value="4" label="赠送"></el-option>
                     </el-select>
                 </el-form-item>
             </el-col>
@@ -147,7 +153,7 @@
             </el-col>
             <el-col :span="5">
                 <el-form-item label="代理商名称" >
-                    <el-input placeholder="请选择"></el-input>
+                    <el-input placeholder="请选择" v-model="modelFromdata.agentName"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="5"  :offset="1">
@@ -189,7 +195,7 @@
                 modelFromdata:{
                     deviceTypeId:'',//设备类型
                     price:'',//单价
-                    applyCount:'',//申请数量
+                    applyCount:1,//申请数量
                     consignee:'',//收货人
                     consigneePhone:'',//收货人手机号
                     consigneeArea:'',//收货人区域
@@ -202,28 +208,58 @@
                     payTime:'',//支付时间
                     payChannel:'',//支付方式(1支付宝2预存款3银行卡)
                     payRemark:'',//支付备注
+                },
+                url:{
+                    add:"/deviceManage/deviceApply/saveDeviceDelivery",
+                    info:"/deviceManage/deviceApply/queryDeviceApplyInfo"
                 }
             }
         },
         methods:{
             //提交审核
             submitApply(){
-                httpRequest("/deviceManage/deviceApply/saveDeviceDelivery","POST",this.modelFromdata)
+                httpRequest(this.url.add,"POST",this.modelFromdata)
                     .then(res=>{
                         console.log(res)
                     })
             },
-            backrank(){
-                this.$emit('backrank')
+            //清空填充项
+            modelDatanull() {
+                for (var key in this.modelFromdata) {
+                    this.modelFromdata[key] = ""
+                }
             },
+            add() {
+                this.modelDatanull()
+            },
+
+            edit(id){
+                httpRequest(this.url.info,"GET",{deviceApplyId:id})
+                    .then(res=>{
+                        this.modelFromdata = res.data;
+                    })
+            },
+
+            //省市区
             selectCode(e){
                 this.modelFromdata.consigneeArea = e;
             },
+            backrank(){
+                this.$emit('backrank')
+            },
+        },
+        computed:{
+            //计算总价
+            totalPrices(){
+                return this.modelFromdata.price* this.modelFromdata.applyCount
+            }
         },
         components:{
             EquimentSelect,
             CitySelect
-        }
+        },
+
+
     }
 </script>
 

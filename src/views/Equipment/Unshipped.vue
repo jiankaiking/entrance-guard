@@ -32,7 +32,7 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
-                        <el-button  plain typ="info">重置</el-button>
+                        <el-button plain typ="info" @click="resetSearch">重置</el-button>
                         <el-button @click="searchClick" type="warning" plain>导出</el-button>
                         <el-button type="success" @click="showAdd" plain>新增发货</el-button>
                         <el-button @click="searchClick" typ="info" plain>批量审核</el-button>
@@ -45,7 +45,7 @@
                           element-loading-spinner="el-icon-loading" :headerRowStyle="{color:'#000000'}"
                           :data="tableData" border style="width: 100%;">
                     <el-table-column type="selection" width="55"></el-table-column>
-                    <el-table-column align="center" prop="applyOrderNum" label="订单号"></el-table-column>
+                    <el-table-column align="center" prop="applyOrderNum" label="订单号" width="240px"></el-table-column>
                     <el-table-column align="center" prop="agentName" label="代理商名称"></el-table-column>
                     <el-table-column align="center" prop="deviceTypeCode" label="设备型号"></el-table-column>
                     <el-table-column align="center" prop="applyCount" label="数量"></el-table-column>
@@ -59,11 +59,14 @@
                     <el-table-column align="center" prop="applyStatusName" label="订单状态"></el-table-column>
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                            <el-button type="text" v-if="scope.row.applyStatus == 1" @click="trueDelivery(scope.row)">确认发货</el-button>
-                            <el-button type="text" @click="showModel(scope.row)">详情</el-button>
-                            <el-button type="text" v-if="scope.row.applyStatus == 3" @click="showModel(scope.row)">审核</el-button>
-                            <el-button type="text" v-if="scope.row.applyStatus == 5" @click="showModel(scope.row)">修改</el-button>
-<!--                            <el-button type="text" @click="acccc">完款</el-button>-->
+                            <el-button type="text" v-if="scope.row.applyStatus == 1" @click="trueDelivery(scope.row)">
+                                确认发货
+                            </el-button>
+                            <el-button type="text" @click="showInfo(scope.row)">详情</el-button>
+                            <el-button type="text" v-if="scope.row.applyStatus == 3" @click="showInfo(scope.row)">审核
+                            </el-button>
+                            <el-button type="text" v-if="scope.row.applyStatus == 5" @click="showInfo(scope.row)">修改
+                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -80,12 +83,12 @@
             </div>
         </div>
         <el-dialog align="center" custom-class="shipped-class" width="400px" :title="dialogTitle"
-                   :visible.sync="dialogTableVisible" :lock-scroll="false" :before-close="handleClose">
+                   :visible.sync="modelFlag" :lock-scroll="false">
             <MessagesBox></MessagesBox>
         </el-dialog>
 
-        <ShippedAddModel v-if="parentTest.dialogTableVisible" @backrank="backrank"
-                         class="overspread-model"></ShippedAddModel>
+        <ShippedAddModel ref="modalForm" class="overspread-model" v-if="parentTest.dialogTableVisible"
+                         @backrank="backrank"></ShippedAddModel>
     </div>
 </template>
 
@@ -105,12 +108,13 @@
                     search: '', //查询条件，代理商、订单号
                     applyStatus: '',  //申请状态
                     payType: '',  //支付类型
-                    searchTime:'',//查询时间
-                    operation:'',//申请人
+                    searchTime: '',//查询时间
+                    operation: '',//申请人
                     size: 10,
                     page: 1
                 },
                 dialogTitle: '',
+                modelFlag: false,
                 dialogTableVisible: false,
                 multipleSelection: [],
                 total: 1,
@@ -128,18 +132,29 @@
         },
         methods: {
             //确认发货
-            trueDelivery(){
+            trueDelivery() {
 
             },
             modelMessage() {
 
             },
+            //完款
             acccc() {
                 this.dialogTableVisible = true
             },
             //新增点击
             showAdd() {
                 this.parentTest.changeDialogTableVisible()
+                this.$nextTick(() => {
+                    this.$refs.modalForm.add();
+                })
+            },
+            //详情
+            showInfo(row) {
+                this.parentTest.changeDialogTableVisible()
+                this.$nextTick(() => {
+                    this.$refs.modalForm.edit(row.deviceApplyId)
+                })
             },
             // 去除新增组件
             backrank() {
@@ -156,7 +171,7 @@
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-            }
+            },
         },
     }
 </script>
