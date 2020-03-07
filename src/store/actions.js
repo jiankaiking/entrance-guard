@@ -8,10 +8,13 @@ const actions = {
             // 向后端发送请求，验证用户名密码是否正确，请求成功接收后端返回的token值，利用commit修改store的state属性，并将token存放在localStorage中
             httpRequest('/login/userLogin','post', user)
                 .then(resp => {
-                    const token = resp.data.token;
-                    const userInfo = resp.data.userInfo;
-                    localStorage.setItem('token', token);
-                   commit('auth_success',{ token, userInfo});
+                    if(resp.success){
+                        const token = resp.data.token;
+                        const userInfo = resp.data.userInfo;
+                        console.log(axios)
+                        localStorage.setItem('token', token);
+                        commit('auth_success',{ token, userInfo});
+                    }
                     resolve(resp);
                 })
                 .catch(err => {
@@ -23,7 +26,7 @@ const actions = {
     },
     LogOut({commit, state}) {
         return new Promise((resolve, reject) => {
-            axios.get('Logout')
+            axios.get('/login/logout')
                 .then(response => {
                     removeIsLogin()
                     localStorage.removeItem('loginUsername');

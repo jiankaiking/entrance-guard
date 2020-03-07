@@ -1,20 +1,20 @@
 <template>
-    <el-form label-width="90px">
+    <el-form label-width="90px" :model="modelFromdata">
         <div class="title">身份证照片</div>
         <el-row>
             <el-col :span="5">
                 <el-form-item label="设备型号" >
-                    <el-input></el-input>
+                    <EquimentSelect :deviceTypeId.sync="modelFromdata.deviceTypeId"></EquimentSelect>
                 </el-form-item>
             </el-col>
             <el-col :span="5" :offset="1">
                 <el-form-item label="单价(元)">
-                    <el-input placeholder="请输入设备单价"></el-input>
+                    <el-input placeholder="请输入设备单价" v-model="modelFromdata.price"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="5" :offset="1">
                 <el-form-item label="数量(台)" >
-                    <el-input placeholder="请设备设备数量"></el-input>
+                    <el-input placeholder="请设备设备数量" v-model="modelFromdata.applyCount"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="5" :offset="1">
@@ -27,22 +27,22 @@
         <el-row>
             <el-col :span="5">
                 <el-form-item label="收货人" >
-                    <el-input placeholder="请输入收货人姓名"></el-input>
+                    <el-input placeholder="请输入收货人姓名" v-model="modelFromdata.consignee"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="5"  :offset="1">
                 <el-form-item label="联系方式">
-                    <el-input placeholder="请输入收货电话号码"></el-input>
+                    <el-input placeholder="请输入收货电话号码" v-model="modelFromdata.consigneePhone"></el-input>
                 </el-form-item>
             </el-col>
-            <el-col :span="5"  :offset="1">
+            <el-col :span="11"  :offset="1">
                 <el-form-item label="收货地址" >
-                    <el-input placeholder="请选择"></el-input>
+                    <CitySelect @selectCode="selectCode"></CitySelect>
                 </el-form-item>
             </el-col>
-            <el-col :span="5"  :offset="1">
+            <el-col :span="5" >
                 <el-form-item label="详细地址" >
-                    <el-input placeholder="请输入详细地址" ></el-input>
+                    <el-input placeholder="请输入详细地址" v-model="modelFromdata.consigneeAdds"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -50,25 +50,31 @@
         <el-row >
             <el-col :span="5">
                 <el-form-item label="支付方式" >
-                    <el-input placeholder="银行卡"></el-input>
+                    <el-select v-model="modelFromdata.payChannel">
+                        <el-option :value="1" label="支付宝"></el-option>
+                        <el-option :value="2" label="预存款"></el-option>
+                        <el-option :value="3" label="银行卡"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-col>
             <el-col :span="5"  :offset="1">
                 <el-form-item label="实付金额">
-                    <el-input placeholder="请输入实付金额(元)"></el-input>
+                    <el-input placeholder="请输入实付金额(元)" v-model="modelFromdata.payMoney"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="5"  :offset="1">
                 <el-form-item label="付款时间" >
                     <el-date-picker
                             type="date"
+                            v-model="modelFromdata.payTime"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择日期">
                     </el-date-picker>
                 </el-form-item>
             </el-col>
             <el-col :span="5"  :offset="1">
                 <el-form-item label="收款账户" >
-                    <el-input placeholder="请输入收款账户" ></el-input>
+                    <el-input placeholder="请输入收款账户" v-model="modelFromdata.payAccount" ></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -83,12 +89,15 @@
             </el-col>
             <el-col :span="5"  :offset="1">
                 <el-form-item label="支付类型" >
-                    <el-input placeholder="请选择支付状态"></el-input>
+                    <el-select v-model="modelFromdata.payType">
+                        <el-option :value="1" label="全额"></el-option>
+                        <el-option :value="1" label="定金"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-col>
             <el-col :span="5"  :offset="1">
                 <el-form-item label="备注信息" >
-                    <el-input placeholder="请输入备注信息" ></el-input>
+                    <el-input placeholder="请输入备注信息" v-model="modelFromdata.payRemark" ></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -98,6 +107,8 @@
                 <el-form-item label="申请时间">
                     <el-date-picker
                             type="date"
+                            v-model="modelFromdata.applyTime"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择日期">
                     </el-date-picker>
                 </el-form-item>
@@ -109,8 +120,8 @@
 
             </el-col>
         </el-row>
-        <div class="title">物流信息</div>
-        <el-row >
+        <div class="title" hidden>物流信息</div>
+        <el-row hidden>
             <el-col :span="5">
                 <el-form-item label="支付方式" >
                     <el-input placeholder="银行卡"></el-input>
@@ -146,32 +157,73 @@
             </el-col>
             <el-col :span="5"  :offset="1">
                 <el-form-item label="支付类型" >
-                    <el-input placeholder="请选择支付状态"></el-input>
+                    <el-select v-model="modelFromdata.payType">
+                        <el-option :value="1" label="全额"></el-option>
+                        <el-option :value="1" label="定金"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-col>
             <el-col :span="5"  :offset="1">
                 <el-form-item label="备注信息" >
-                    <el-input placeholder="请输入备注信息" ></el-input>
+                    <el-input placeholder="请输入备注信息" v-model="modelFromdata.payRemark" ></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
         <el-row>
             <el-col :span="5" :offset="9">
                 <el-button @click="backrank">返回</el-button>
-                <el-button style="margin-left: 80px">提交审核</el-button>
+                <el-button style="margin-left: 80px" @click="submitApply">提交审核</el-button>
             </el-col>
         </el-row>
     </el-form>
 </template>
 
 <script>
+    import httpRequest from "../../../api/api";
+    import EquimentSelect from "../../../components/select/EquimentSelect";
+    import CitySelect from "../../../components/select/CitySelect";
     export default {
         name: "ShippedAddModel",
+        data(){
+            return{
+                modelFromdata:{
+                    deviceTypeId:'',//设备类型
+                    price:'',//单价
+                    applyCount:'',//申请数量
+                    consignee:'',//收货人
+                    consigneePhone:'',//收货人手机号
+                    consigneeArea:'',//收货人区域
+                    consigneeAdds:'',//收货人地址
+                    payMoney:'',//支付金额
+                    payAccount:'',//支付账号
+                    payType:'',//支付类型 1全额2定金
+                    payReceipts:'',//支付回执
+                    applyTime:'',//申请时间
+                    payTime:'',//支付时间
+                    payChannel:'',//支付方式(1支付宝2预存款3银行卡)
+                    payRemark:'',//支付备注
+                }
+            }
+        },
         methods:{
+            //提交审核
+            submitApply(){
+                httpRequest("/deviceManage/deviceApply/saveDeviceDelivery","POST",this.modelFromdata)
+                    .then(res=>{
+                        console.log(res)
+                    })
+            },
             backrank(){
                 this.$emit('backrank')
             },
+            selectCode(e){
+                this.modelFromdata.consigneeArea = e;
+            },
         },
+        components:{
+            EquimentSelect,
+            CitySelect
+        }
     }
 </script>
 

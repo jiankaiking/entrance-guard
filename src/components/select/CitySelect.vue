@@ -10,7 +10,7 @@
                 <el-option v-for="(item,index) in cityArr" :label="item.regionName" :value="item.regionId"></el-option>
             </el-select>
         </el-col>
-        <el-col :span="8" v-if="type != 'city'">
+        <el-col :span="7" v-if="type != 'city'">
             <el-select v-model="region" @change="selectCode">
                 <el-option v-for="(item,index) in regionArr" :label="item.regionName" :value="item.regionId"></el-option>
             </el-select>
@@ -32,13 +32,13 @@
                     return "region";
                 }
             },
-            province:{},
-            city:{},
-            region:{},
         },
         data() {
             return {
                 provinceArr: [],
+                province:{},
+                city:{},
+                region:{},
                 cityArr: [],
                 regionArr: [],
                 rId: 1  // 查询id
@@ -47,7 +47,10 @@
         mounted() {
             httpRequest("/sysRegion/getRegion", "GET", {regionId: this.rId})
                 .then(res => {
-                    this.provinceArr = res.data
+                    this.provinceArr = res.data;
+                    this.province = ''
+                    this.city = ''
+                    this.region = ''
                 })
         },
         methods: {
@@ -55,8 +58,8 @@
                 httpRequest("/sysRegion/getRegion", "GET", {regionId: e})
                     .then(res => {
                         this.cityArr = res.data;
-                        this.city = ""
-                        this.region = ""
+                        this.city = ''
+                        this.region = ''
                     })
             },
             citySelect(e) {
@@ -66,11 +69,12 @@
                             this.$emit("selectCode",e)
                         }else{
                             this.regionArr = res.data;
-                            this.region = ""
                         }
+                        this.region = ''
                     })
             },
             selectCode(e){
+
                 this.$emit("selectCode",e)
             },
         }

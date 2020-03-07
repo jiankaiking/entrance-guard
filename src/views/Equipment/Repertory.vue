@@ -74,6 +74,10 @@
                 this.deviceTypeId = deviceTypeId;
                 this.dialogTableVisible = true
             },
+            //补货成功
+            modalFormOk(){
+                this.dialogTableVisible = false;
+            },
             //入库记录
             goGetrecord(deviceTypeId){
                 this.$router.push({path:"/entrepot/getrecord",query:{deviceTypeId:deviceTypeId}})

@@ -23,7 +23,7 @@ service.interceptors.request.use(config => {
     if(store.state.token){
         config.headers['Authorization'] = store.state.token
     }
-    console.log(store)
+   // console.log(store)
     config.method === 'post' ? config.data = qs.stringify({...config.data}) : config.params = {...config.data};
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
     return config;
@@ -36,6 +36,7 @@ service.interceptors.request.use(config => {
 //响应拦截
 service.interceptors.response.use(
     response => {
+       // console.log(response)
         if (!response.data.success) {
             Message.error(response.data.msg)
         }

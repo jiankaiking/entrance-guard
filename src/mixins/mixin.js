@@ -29,6 +29,7 @@ export const myMixins = {
             this.loading = true
             httpRequest(this.listUrl, 'get', this.searchData)
                 .then((res) => {
+                   // console.log(res)
                     if (res.code == 200) {
                         this.total = res.data.total;
                         this.tableData = res.data.records?res.data.records:res.data.rows;

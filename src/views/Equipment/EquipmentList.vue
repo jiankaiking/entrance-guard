@@ -16,14 +16,14 @@
         </div>
         <div class="tableData">
             <div class="searchData">
-                <el-form ref="form" :model="searchData" label-width="25px">
-                    <el-form-item>
+                <el-form ref="form" :model="searchData" label-width="120px">
+                    <el-form-item label="部门名称">
                         <el-select v-model="searchData.agentArea" placeholder="选择省">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item>
+                    <el-form-item label="绑定时间">
                         <el-select v-model="searchData.agentArea" placeholder="选择市">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
@@ -43,45 +43,16 @@
                           element-loading-spinner="el-icon-loading"
                           :headerRowStyle="{color:'#000000'}"
                           :data="tableData" border style="width: 100%;">
-                    <el-table-column align="center" prop="agentId" label="代理商号"></el-table-column>
-                    <el-table-column align="center" prop="agentName" label="代理商名称"></el-table-column>
-                    <el-table-column align="center" prop="address" label="代理商等级"></el-table-column>
-                    <el-table-column align="center" prop="responsibleName" label="联系人"></el-table-column>
-                    <el-table-column align="center" prop="responsibleName" label="所属运营"></el-table-column>
-                    <el-table-column align="center" prop="agentScope" label="代理区域"></el-table-column>
-                    <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
-                    <el-table-column align="center" prop="sellerCount" label="商户数量"></el-table-column>
-                    <el-table-column align="center" width="150" label="状态">
-                        <template slot-scope="scope">
-                            <el-button type="text" @click="changeSonStatus(scope.row,scope.$index,0)">
-                                <el-switch
-                                        :active-value="1"
-                                        :inactive-value="0"
-                                        :value="scope.row.agentStatus"
-                                        active-text="正常"
-                                        inactive-text="停用">
-                                </el-switch>
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" width="150" label="子代功能">
-                        <template slot-scope="scope">
-                            <el-button type="text" @click="changeSonStatus(scope.row,scope.$index,1)">
-                                <el-switch
-                                        :active-value="1"
-                                        :inactive-value="0"
-                                        :value="scope.row.sonAgentStatus"
-                                        active-text="正常"
-                                        inactive-text="停用">
-                                </el-switch>
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="操作">
-                        <template slot-scope="scope">
-                            <el-button type="info" plain size="mini" @click="showModel(scope.row)">详情</el-button>
-                        </template>
-                    </el-table-column>
+                    <el-table-column align="center" prop="agentId" label="序号"></el-table-column>
+                    <el-table-column align="center" prop="snCode" label="SN码"></el-table-column>
+                    <el-table-column align="center" prop="deviceTypeCode" label="设备型号"></el-table-column>
+                    <el-table-column align="center" prop="agentName" label="代理商"></el-table-column>
+                    <el-table-column align="center" prop="sellerName" label="商家"></el-table-column>
+                    <el-table-column align="center" prop="agentScope" label="交易笔数"></el-table-column>
+                    <el-table-column align="center" prop="createTime" label="交易金额"></el-table-column>
+                    <el-table-column align="center" prop="bindTime" label="绑定时间"></el-table-column>
+                    <el-table-column align="center" prop="createTime" label="操作人"></el-table-column>
+                    <el-table-column align="center" prop="sellerCount" label="操作"></el-table-column>
                 </el-table>
             </div>
             <div class="pagination">
@@ -109,24 +80,25 @@
         data() {
             return {
                 searchData: {
-                    agentArea: '', //代理区域
-                    queryCriteria: '',  //查询条件
-                    agent_pid: '',  //上级代理商id
+                    bindStatus: 3, //代理区域
+                    searchTime: '',  //查询条件
+                    deviceTypeId: '',  //上级代理商id\
+                    search:'',
                     size: 10,
                     page: 1
                 },
                 activeIndex: 0,  //绑定状态下标
                 equipmentIndex:0, // 总数状态下标
                 bindStatusArr: [
-                    {name: "已绑定设备", value: "1"},
-                    {name: "待绑定设备", value: "2"},
-                    {name: "解除绑定申请", value: "3"}
+                    {name: "已绑定设备", value: 3},
+                    {name: "待绑定设备", value: 2},
+                    {name: "解除绑定申请", value: 5}
                 ],
                 dataInfo: {},
                 total: '',
                 dialogTableVisible: false,
                 tableData: [],
-                listUrl: '/agentManage/getAgentList',   //表格数据接口
+                listUrl: '/deviceManage/device/getDeviceListByStatus',   //表格数据接口
             }
         },
         mounted() {
@@ -138,7 +110,9 @@
             },
             //点击切换绑定状态
             bindStatuschange(index){
-                this.activeIndex = index
+                this.activeIndex = index;
+                this.searchData.bindStatus = this.bindStatusArr[index].value;
+                this.getTableData()
             },
             //获取总设备数量
             getdevice() {

@@ -93,7 +93,7 @@
             return{
                 modelFromdata:{
                     deviceTypeId:this.deviceTypeId, //设备类型id
-                    agentId:'',//代理商ID
+                    agentId:1101,//代理商ID
                     deliveryCount:'',//赠送数量
                     presentDescription:'',//赠送原因
                     sendOutFactoryType:'',//发货厂商

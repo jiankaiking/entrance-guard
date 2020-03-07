@@ -20,9 +20,9 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="searchClick">搜索</el-button>
-                    <el-button>导入设备号</el-button>
-                    <el-button @click="headAdd">绑定</el-button>
+                    <el-button type="primary" plain @click="searchClick" >搜索</el-button>
+                    <el-button type="warning" plain>导入设备号</el-button>
+                    <el-button type="success" plain @click="headAdd">绑定</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -85,7 +85,7 @@
                 dialogTableVisible: false,
                 value: '',
                 total: 0,
-                listUrl: '/deviceManage/deviceYrBind/cashierList',
+                listUrl: '/deviceManage/deviceYrBind/cashierBind',
                 tableData: [{}]
             }
         },

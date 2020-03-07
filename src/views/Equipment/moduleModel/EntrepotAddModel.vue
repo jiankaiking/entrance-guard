@@ -4,11 +4,7 @@
             <el-input v-model="modelFromdata.orderNum"></el-input>
         </el-form-item>
         <el-form-item label="设备型号">
-            <el-select v-model="modelFromdata.deviceTypeId" placeholder="选择设备类型">
-                <el-option v-for="(item,index) in parentTest.deviceType"
-                           :label="item.deviceTypeCode" :value="item.deviceTypeId">
-                </el-option>
-            </el-select>
+            <EquimentSelect :deviceTypeId.sync="modelFromdata.deviceTypeId"></EquimentSelect>
         </el-form-item>
         <el-form-item label="厂商名称">
             <el-input  v-model="modelFromdata.factory"></el-input>
@@ -21,8 +17,9 @@
         </el-form-item>
         <el-form-item label="入库时间">
             <el-date-picker
-                    v-model="modelFromdata.createTime"
+                    v-model="modelFromdata.putTime"
                     type="date"
+                    value-format="yyyy-MM-dd"
                     placeholder="选择日期">
             </el-date-picker>
         </el-form-item>
@@ -41,9 +38,9 @@
 
 <script>
     import httpRequest from "../../../api/api";
+    import EquimentSelect from "../../../components/select/EquimentSelect";
     export default {
         name: "EquipmentAddModel",
-        inject:["parentTest"],
         data(){
             return{
                 modelFromdata:{
@@ -94,6 +91,9 @@
                         }
                     })
             },
+        },
+        components:{
+            EquimentSelect
         }
     }
 </script>
