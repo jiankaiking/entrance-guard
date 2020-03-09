@@ -3,6 +3,6 @@ const state = {
     status: '',
     cont:0,
     token: localStorage.getItem('token') || '',
-    user:"",
+    user:JSON.parse(localStorage.getItem('user')) || '',
 }
 export default state

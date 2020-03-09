@@ -6,15 +6,15 @@
                     <div class="userMsg">
                         <img class="userVia" src="../assets/images/active.jpeg" alt="">
                         <span class="el-dropdown-link">
-                        {{ userInfo.name}}
+                        {{user.userName}}
                         </span>
                         <i class="el-icon-arrow-down"/>
                     </div>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="logout">
+                        <el-dropdown-item command="logout" @click.native="LogOut">
                             退出登录
                         </el-dropdown-item>
-                        <el-dropdown-item command="logout">
+                        <el-dropdown-item command="logout" @click.native="changePassword">
                             修改密码
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -25,42 +25,26 @@
 </template>
 
 <script>
-    // import {
-    //     mapState
-    // } from 'vuex';
+    import {mapState,mapActions} from 'vuex';
     // import {LOGOUT} from '../store/action_type';
 
     export default {
         data() {
             return {
-                options: [{
-                    value: 'white',
-                    backgroundC: 'red',
-                    label: ' '
-                }, {
-                    value: 'primary2',
-                    backgroundC: 'yellow',
-                    label: ' '
-                }, {
-                    value: 'primary3',
-                    backgroundC: 'pink',
-                    label: ' '
-                }, {
-                    value: 'primary4',
-                    backgroundC: 'gold',
-                    label: ' '
-                }],
-                value: ' ',
-                userInfo: {
-                    name: 'aaaaaaaa'
-                }
-            };
+            }
+        },
+        mounted(){
+            console.log(this.$store)
         },
         computed: {
-            //...mapState(['userInfo'])
+            ...mapState(['user'])
         },
         methods: {
+            ...mapActions(["LogOut"]),
 
+            changePassword(){
+                this.$router.push("/findpassword")
+            },
             handleCommand(command) {
                 console.log(1)
 
@@ -116,7 +100,7 @@
         width: 100px;
     }
     .banner-right .banner-userinfo {
-        float: right;
+        float: right; cursor: pointer;
     }
 
     .userMsg {

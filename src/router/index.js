@@ -240,7 +240,7 @@ const router = new Router({
 
         },
         {
-            name: 'Login', path: '/findpassword', component: () => import('@/views/User/forgetPassword')
+            name: 'Login1', path: '/findpassword', component: () => import('@/views/User/forgetPassword')
         },
         {
             name: 'Login', path: '/Login', component: () => import('@/views/Login')

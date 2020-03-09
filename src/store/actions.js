@@ -13,6 +13,7 @@ const actions = {
                         const userInfo = resp.data.userInfo;
                         console.log(axios)
                         localStorage.setItem('token', token);
+                        localStorage.setItem('user', JSON.stringify(userInfo));
                         commit('auth_success',{ token, userInfo});
                     }
                     resolve(resp);
