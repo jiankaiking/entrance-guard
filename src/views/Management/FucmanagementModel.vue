@@ -14,8 +14,7 @@
         </el-form-item>
         <div>配置管理</div>
         <el-form-item  prop="menuIds">
-<!--            <el-transfer v-model="modelFromdata.menuIds" :data="data"></el-transfer>-->
-            <MyTransfer :schoolinfo="schoolinfo"></MyTransfer>
+            <MyTransfer :dataSource="dataSource" :matchKey="value" ></MyTransfer>
         </el-form-item>
         <el-form-item>
             <div style="margin: 0 auto; width: 200px">
@@ -23,14 +22,12 @@
                 <el-button type="primary" @click="handleOk">保存</el-button>
             </div>
         </el-form-item>
-
     </el-form>
 </template>
 
 <script>
     import httpRequest from "../../api/api";
-    import MyTransfer from "../../components/MyTransfer";
-
+     import MyTransfer from '../../components/MyTransfer'
     export default {
         data() {
             return {
@@ -40,10 +37,14 @@
                     roleRemarks:'',
                     menuIds:'',
                 },
-                schoolinfo:[
-                    
+                dataSource:[
+                    {id:1,name:'a'},
+                    {id:2,name:'b'},
+                    {id:3,name:'c'},
+                    {id:4,name:'d'},
+                    {id:5,name:'e'}
                 ],
-                value: [1, 4],
+                value: [],
                 url: {
                     add: '/roleManagec/addRole',
                     edit: '/roleManagec/edit'
@@ -100,16 +101,12 @@
     };
 </script>
 <style lang="scss">
-        .funcmanang-model .el-form-item {
-            width: 300px;
-        }
-
-        .funcmanang-model .el-transfer-panel__header {
-            display: none;
-        }
-
-        .funcmanang-model .el-transfer-panel__item .el-checkbox__input {
+    .el-transfer-panel__header {
+        display: none;
+    }
+    .el-transfer-panel__item .el-checkbox__input{
+        .el-transfer-panel__item .el-checkbox__input {
             left: 35px;
         }
+    }
 </style>
-

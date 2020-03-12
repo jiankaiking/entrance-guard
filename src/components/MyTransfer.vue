@@ -1,193 +1,442 @@
-
 <template>
-    <div class="shuttle">
-        <div class="shuttle_item">
-            <ul class="school">
-                <li v-for="(item,index) in allSchool" :key="index">
-                    <el-checkbox :label="item.name" :value="item.value"></el-checkbox>
-                </li>
-            </ul>
+    <div class="clearfix">
+        <div class="col-sm-5">
+            <div class="panel panel-default transfer-container">
+                <div class="transfer-container-bottom">
+                    <div class="loading" v-if="leftLoading"></div>
+                    <template v-else>
+                        <div class="list" :class="{'scroll-y': matchedLeftList.length > 7}">
+                            <ul class="list-group">
+                                <template v-for="(item,index) in matchedLeftList">
+                                    <li class="list-group-item" @click="toggleLeft($event,index)">
+                                        <input type="checkbox" v-model="item.checked" :key="index">
+                                        {{ item.name }}
+                                    </li>
+                                </template>
+                                <li class="list-group-item text-muted" v-if="matchedLeftList.length === 0">暂无数据</li>
+                            </ul>
+                        </div>
+                    </template>
+                </div>
+                <div class="panel-heading">
+                    <input type="checkbox" v-model="leftAllChecked" @change="changeLeftAll">
+                    <template>
+                        全选
+<!--                        {{leftMatchedCheckedItems.length}} / {{matchedLeftList.length}} 项-->
+                    </template>
+<!--                    <template v-else>-->
+<!--                        {{matchedLeftList.length}} 项-->
+<!--                    </template>-->
+<!--                    <div class="pull-right">{{leftListTitle}}</div>-->
+                </div>
+            </div>
         </div>
-        <div class="shuttle_arrow">
-            <el-button icon="el-icon-d-arrow-right" type="primary" plain @click="toRightTeam">到右边
-            </el-button>
-            <el-button icon="el-icon-d-arrow-left" type="primary" plain class="go_left" @click="toLeftSchools">到左边
-            </el-button>
+        <div class="col-sm-2 text-center buttons">
+            <button type="button"
+                    class="btn btn-default"
+                    :class="{disabled:!toRightBtnStatus}"
+                    :disabled="!toRightBtnStatus"
+                    @click="toRight" style="margin-bottom:10px" v-html="button.toRight">
+            </button>
+            <button type="button"
+                    class="btn btn-default"
+                    :class="{disabled:!toLeftBtnStatus}"
+                    :disabled="!toLeftBtnStatus"
+                    @click="toLeft" v-html="button.toLeft">
+            </button>
         </div>
-        <div class="shuttle_item">
-            <ul class="school">
-                <li v-for="(item ,index ) in allTeam" :key="index">
-                    <el-checkbox :label="item.name" :value="item.value"></el-checkbox>
-                </li>
-            </ul>
-        </div>
+        <div class="col-sm-5 col-sm-offset-2">
+            <div class="panel panel-default transfer-container">
 
+                <div class="transfer-container-bottom">
+                    <div class="loading" v-if="rightLoading" style="margin-top:-44px;height:254px;"></div>
+                    <template v-else>
+                        <div class="list" :class="{'scroll-y': matchedRightList.length > 7}">
+                            <ul class="list-group">
+                                <template v-for="(item,index) in matchedRightList">
+                                    <li class="list-group-item" @click="toggleRight($event,index)">
+                                        <input type="checkbox" v-model="item.checked">
+                                        {{ item.name }}
+                                    </li>
+                                </template>
+                                <li class="list-group-item text-muted" v-if="matchedRightList.length === 0">暂无数据</li>
+                            </ul>
+                        </div>
+                    </template>
+                </div>
+                <div class="panel-heading">
+                    <input type="checkbox" v-model="rightAllChecked" @change="changeRightAll">
+                    <template >
+                        全选
+                    </template>
+<!--                    <template v-else>-->
+<!--                        全选-->
+<!--                        {{matchedRightList.length}} 项-->
+<!--                    </template>-->
+<!--                    <div class="pull-right">-->
+<!--                        {{rightListTitle}}-->
+<!--                    </div>-->
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+    const objEqual = (obj1, obj2)=>{
+        for (const i in obj1) {
+            if (obj1.hasOwnProperty(i) && JSON.stringify(obj2[i]) !== JSON.stringify(obj1[i])) {
+                return false;
+            }
+        }
+        return true;
+    };
     export default {
-        name: "shuttle",
+        name: 'transfer',
+        props: {
+            dataSource: {
+                //原始数据源
+                type: Array,
+                default() {
+                    return [];
+                }
+            },
+            selectedItems: {
+                //右侧的数据列表
+                type: Array,
+                default() {
+                    return [];
+                }
+            },
+            matchKey: {
+                //匹配的key，可以单个或多个key
+                type: Array,
+                default() {
+                    return ['Id'];
+                }
+            },
+            showKey: {
+                //显示的key，可以单个或多个key
+                type: Array,
+                default() {
+                    return ['Name'];
+                }
+            },
+            leftLoading: {
+                type: Boolean,
+                default: false
+            },
+            rightLoading: {
+                type: Boolean,
+                default: false
+            },
+            button: {
+                type: Object,
+                default() {
+                    return {
+                        toLeft: '<span class="glyphicon glyphicon-chevron-left">321</span>',
+                        toRight: '<span class="glyphicon glyphicon-chevron-right">321321</span>'
+                    };
+                }
+            },
+            leftListTitle: {
+                type: String,
+                default: '全部列表'
+            },
+            rightListTitle: {
+                type: String,
+                default: '已选择列表'
+            }
+        },
         data() {
             return {
-                allSchool: [
-                    {name:'我是1',id:1},
-                    {name:'我是2',id:2},
-                    {name:'我是3',id:3},
-                    {name:'我是4',id:4},
-                    {name:'我是5',id:5},
-                    {name:'我是6',id:6}
-                ],//所有学校
-                allTeam: [ {name:'我是7',id:7},
-                    {name:'我是8',id:8}],  //所有小组
-                schoolsNames: [],   //所有学校 选中的
-                teamName: [],   //小组成员  选中的
-
-            }
+                leftAutoCompleteInput: '',
+                rightAutoCompleteInput: '',
+                leftList: [],
+                rightList: [],
+                leftAllChecked: false,
+                rightAllChecked: false
+            };
         },
-        props: ["schoolInfo","teamInfo"],
         created() {
+            this.initRightList();
+            this.initLeftList();
         },
-        mounted() {
-        },
-        watch: {
-            schoolInfo(val) {   //  编辑时用来回显，添加时的默认数据
-                this.schoolInfo = val;
-                this.allSchool = val;
+        computed: {
+            matchedLeftList() {
+                const that = this;
+                if (that.leftAutoCompleteInput !== '') {
+                    return that.leftList.filter(function(item) {
+                        const matched = that.matchKey.filter(function(key) {
+                            return (item[key] + '').indexOf(that.leftAutoCompleteInput) > -1;
+                        });
+                        return matched.length > 0;
+                    });
+                }
+                return that.leftList;
             },
-            teamInfo(val){   //  编辑时用来回显
-                this.teamInfo = val;
-                this.allTeam=val;
+            leftMatchedCheckedItems() {
+                const checked = this.matchedLeftList.filter(function(item) {
+                    return item.checked;
+                });
+                this.leftAllChecked = checked.length > 0 && checked.length === this.matchedLeftList.length;
+                return checked;
             },
-            leaderInfo(val){   //  编辑时用来回显
-                this.leaderInfo=val;
-                this.leader=val;
+            matchedRightList() {
+                const that = this;
+                if (that.rightAutoCompleteInput !== '') {
+                    return that.rightList.filter(function(item) {
+                        const matched = that.matchKey.filter(function(key) {
+                            return (item[key] + '').indexOf(that.rightAutoCompleteInput) > -1;
+                        });
+                        return matched.length > 0;
+                    });
+                }
+                return that.rightList;
             },
+            rightMatchedCheckedItems() {
+                const checked = this.matchedRightList.filter(function(item) {
+                    return item.checked;
+                });
+                this.rightAllChecked = checked.length > 0 && checked.length === this.matchedRightList.length;
+                return checked;
+            },
+            toRightBtnStatus() {
+                return this.leftMatchedCheckedItems.length > 0;
+            },
+            toLeftBtnStatus() {
+                return this.rightMatchedCheckedItems.length > 0;
+            }
         },
         methods: {
-            async toRightTeam() {
-                let moveName= await this.matching(this.allSchool,this.schoolsNames);
-                let allArr= await this.myFilter(this.allSchool,moveName);
-                this.allSchool = allArr;
-                for(let i=0;i<moveName.length;i++){
-                    this.allTeam.push(moveName[i])
+            initRightList() {
+                let selectedItems = JSON.parse(JSON.stringify(this.selectedItems));
+                if (this.selectedItems.length > 0 && this.dataSource.length > 0) {
+                    const isBroken = Object.keys(this.selectedItems[0]).length < Object.keys(this.dataSource[0]).length;
+                    if (isBroken) {
+                        selectedItems = this.selectedItems.map(item1 => {
+                            const matched = this.dataSource.filter(item2 => {
+                                //item1和item2中的每一个matchkey对应的值都相等(不匹配的matchkey为0)
+                                return this.matchKey.filter(key => {
+                                    return item1[key] !== item2[key];
+                                }).length === 0;
+                            });
+                            return matched[0];
+                        });
+                    }
+                    this.rightList = selectedItems;
+                } else {
+                    //当list为空数组时,右侧即使有数据也会变为空;当list有数据时才会置rightlist的状态
+                    this.rightList = [];
                 }
-                this.schoolsNames=[];
-                await this.putParentsTeams();
             },
-            async toLeftSchools() {
-                let moveName= await this.matching(this.allTeam,this.teamName);
-                let allArr =await this.myFilter(this.allTeam,moveName);
-                this.allTeam = allArr;
-                for(let i=0;i<moveName.length;i++){
-                    this.allSchool.push(moveName[i])
+            initLeftList() {
+                //处理leftList和matchedRightList
+                const that = this;
+                const dataSource = this.dataSource;
+                this.leftList = dataSource.filter(function(item1) {
+                    const selected = that.rightList.filter(function(item2) {
+                        return objEqual(item1, item2);
+                    }).length > 0;
+                    return !selected;
+                });
+            },
+            toRight() {
+                const that = this;
+                const leftMatchedCheckedItems = JSON.parse(JSON.stringify(this.leftMatchedCheckedItems));
+                leftMatchedCheckedItems.map(function(item) {
+                    item.checked = false;
+                });
+                this.leftList = this.leftList.filter(function(item1) {
+                    return that.leftMatchedCheckedItems.filter(function(item2) {
+                        return objEqual(item1, item2);
+                    }).length === 0;
+                });
+                this.rightList.unshift(...leftMatchedCheckedItems);
+                this.leftAllChecked = false;
+                this.rightAllChecked = false;
+                this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
+            },
+            toLeft() {
+                const that = this;
+                const rightMatchedCheckedItems = JSON.parse(JSON.stringify(this.rightMatchedCheckedItems));
+                rightMatchedCheckedItems.map(function(item) {
+                    item.checked = false;
+                });
+                this.rightList = this.rightList.filter(function(item1) {
+                    return that.rightMatchedCheckedItems.filter(function(item2) {
+                        return objEqual(item1, item2);
+                    }).length === 0;
+                });
+                this.leftList.unshift(...rightMatchedCheckedItems);
+                this.rightAllChecked = false;
+                this.leftAllChecked = false;
+                this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
+            },
+            toggleLeft(event, index) {
+                const clone = JSON.parse(JSON.stringify(this.leftList));
+                if (event.target.tagName === 'INPUT'){
+                    if (typeof clone[index].checked === 'undefined' || !clone[index].checked){
+                        clone[index].checked = true;
+                    } else {
+                        clone[index].checked = false;
+                    }
+                    this.leftList = [];
+                    this.leftList = clone;
                 }
-                this.teamName=[];
-                await this.putParentsTeams();
             },
-            async toRightLeader() {
-                if (this.leader.length >= 1||this.teamName.length>1) {
-                    this.$message({
-                        message: "小组组长只能选一个",
-                        type: "error"
+            toggleRight(event, index) {
+                const clone = JSON.parse(JSON.stringify(this.rightList));
+                if (event.target.tagName === 'INPUT'){
+                    if (typeof clone[index].checked === 'undefined' || !clone[index].checked){
+                        clone[index].checked = true;
+                    } else {
+                        clone[index].checked = false;
+                    }
+                    this.rightList = [];
+                    this.rightList = clone;
+                }
+            },
+            listContent(item) {
+                const showItems = [];
+                this.showKey.map(function(key) {
+                    showItems.push(item[key]);
+                });
+                return showItems.join('-');
+            },
+            getRightList() {
+                return JSON.parse(JSON.stringify(this.rightList));
+            },
+            changeLeftAll(event) {
+                const checked = event.target.checked;
+                const matchedLeftList = JSON.parse(JSON.stringify(this.matchedLeftList));
+                if (this.leftAutoCompleteInput !== '' && matchedLeftList.length > 0) {
+                    // 匹配项为leftList的真子集且不为空集时，需要结合matchedLeftList处理数据
+                    this.leftList = this.leftList.map(item => {
+                        const isSameItem = matchedLeftList.filter(matchedItem => {
+                            const allMatched = this.matchKey.filter(key => {
+                                return item[key] !== matchedItem[key];
+                            }).length === 0;
+                            return allMatched;
+                        }).length > 0;
+                        if (isSameItem) {
+                            item.checked = checked;
+                        }
+                        return item;
                     });
-                    return false;
+                } else if (this.leftAutoCompleteInput === '') {
+                    // 匹配项和leftList相等时，无需结合matchedLeftList做处理
+                    this.leftList = this.leftList.map(item => {
+                        item.checked = checked;
+                        return item;
+                    });
                 }
-                let moveName= await this.matching(this.allTeam,this.teamName);
-                let allArr =await this.myFilter(this.allTeam,moveName);
-                this.allTeam = allArr;
-                for(let i=0;i<moveName.length;i++){
-                    this.leader.push(moveName[i])
-                }
-                this.teamName=[];
-                await this.putParentsTeams();
             },
-            async toLeftTeam() {
-                let moveName= await this.matching(this.leader,this.teamLeader);
-                let allArr =await this.myFilter(this.leader,moveName);
-                this.leader = allArr;
-                for(let i=0;i<moveName.length;i++){
-                    this.allTeam.push(moveName[i])
-                }
-                this.teamLeader=[];
-                await this.putParentsTeams();
-            },
-            // 过滤 相同选项
-            async myFilter(allArr, selArr) {
-                let ary03 = [];
-                for (let i = 0; i < allArr.length; i++) {
-                    for (let j = 0; j < selArr.length; j++) {
-                        if (allArr[i].userId == selArr[j].userId) {
-                            allArr.splice(i,1);
+            changeRightAll(event) {
+                const checked = event.target.checked;
+                const matchedRightList = JSON.parse(JSON.stringify(this.matchedRightList));
+                if (this.rightAutoCompleteInput !== '' && matchedRightList.length > 0) {
+                    // 匹配项为rightList的真子集且不为空集时，需要结合matchedRightList处理数据
+                    this.rightList = this.rightList.map(item => {
+                        const isSameItem = matchedRightList.filter(matchedItem => {
+                            const allMatched = this.matchKey.filter(key => {
+                                return item[key] !== matchedItem[key];
+                            }).length === 0;
+                            return allMatched;
+                        }).length > 0;
+                        if (isSameItem) {
+                            item.checked = checked;
                         }
-                    }
+                        return item;
+                    });
+                } else if (this.rightAutoCompleteInput === '') {
+                    // 匹配项和rightList相等时，无需结合matchedRightList做处理
+                    this.rightList = this.rightList.map(item => {
+                        item.checked = checked;
+                        return item;
+                    });
                 }
-                return allArr;
-            },
-            //  匹配 移动的 选项
-            async matching(allArr, matchArr) {
-                let matArr = [];
-                for (let i = 0; i < allArr.length; i++) {
-                    for (let j = 0; j < matchArr.length; j++) {
-                        if (allArr[i].userId == matchArr[j]) {
-                            matArr.push(allArr[i]);
-                        }
-                    }
-                }
-                return matArr;
-            },
-            //    向父组件传组员名称 和组长id   由于这是单独的一个穿梭框组件，数据会和父组件里面的动态绑定，提交按钮也在父组件，所以需要此步骤，
-            async putParentsTeams() {
-                this.$emit('teamNames', this.allTeam,this.leader);
-            },
+            }
         },
-
-    }
+        watch: {
+            dataSource() {
+                this.initRightList();
+                this.initLeftList();
+            },
+            selectedItems() {
+                this.initRightList();
+                this.initLeftList();
+            }
+        }
+    };
 </script>
 
-<style lang="scss" scoped>
-    ul li {
-        list-style: none;
+<style scoped>
+
+    /*.buttons {*/
+    /*    position: absolute;*/
+    /*    top: 50%;*/
+    /*    left: 50%;*/
+    /*    transform: translate(-50%, -50%);*/
+    /*}*/
+    .clearfix{
+        display: flex; justify-content: center; align-items: center;
     }
-
-    .shuttle {
+    .col-sm-5{
+        width: 200px; border: 1px solid #CACACA;
+    }
+    .buttons{
         display: flex;
-        flex-direction: row;
+        align-items: center;
+        flex-direction: column;
         justify-content: center;
-
-        .shuttle_item {
-            width: 20%;
-
-            span {
-                font-size: 16px;
-                margin-left: 50px;
-            }
-        }
-
-        .shuttle_arrow {
-            width: 10%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0 30px 0 20px;
-
-            .go_left {
-                margin-left: 0;
-                margin-top: 15px;
-            }
-        }
-
-        .school {
-            border: 1px solid #c8c9cc;
-            padding: 0 10px;
-            border-radius: 5px;
-            height: 150px;
-            overflow: auto;
-
-            li {
-                padding-top: 10px;
-            }
-        }
+    }
+    .buttons .btn {
+        display: block;
+        margin: 0 auto;
+    }
+    .transfer-container {
+        overflow: hidden;
+    }
+    .transfer-container-bottom {
+        padding-top: 44px;
+        height: 254px;
+        position: relative;
+    }
+    .transfer-container-autoC {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 5px;
+        height: 34px;
+        width: 100%;
+    }
+    .scroll-y {
+        overflow-y: scroll !important;
+    }
+    .list {
+        overflow: hidden;
+        height: 210px;
+    }
+    .list-group {
+        padding: 0;
+        margin: 0;
+    }
+    .list-group-item {
+        margin: 0;
+        padding: 0 15px 0 30px;
+        line-height: 30px;
+        border: none;
+    }
+    .list-group-item:hover {
+        background: #f5f5f5;
+        cursor: pointer;
+    }
+    .list-group-item input[type="checkbox"] {
+        margin-left: -15px;
+    }
+    .loading {
+        margin-top: -44px;
+        height: 254px;
     }
 </style>

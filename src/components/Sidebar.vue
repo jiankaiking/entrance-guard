@@ -7,6 +7,7 @@
                 mode="vertical"
                 background-color="#fff"
                 text-color="#666666"
+                @select="muneselect"
                 active-text-color="red">
             <SidebarItem v-for="menu in menuList" :key="menu.path" :item="menu"/>
         </el-menu>
@@ -24,6 +25,11 @@
                 required: true
             }
         },
+        methods:{
+            muneselect(key,keypath,z){
+                console.log(key,keypath,z)
+            }
+        }
     }
 </script>
 <style>
