@@ -104,7 +104,7 @@
                 });
             },
             getCode(){
-                this.codeImg = BASE_URL + '/login/getValidateCode?'+Math.random()
+                this.codeImg = '/api/login/getValidateCode?'+Math.random()
             },
             //切换登录方式
             checkLogin() {

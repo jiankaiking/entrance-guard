@@ -25,13 +25,13 @@
                     <el-table-column prop="personCount" align="center" label="人数"></el-table-column>
                     <el-table-column align="center" label="状态">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small">{{scope.roleStatus }}</el-button>
+                            <el-button type="text" size="small">{{scope.row.roleStatusName }}</el-button>
                         </template>
                     </el-table-column>
                     <el-table-column prop="roleRemarks" align="center" label="角色描述"></el-table-column>
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                            <el-button type="text" @click="headEdit(scope)" size="small">编辑</el-button>
+                            <el-button type="text" @click="headEdit(scope.row)" size="small">编辑</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

@@ -1,6 +1,8 @@
 
 import mutations from "./mutations";
 import httpRequest from "../api/api";
+import {Message} from "element-ui";
+import router from "../router";
 import axios from 'axios'
 const actions = {
     Login({commit}, user) {
@@ -11,7 +13,6 @@ const actions = {
                     if(resp.success){
                         const token = resp.data.token;
                         const userInfo = resp.data.userInfo;
-                        console.log(axios)
                         localStorage.setItem('token', token);
                         localStorage.setItem('user', JSON.stringify(userInfo));
                         commit('auth_success',{ token, userInfo});
@@ -27,16 +28,17 @@ const actions = {
     },
     LogOut({commit, state}) {
         return new Promise((resolve, reject) => {
-            axios.get('/login/logout')
+            httpRequest('/login/logout')
                 .then(response => {
-                    removeIsLogin()
-                    localStorage.removeItem('loginUsername');
-                    // 移除之前在axios头部设置的token,现在将无法执行需要token的事务
-                    delete axios.defaults.headers.common['Authorization'];
-                    resolve(response)
-                })
-                .catch(error => {
-                    reject(error)
+                    // removeIsLogin()
+
+                    if(response.success){
+                        Message.success(response.msg)
+                        localStorage.removeItem('user');
+                        localStorage.removeItem('token');
+                        delete axios.defaults.headers.common['Authorization'];
+                        router.push('/login')
+                    }
                 })
         })
     }

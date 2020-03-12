@@ -12,9 +12,10 @@
         <el-form-item label="角色名称" prop="roleRemarks">
             <el-input v-model="modelFromdata.roleRemarks" type="textare"/>
         </el-form-item>
-        <div>123123213</div>
+        <div>配置管理</div>
         <el-form-item  prop="menuIds">
-            <el-transfer v-model="modelFromdata.menuIds" :data="data"></el-transfer>
+<!--            <el-transfer v-model="modelFromdata.menuIds" :data="data"></el-transfer>-->
+            <MyTransfer :schoolinfo="schoolinfo"></MyTransfer>
         </el-form-item>
         <el-form-item>
             <div style="margin: 0 auto; width: 200px">
@@ -22,25 +23,16 @@
                 <el-button type="primary" @click="handleOk">保存</el-button>
             </div>
         </el-form-item>
+
     </el-form>
 </template>
 
 <script>
     import httpRequest from "../../api/api";
+    import MyTransfer from "../../components/MyTransfer";
 
     export default {
         data() {
-            const generateData = _ => {
-                const data = [];
-                for (let i = 1; i <= 15; i++) {
-                    data.push({
-                        key: i,
-                        label: `备选项`,
-                        disabled: false
-                    });
-                }
-                return data;
-            };
             return {
                 modelFromdata:{
                     roleName:'',
@@ -48,7 +40,9 @@
                     roleRemarks:'',
                     menuIds:'',
                 },
-                data: generateData(),
+                schoolinfo:[
+                    
+                ],
                 value: [1, 4],
                 url: {
                     add: '/roleManagec/addRole',
@@ -58,6 +52,9 @@
         },
         mounted(){
 
+        },
+        components:{
+            MyTransfer
         },
         methods: {
             add(abc) {

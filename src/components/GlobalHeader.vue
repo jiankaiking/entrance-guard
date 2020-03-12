@@ -34,13 +34,14 @@
             }
         },
         mounted(){
-            console.log(this.$store)
+          //  console.log(this.$store)
         },
         computed: {
             ...mapState(['user'])
         },
         methods: {
             ...mapActions(["LogOut"]),
+
 
             changePassword(){
                 this.$router.push("/findpassword")

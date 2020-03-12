@@ -3,17 +3,9 @@
         <el-row>
             <el-col :span="12">
                 <el-form-item label="头像:">
-                    <div style="display: flex; align-items: center;">
-                        <el-upload
-                                style="margin: 0 15px;"
-                                :action="url.uploadImg"
-                                :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                        >
-                            <img v-if="modelFromdata.staffPhotos" :src="modelFromdata.staffPhotos" class="avatar">
-                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
-                        <span>点击选择头像</span>
+                    <div style="display: flex; align-items: center; width: 210px; height: 50px">
+                        <uploadImg :imgUrl.sync="modelFromdata.staffPhotos"></uploadImg>
+                        <span style="margin-left: 20px">点击选择头像</span>
                     </div>
                 </el-form-item>
             </el-col>
@@ -129,7 +121,7 @@
 
 <script>
     import abc from '@/assets/images/77.png'
-    import BASE_URL from '../../api/config'
+    import uploadImg from "../../components/uploadImg/uploadImg";
     import httpRequest from "../../api/api";
 
     export default {
@@ -163,9 +155,11 @@
                     add: '/staffManage/addStaff',
                     info: '/staffManage/getStaffInfo',
                     edit: '/staffManage/editStaffInfo',
-                    uploadImg: BASE_URL + '/upload/uploadImg',
                 },
             }
+        },
+        components:{
+            uploadImg
         },
         methods: {
             getOrganInfo() {

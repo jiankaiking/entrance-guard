@@ -15,7 +15,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://192.168.0.147:8888',
+                target: 'http://192.168.0.147:8888/managecenter',
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {

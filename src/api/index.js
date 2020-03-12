@@ -4,16 +4,17 @@
 *
 */
 
-import {Message} from "element-ui";
+import {Message,MessageBox} from "element-ui";
 import axios from 'axios'
 import qs from 'qs'
 import BASE_URL from './config'
 import store from "../store";
+import router from "../router";
 
 
 
 const service = axios.create({
-    baseURL: BASE_URL,   //请求api
+    baseURL: '/api',   //请求api
     timeout: 5000,     //请求超时时间
     withCredentials: true //允许携带cookie
 })
@@ -23,7 +24,7 @@ service.interceptors.request.use(config => {
     if(store.state.token){
         config.headers['Authorization'] = store.state.token
     }
-   // console.log(store)
+
     config.method === 'post' ? config.data = qs.stringify({...config.data}) : config.params = {...config.data};
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
     return config;
@@ -36,8 +37,17 @@ service.interceptors.request.use(config => {
 //响应拦截
 service.interceptors.response.use(
     response => {
-       // console.log(response)
         if (!response.data.success) {
+            //登录过期
+            if(response.data.code == 401 || response.data.code == 403){
+                MessageBox.alert('请重新登录', '登录已过期', {
+                    confirmButtonText: '确定',
+                    center:true,
+                    callback: action => {
+                        router.push("/login")
+                    }
+                });
+            }
             Message.error(response.data.msg)
         }
         return response.data;

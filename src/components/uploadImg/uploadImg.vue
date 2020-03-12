@@ -3,28 +3,30 @@
             class="avatar-uploader"
             :action="uploadImg"
             :show-file-list="false"
+            :headers="myHeaders"
             :on-success="handleAvatarSuccess1">
         <img v-if="imgUrl" :src="imgUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
 </template>
 <script>
+    var token = localStorage.getItem("token")
     import BASE_URL from '../../api/config'
+
     export default {
         name: "uploadImg",
-        props:{
-          imgUrl:{
-
-          }
+        props: {
+            imgUrl: {}
         },
-        data(){
-            return{
-                uploadImg:BASE_URL + '/upload/uploadImg',
+        data() {
+            return {
+                myHeaders: {Authorization: token},
+                uploadImg: BASE_URL + '/upload/uploadImg',
             }
         },
-        methods:{
-            handleAvatarSuccess1(e){
-                this.$emit("update:imgUrl",e.data)
+        methods: {
+            handleAvatarSuccess1(e) {
+                this.$emit("update:imgUrl", e.data)
             }
         }
     }
