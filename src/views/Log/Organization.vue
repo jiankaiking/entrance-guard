@@ -24,7 +24,7 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table :data="tableData" border empty-text style="width: 99.9%">
+                <el-table :data="tableData" border empty-text style="width: 99.9%"  v-loading="loading">
                     <el-table-column prop="logId" align="center" label="日志编号"></el-table-column>
                     <el-table-column prop="logModule" label="操作模块" align="center"></el-table-column>
                     <el-table-column prop="operResult" align="center" label="操作结果"></el-table-column>

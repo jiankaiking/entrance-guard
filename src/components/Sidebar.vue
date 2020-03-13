@@ -27,7 +27,7 @@
         },
         methods:{
             muneselect(key,keypath,z){
-                console.log(key,keypath,z)
+           //     console.log(key,keypath,z)
             }
         }
     }

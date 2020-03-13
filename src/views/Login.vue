@@ -89,13 +89,19 @@
         methods: {
             //登录按钮  表单验证，验证成功 action提交
             onSubmit(fromName) {
+
                 let _that = this;
                 this.$refs[fromName].validate((valid) => {
                     if (valid) {
                         this.$store.dispatch('Login', this.userInfor)
                             .then(res=>{
                                 if(res.success){
-                                    this.$router.push("/")
+                                    if(this.$route.query.redirect){
+                                        this.$router.push(this.$route.query.redirect)
+                                    }else{
+                                        this.$router.push("/")
+                                    }
+
                                 }else{
                                     this.getCode()
                                 }

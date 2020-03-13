@@ -5,9 +5,9 @@ import {Message} from "element-ui";
 import router from "../router";
 import axios from 'axios'
 const actions = {
+    //登录
     Login({commit}, user) {
         return new Promise((resolve, reject) => {
-            // 向后端发送请求，验证用户名密码是否正确，请求成功接收后端返回的token值，利用commit修改store的state属性，并将token存放在localStorage中
             httpRequest('/login/userLogin','post', user)
                 .then(resp => {
                     if(resp.success){
@@ -26,19 +26,27 @@ const actions = {
                 })
         })
     },
-    LogOut({commit, state}) {
+    //登出
+    LogOut({commit, state},backPath) {
         return new Promise((resolve, reject) => {
             httpRequest('/login/logout')
                 .then(response => {
-                    // removeIsLogin()
-
                     if(response.success){
                         Message.success(response.msg)
                         localStorage.removeItem('user');
                         localStorage.removeItem('token');
                         delete axios.defaults.headers.common['Authorization'];
-                        router.push('/login')
+                        if(backPath){
+                            router.push({path:'/login',query:{redirect:backPath.fullPath}})
+                        }else{
+                            router.push({path:'/login'})
+                        }
+                        commit('logout');
                     }
+                    resolve(response);
+                })
+                .catch(err => {
+                    reject(err)
                 })
         })
     }

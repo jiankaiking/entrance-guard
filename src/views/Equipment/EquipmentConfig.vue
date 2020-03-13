@@ -15,7 +15,7 @@
             </div>
             <div class="tableData">
                 <div class="tableBox">
-                    <el-table :data="tableData" border empty-text style="width: 100%">
+                    <el-table :data="tableData" border empty-text style="width: 100%" v-loading="loading">
                         <el-table-column align="center" type="index" label="序号" width="100px">
                         </el-table-column>
                         <el-table-column prop="deviceTypeCode" label="设备型号" align="center"></el-table-column>

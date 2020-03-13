@@ -19,7 +19,7 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table :data="tableData" empty-text border style="width: 99.8%">
+                <el-table :data="tableData" empty-text border style="width: 99.8%" v-loading="loading">
                     <el-table-column align="center" prop="roleId" label="序号"></el-table-column>
                     <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
                     <el-table-column prop="personCount" align="center" label="人数"></el-table-column>

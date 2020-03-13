@@ -11,7 +11,7 @@
                         <i class="el-icon-arrow-down"/>
                     </div>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="logout" @click.native="LogOut">
+                        <el-dropdown-item command="logout" @click.native="LogOut($route)">
                             退出登录
                         </el-dropdown-item>
                         <el-dropdown-item command="logout" @click.native="changePassword">
@@ -35,6 +35,7 @@
             ...mapState(['user'])
         },
         methods: {
+
             ...mapActions(["LogOut"]),
 
             changePassword(){

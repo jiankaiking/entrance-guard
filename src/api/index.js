@@ -40,16 +40,18 @@ service.interceptors.response.use(
         if (!response.data.success) {
             //登录过期
             if(response.data.code == 401 || response.data.code == 403){
+                let hisUrl = window.location.href.slice(window.location.href.indexOf("#") +1)
                 MessageBox.alert('请重新登录', '登录已过期', {
                     confirmButtonText: '确定',
                     center:true,
                     callback: action => {
-                        router.push("/login")
+                        router.push({path:"/login",query:{redirect:hisUrl}})
                     }
                 });
             }
             Message.error(response.data.msg)
         }
+
         return response.data;
     },
     error => {

@@ -34,7 +34,7 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table :data="tableData" border empty-text style="width: 100%">
+                <el-table :data="tableData" border empty-text style="width: 100%" v-loading="loading">
                     <el-table-column prop="loginUserName" align="center" label="姓名"></el-table-column>
                     <el-table-column prop="loginOrganName" label="所属部门" align="center"></el-table-column>
                     <el-table-column prop="loginClientIp" align="center" label="IP"></el-table-column>
