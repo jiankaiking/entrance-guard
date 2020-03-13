@@ -12,26 +12,28 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="searchClick" type="primary" plain>搜索</el-button>
+                    <el-button @click="getDataList" type="primary" plain>搜索</el-button>
                     <el-button @click="headAdd" type="success" plain>新增</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" row-key="id"
-                        border default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                    <el-table-column prop="date" label="组织机构层级"  align="center"></el-table-column>
-                    <el-table-column prop="name" label="分类"  align="center"></el-table-column>
-                    <el-table-column align="center" prop="address" label="主要负责人"></el-table-column>
-                    <el-table-column align="center" prop="address" label="电话"></el-table-column>
-                    <el-table-column align="center" prop="address" label="人数"></el-table-column>
-                    <el-table-column align="center" prop="address" label="状态"></el-table-column>
-                    <el-table-column align="center" prop="address" label="备注"></el-table-column>
+                <el-table :data="tableData" border style="width: 99.9%"
+                          v-loading="loading"
+                          row-key="menuId" lazy :load="loadData"
+                          :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                    <el-table-column prop="organName" label="组织机构层级"  align="center"></el-table-column>
+                    <el-table-column prop="organTypeName" label="分类"  align="center"></el-table-column>
+                    <el-table-column align="center" prop="staffFullName" label="主要负责人"></el-table-column>
+                    <el-table-column align="center" prop="loginPhone" label="电话"></el-table-column>
+                    <el-table-column align="center" prop="personCount" label="人数"></el-table-column>
+                    <el-table-column align="center" prop="organStatusName" label="状态"></el-table-column>
+                    <el-table-column align="center" prop="organRemarks" label="备注"></el-table-column>
                     <el-table-column align="center" label="操作">
-                        <template>
-                            <el-button type="text" @click="edit">编辑</el-button>
-                            <el-button type="text">停用</el-button>
+                        <template slot-scope="scope">
+                            <el-button type="text" @click="headEdit(scope.row)">编辑</el-button>
+                            <el-button type="text" @click="changeStatus(scope.row)">{{scope.row.organStatus == 1?'停用':'启用'}}</el-button>
                             <el-button type="text">删除</el-button>
                         </template>
                     </el-table-column>
@@ -39,59 +41,92 @@
             </div>
         </div>
         <el-dialog :lock-scroll="false" class="organnizaDia" title="收货地址" width="30%" center :visible.sync="dialogTableVisible">
-            <OrganizationModel></OrganizationModel>
+            <OrganizationModel ref="modalForm" @close="close" @ok="modalFormOk"></OrganizationModel>
         </el-dialog>
     </div>
 </template>
 
 <script>
-    import {myMixins} from "../../mixins/mixin";
+    // import {myMixins} from "../../mixins/mixin";
+    import httpRequest from "../../api/api";
     import OrganizationModel from "./OrganizationModel";
+
 
     export default {
         name: "Organization",
-        mixins:[myMixins],
+        // mixins:[myMixins],
         data() {
             return {
                 searchData: {
                     organStatus:'',//状态
                     organName:'',//机构名称、部门名称
                 },
+                loading:false,
                 listUrl:'/organManage/getOrganList',
                 dialogTableVisible: false,
                 tableData: [],
             }
-        }
-        ,
+        },
         components: {
             OrganizationModel
-        }
-        ,
+        },
+        mounted(){
+            this.getDataList()
+        },
         methods: {
-
+            modalFormOk(){
+                this.getDataList()
+                this.close()
+            },
+            close(){
+                this.dialogTableVisible = false
+            },
+            //编辑
+            headEdit(record) {
+                this.dialogTableVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.modalForm.edit(record);
+                })
+            },
+            //新增
+            headAdd() {
+                this.dialogTableVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.modalForm.add();
+                })
+            },
+            changeStatus(row){
+                httpRequest("/organManage/offOrNoOrgan","POST",{organId:row.organId,organStatus:row.organStatus == 0?1:0})
+                    .then(res=>{
+                        if(res.success){
+                            this.getDataList()
+                        }
+                    })
+            },
+            getDataList(){
+                this.loading = true;
+                httpRequest(this.listUrl,"GET",this.searchData)
+                    .then(res=>{
+                       if(res.success){
+                           this.tableData = res.data;
+                       }
+                    })
+                    .finally(res=>{
+                        this.loading = false;
+                    })
+            },
+            loadData(tree, treeNode, resolve){
+                this.searchData.menuPid = tree.organId
+                httpRequest(this.listUrl, "GET", this.searchData)
+                    .then(res=>{
+                        resolve(res.data)
+                    })
+            },
         }
 
     }
 </script>
 
 <style scoped>
-
-
-
-    .tableData {
-        background: #ffffff;
-        box-shadow: 0px 1px 6px 4px rgba(242, 242, 242, 1);
-
-
-    }
-    .tableData .tableBox {
-        padding: 30px;
-        box-sizing: border-box;
-
-    }
-
-    .tableData .pagination {
-        padding-bottom: 30px;
-    }
 </style>
 

@@ -26,22 +26,16 @@
 
 <script>
     import {mapState,mapActions} from 'vuex';
-    // import {LOGOUT} from '../store/action_type';
-
     export default {
         data() {
             return {
             }
-        },
-        mounted(){
-          //  console.log(this.$store)
         },
         computed: {
             ...mapState(['user'])
         },
         methods: {
             ...mapActions(["LogOut"]),
-
 
             changePassword(){
                 this.$router.push("/findpassword")

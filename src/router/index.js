@@ -17,9 +17,6 @@ const router = new Router({
             },
             children: [
                 {
-                    path: '/test', name: 'homeindex', component: () => import('@/components/MyTransfer'),
-                },
-                {
                     path: '/home/index', name: 'homeindex', component: () => import('@/views/Home'),
                     meta: {title: '首页', historyFlag: true}
                 },

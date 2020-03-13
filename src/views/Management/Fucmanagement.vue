@@ -2,13 +2,13 @@
     <div class="main-contenner">
         <div class="searchData">
             <el-form ref="searchFrom" :model="searchData" label-width="80px">
-                <el-form-item label="任务名称">
-                    <el-input v-model="searchData.roleName"></el-input>
+                <el-form-item label="角色名称">
+                    <el-input v-model="searchData.roleName"  placeholder="请输入部门名称"></el-input>
                 </el-form-item>
-                <el-form-item label="任务状态">
-                    <el-select v-model="searchData.roleStatus" placeholder="请选择活动区域">
-                        <el-option label="不正常" value="0"></el-option>
-                        <el-option label="正常" value="1"></el-option>
+                <el-form-item label="角色状态">
+                    <el-select v-model="searchData.roleStatus" placeholder="请选择">
+                        <el-option label="停止" value="0"></el-option>
+                        <el-option label="启动" value="1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -19,7 +19,7 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table :data="tableData" empty-text border style="width: 99.9%">
+                <el-table :data="tableData" empty-text border style="width: 99.8%">
                     <el-table-column align="center" prop="roleId" label="序号"></el-table-column>
                     <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
                     <el-table-column prop="personCount" align="center" label="人数"></el-table-column>
@@ -48,7 +48,7 @@
                 </el-pagination>
             </div>
         </div>
-        <el-dialog title="提示" align="center" :visible.sync="dialogTableVisible" width="50%" :before-close="handleClose">
+        <el-dialog width="500px" :lock-scroll="false" title="新增角色" align="center" :visible.sync="dialogTableVisible"  :before-close="handleClose">
             <FucmanagementModel ref="modalForm" @close="modalClose" @ok="modalFormOk"></FucmanagementModel>
         </el-dialog>
     </div>
@@ -83,8 +83,19 @@
     }
 </script>
 
-<style scoped>
 
+<style>
+    .transfer{
+        height: 300px !important;
+    }
+    .transfer .transfer-title,.transfer .filter-tree{
+        display: none !important;
+    }
+    .transfer .transfer-main{
+        height: 100% !important;
+    }
+</style>
+<style scoped>
 
     .tableData {
         background: #ffffff;

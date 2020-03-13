@@ -20,13 +20,13 @@
 
                 <el-form v-show="!sweepLogin" label-width="0" ref="loginForm" :model="userInfor" :rules="rules"
                          style="padding-top: 20px">
-                    <el-form-item prop="username">
+                    <el-form-item prop="userName">
                         <el-input placeholder="请输入账号" v-model="userInfor.userName">
                             <i slot="prefix" class="el-icon-user"></i>
                         </el-input>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input placeholder="请输入密码"  clearable v-model="userInfor.password">
+                        <el-input placeholder="请输入密码" type="password"  clearable v-model="userInfor.password">
                             <i slot="prefix" class="el-icon-lock"></i>
                         </el-input>
                     </el-form-item>
@@ -96,6 +96,8 @@
                             .then(res=>{
                                 if(res.success){
                                     this.$router.push("/")
+                                }else{
+                                    this.getCode()
                                 }
                             })
                     } else {
