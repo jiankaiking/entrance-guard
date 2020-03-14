@@ -2,12 +2,12 @@
 
     <el-form ref="form" :model="modelFromdata" label-width="80px" style="padding: 0 30px; box-sizing: border-box;">
         <el-form-item label="*上级部门">
-            <el-select v-model="modelFromdata.organPid" placeholder="请选择">
+            <el-select v-model="modelFromdata.organPid" @change="changeOrgan" placeholder="请选择">
                 <el-option
-                        v-for="item in options"
+                        v-for="item in OrganList"
                         :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        :label="item.organName"
+                        :value="item.organId">
                 </el-option>
             </el-select>
         </el-form-item>
@@ -15,25 +15,25 @@
             <el-input v-model="modelFromdata.organName" placeholder="请选择"></el-input>
         </el-form-item>
         <el-form-item label="*负责人">
-            <el-select v-model="modelFromdata.userId" placeholder="请选择">
+            <el-select v-model="modelFromdata.userId" @change="changeUser" placeholder="请选择">
                 <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        v-for="item in ChargeUserList"
+                        :key="item.staffId"
+                        :label="item.staffFullName"
+                        :value="item.staffId">
                 </el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="*手机号">
-            <el-input v-model="phone"></el-input>
+            <el-input v-model="modelFromdata.loginPhone" disabled></el-input>
         </el-form-item>
         <el-form-item label="分类">
-            <el-select v-model="value" placeholder="请选择">
+            <el-select v-model="modelFromdata.organType" placeholder="请选择">
                 <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        v-for="item in organType"
+                        :key="item.dataValue"
+                        :label="item.dataCode"
+                        :value="item.dataValue">
                 </el-option>
             </el-select>
         </el-form-item>
@@ -43,21 +43,23 @@
 
         <el-form-item label="部门状态">
             <el-radio-group v-model="modelFromdata.organStatus">
-                <el-radio :label="6">备选项</el-radio>
-                <el-radio :label="9">备选项</el-radio>
+                <el-radio label="0">停用</el-radio>
+                <el-radio label="1">启用</el-radio>
             </el-radio-group>
         </el-form-item>
         <el-form-item label="备注">
             <el-input type="textarea"  v-model="modelFromdata.organRemarks"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">立即创建</el-button>
-            <el-button>取消</el-button>
+            <el-button type="primary" @click="handleOk">立即创建</el-button>
+            <el-button @click="close">取消</el-button>
         </el-form-item>
     </el-form>
 </template>
 
 <script>
+    import httpRequest from "../../api/api";
+
     export default{
         name:'OrganizationModel',
         data(){
@@ -70,17 +72,52 @@
                     organPid:'',//父节点ID
                     organStatus:'',//机构状态
                     organRemarks:'',//备注
+                    loginPhone:'',
                 },
-                phone:'123',
-                ulr:{
+                OrganList:[],
+                ChargeUserList:[],
+                organType:[],
+                phone:'',
+                url:{
                     add:'/organManage/editOrgan',
                     info:'',
                 },
             }
         },
+        mounted(){
+            this.getChildOrganList()
+        },
         methods:{
+
+            //机构选择获取负责人
+            changeOrgan(e){
+                this.modelFromdata.userId = "";
+                httpRequest("/organManage/getChargeUserList","GET",{organId:e})
+                    .then(res=>{
+                        this.ChargeUserList = res.data;
+                    })
+            },
+            changeUser(e){
+                let selcetItem =  this.ChargeUserList.filter((item,index)=>{
+                    return item.staffId == e
+                })
+
+                this.modelFromdata.loginPhone = selcetItem[0].loginPhone
+            },
+            //获取机构
+            getChildOrganList(){
+                httpRequest("/organManage/getChildOrganList","GET")
+                    .then(res=>{
+                        this.OrganList = res.data
+                        return httpRequest("/sysDict/getDataListByType","GET",{dataType:"organ_type"})
+                    })
+                    .then(res=>{
+                       this.organType = res.data;
+                    })
+            },
             //清空填充项
             modelDatanull(){
+                this.modelFromdata.loginPhone = ''
                 for(var key in this.modelFromdata){
                     this.modelFromdata[key] = ""
                 }
@@ -94,13 +131,15 @@
             edit(record) {
                 // 员工详情
                 this.modelDatanull()
+                this.changeOrgan(record.organPid)
                 Object.assign(this.modelFromdata,record)
+
             },
             handleOk(){
                 const that = this;
-                let url = '';
+
                 // 触发表单验证
-                httpRequest(url, 'post', this.modelFromdata)
+                httpRequest(that.url.add, 'POST', this.modelFromdata)
                     .then((res) => {
                         if(res.success){
                             that.$message.success("修改成功")

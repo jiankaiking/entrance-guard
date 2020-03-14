@@ -48,6 +48,7 @@
 
 <script>
     import img from '@/assets/images/active.jpeg'
+    import httpRequest from "../api/api";
     import vuedraggable from 'vuedraggable'
 
     export default {
@@ -61,10 +62,6 @@
                     {path: '', name: '商户', imgUrl: img},
                     {path: '', name: '代理商', imgUrl: img},
                     {path: '', name: '代理商', imgUrl: img},
-                    {path: '', name: '商户', imgUrl: img},
-                    {path: '', name: '代理商', imgUrl: img},
-                    {path: '', name: '商户', imgUrl: img},
-                    {path: '', name: '系统设置', imgUrl: img},
                 ],
                 messgesData: [
                     {title: '空腹可以吃饭吗'},
@@ -86,6 +83,12 @@
         },
         components: {
             vuedraggable,
+        },
+        mounted(){
+            httpRequest("/index/getUserInfo","GET")
+                .then(res=>{
+                    console.log(res)
+                })
         },
         computed: {
             getWidth(useData) {

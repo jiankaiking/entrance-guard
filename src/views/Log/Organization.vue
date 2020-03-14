@@ -3,12 +3,15 @@
         <div class="searchData">
             <el-form ref="form" :model="searchData" label-width="80px">
                 <el-form-item label="操作人员">
-                    <el-input v-model="searchData.operatorName"></el-input>
+                    <el-input v-model="searchData.operatorName"  placeholder="请输入操作人员"></el-input>
                 </el-form-item>
                 <el-form-item label="操作时间">
                     <el-date-picker
-                            v-model="searchData.operTime"
+                            v-model="dateValue"
+                            @change="changeDate"
                             type="daterange"
+                            format="yyyy-MM-dd"
+                            value-format="yyyy-MM-dd"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
                     </el-date-picker>
@@ -60,11 +63,13 @@
                 //搜索数据
                 searchData:{
                     operatorName:'',
-                    operTime:null,
+                    startDate: '',
+                    endDate: '',
                     operContent:'',
                     page:1,
                     size:10
                 },
+                dateValue: '',
                 listUrl:'/log/getSysOperationLogList',
                 tableData: []
             }
@@ -72,7 +77,10 @@
         mounted(){
         },
         methods: {
-
+            changeDate(e) {
+                this.searchData.startDate = e[0]
+                this.searchData.endDate = e[1]
+            },
         }
 
     }

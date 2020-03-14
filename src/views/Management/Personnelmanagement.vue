@@ -6,7 +6,7 @@
             </div>
             <el-tree
                     :data="originData"
-                    :props="defaultProps"
+                    props="{children: 'children',label: 'organName'}"
                     default-expand-all
                     ref="tree"/>
 
@@ -95,10 +95,10 @@
         data() {
             return {
                 originData: [],
-                defaultProps: {
-                    children: 'children',
-                    label: 'organName',
-                },
+                // defaultProps: {
+                //     children: 'children',
+                //     label: 'organName',
+                // },
                 searchData: {
                     organId: 1,
                     organName: '',//机构名称、部门名称

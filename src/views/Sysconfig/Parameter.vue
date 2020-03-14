@@ -6,10 +6,12 @@
                     <el-input v-model="searchData.paramName"></el-input>
                 </el-form-item>
                 <el-form-item label="所属模块">
-                    <el-input v-model="searchData.paramModule"></el-input>
+                    <CommonSelect :value.sync="searchData.paramModule" type="system_service"></CommonSelect>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" plain @click="searchClick">搜索</el-button>
+                    <el-button type="success" plain @click="headAdd">新增</el-button>
+                    <el-button  plain @click="resetSearch">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -41,7 +43,7 @@
             </div>
         </div>
         <el-dialog :lock-scroll="false" title="收货地址" center width="30%" :visible.sync="dialogTableVisible">
-            <ParameterModel  ref="modalForm" @close="modalClose" @ok="modalFormOk"></ParameterModel>
+            <ParameterModel ref="modalForm" @close="modalClose" @ok="modalFormOk"></ParameterModel>
         </el-dialog>
     </div>
 </template>
@@ -50,30 +52,33 @@
     import httpRequest from "../../api/api";
     import {myMixins} from "../../mixins/mixin";
     import ParameterModel from "./ParameterModel";
+    import CommonSelect from "../../components/select/CommonSelect";
+
     export default {
         name: "Organization",
-        mixins:[myMixins],
+        mixins: [myMixins],
         data() {
             return {
-                searchData:{
-                    paramName:'',
-                    paramModule:'',
-                    page:1,
-                    size:10,
+                searchData: {
+                    paramName: '',
+                    paramModule: '',
+                    page: 1,
+                    size: 10,
                 },
-                total:null,
+                total: null,
                 dialogTableVisible: false,
-                listUrl:'/paramManage/getParamList',
+                listUrl: '/paramManage/getParamList',
                 tableData: []
             }
         },
-        components:{
-            ParameterModel
+        components: {
+            ParameterModel,
+            CommonSelect
         },
-        mounted(){
-
+        mounted() {
         },
         methods: {
+
         },
 
 
@@ -81,22 +86,4 @@
 </script>
 
 <style scoped lang="scss">
-
-
-
-
-    .tableData {
-        background: #ffffff;
-        box-shadow: 0px 1px 6px 4px rgba(242, 242, 242, 1);
-
-        .tableBox {
-            padding: 30px;
-            box-sizing: border-box;
-
-        }
-
-        .pagination {
-            padding-bottom: 30px;
-        }
-    }
 </style>

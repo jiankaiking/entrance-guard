@@ -29,12 +29,13 @@
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item>
+                    <el-form-item label-width="20px">
                         <el-input placeholder="代理商名称/联系人/联系方式" v-model="searchData.queryCriteria"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
-                        <el-button @click="agentAdd" type="success" plain>新增</el-button>
+                        <el-button @click="resetSearch" type="success" plain>重置</el-button>
+                        <el-button  type="warning" plain>导出</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -43,7 +44,7 @@
                           element-loading-spinner="el-icon-loading"
                           :headerRowStyle="{color:'#000000'}"
                           :data="tableData" border style="width: 100%;">
-                    <el-table-column align="center" prop="agentId" label="序号"></el-table-column>
+                    <el-table-column align="center" type="index" width="50" label="序号"></el-table-column>
                     <el-table-column align="center" prop="snCode" label="SN码"></el-table-column>
                     <el-table-column align="center" prop="deviceTypeCode" label="设备型号"></el-table-column>
                     <el-table-column align="center" prop="agentName" label="代理商"></el-table-column>
@@ -52,7 +53,11 @@
                     <el-table-column align="center" prop="createTime" label="交易金额"></el-table-column>
                     <el-table-column align="center" prop="bindTime" label="绑定时间"></el-table-column>
                     <el-table-column align="center" prop="createTime" label="操作人"></el-table-column>
-                    <el-table-column align="center" prop="sellerCount" label="操作"></el-table-column>
+                    <el-table-column align="center" label="操作">
+                        <template>
+                            <el-button plain type="text">详情</el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </div>
             <div class="pagination">

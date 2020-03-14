@@ -4,7 +4,7 @@
             <div class="searchData">
                 <el-form ref="form" :model="searchData" label-width="80px">
                     <el-form-item label="设备型号" style="width: 220px">
-                        <el-input v-model="searchData.loginStaffName"></el-input>
+                        <el-input v-model="searchData.deviceTypeCode" placeholder="请输入设备型号"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="searchClick" plain>搜索</el-button>
@@ -62,10 +62,7 @@
             return {
                 //搜索数据
                 searchData: {
-                    loginStaffName: '',
-                    loginClientIp: '',
-                    loginTime: null,
-                    loginStatus: '',
+                    deviceTypeCode: '',
                     page: 1,
                     size: 10
                 },

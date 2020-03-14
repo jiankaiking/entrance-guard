@@ -29,12 +29,6 @@ const router = new Router({
                 },
                 //日志
                 {
-                    path: '/log/menu',
-                    name: 'menu',
-                    component: () => import('@/views/Log/Menu'),
-                    meta: {title: '日志菜单'}
-                },
-                {
                     path: '/log/operation',
                     name: 'organization1',
                     component: () => import('@/views/Log/Organization'),

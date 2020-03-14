@@ -1,7 +1,7 @@
 <template>
     <el-form class="message-shipped" label-width="75px">
         <el-form-item label="设备号:">
-            <el-input></el-input>
+            <el-input v-model="modelFromdata.deviceNo"></el-input>
         </el-form-item>
         <el-form-item label="商家:">
             <el-input></el-input>
@@ -17,8 +17,22 @@
 </template>
 
 <script>
+    import CommonSelect from "../../../components/select/CommonSelect";
     export default {
-        name: "CashierBindModel"
+        name: "CashierBindModel",
+        data(){
+            return{
+                modelFromdata:{
+                    personInfoId:'',
+                    deviceNo:'',
+                    storeId:'',
+                    sellerId:'',
+                }
+            }
+        },
+        components:{
+            CommonSelect
+        },
     }
 </script>
 

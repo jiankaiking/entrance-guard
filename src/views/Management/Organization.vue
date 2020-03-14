@@ -20,10 +20,11 @@
         <div class="tableData">
             <div class="tableBox">
                 <el-table :data="tableData" border style="width: 99.9%"
-                          v-loading="loading"
-                          row-key="menuId" lazy :load="loadData"
+                          v-loading="loading" :indent="16"
+                          ref="table"
+                          row-key="organId" lazy :load="loadData"
                           :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                    <el-table-column prop="organName" label="组织机构层级"  align="center"></el-table-column>
+                    <el-table-column prop="organName" label="组织机构层级"  ></el-table-column>
                     <el-table-column prop="organTypeName" label="分类"  align="center"></el-table-column>
                     <el-table-column align="center" prop="staffFullName" label="主要负责人"></el-table-column>
                     <el-table-column align="center" prop="loginPhone" label="电话"></el-table-column>
@@ -34,13 +35,13 @@
                         <template slot-scope="scope">
                             <el-button type="text" @click="headEdit(scope.row)">编辑</el-button>
                             <el-button type="text" @click="changeStatus(scope.row)">{{scope.row.organStatus == 1?'停用':'启用'}}</el-button>
-                            <el-button type="text">删除</el-button>
+                            <el-button type="text" @click="deleteOrgan(scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
         </div>
-        <el-dialog :lock-scroll="false" class="organnizaDia" title="收货地址" width="30%" center :visible.sync="dialogTableVisible">
+        <el-dialog :lock-scroll="false" class="organnizaDia" title="机构管理" width="30%" center :visible.sync="dialogTableVisible">
             <OrganizationModel ref="modalForm" @close="close" @ok="modalFormOk"></OrganizationModel>
         </el-dialog>
     </div>
@@ -65,6 +66,7 @@
                 listUrl:'/organManage/getOrganList',
                 dialogTableVisible: false,
                 tableData: [],
+                abc:false,
             }
         },
         components: {
@@ -95,11 +97,22 @@
                     this.$refs.modalForm.add();
                 })
             },
+            //删除
+            deleteOrgan(row){
+                httpRequest("/organManage/offOrNoOrgan","POST",{organId:row.organId})
+                    .then(res=>{
+                        if(res.success){
+                            this.getDataList()
+                        }
+                    })
+            },
             changeStatus(row){
                 httpRequest("/organManage/offOrNoOrgan","POST",{organId:row.organId,organStatus:row.organStatus == 0?1:0})
                     .then(res=>{
                         if(res.success){
-                            this.getDataList()
+                            console.log(this.$refs.table)
+                            this.$refs.table.store.updateTreeData()
+                             this.getDataList()
                         }
                     })
             },
@@ -109,6 +122,7 @@
                     .then(res=>{
                        if(res.success){
                            this.tableData = res.data;
+
                        }
                     })
                     .finally(res=>{
@@ -116,8 +130,8 @@
                     })
             },
             loadData(tree, treeNode, resolve){
-                this.searchData.menuPid = tree.organId
-                httpRequest(this.listUrl, "GET", this.searchData)
+                // this.searchData.menuPid = tree.organId
+                httpRequest(this.listUrl, "GET", {organId:tree.organId})
                     .then(res=>{
                         resolve(res.data)
                     })

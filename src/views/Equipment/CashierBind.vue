@@ -2,13 +2,13 @@
     <div class="main-contenner">
         <div class="searchData">
             <el-form ref="form" :model="searchData" label-width="80px">
-                <el-form-item label="操作人员" style="width: 220px">
-                    <el-input v-model="searchData.name"></el-input>
+                <el-form-item label="查询" style="width: 220px">
+                    <el-input v-model="searchData.name" placeholder="请输入商家/门店/代理商名称"></el-input>
                 </el-form-item>
                 <el-form-item label-width="20px">
-                    <el-input v-model="searchData.name"></el-input>
+                    <el-input v-model="searchData.deviceNo" placeholder="请输入设备号"></el-input>
                 </el-form-item>
-                <el-form-item label="登录时间">
+                <el-form-item label="绑定日期">
                     <el-date-picker
                             v-model="searchData.searchTime"
                             type="daterange"
@@ -29,15 +29,15 @@
         <div class="tableData">
             <div class="tableBox">
                 <el-table :data="tableData" border empty-text style="width: 100%">
-                    <el-table-column prop="loginUserName" align="center" label="序号"></el-table-column>
-                    <el-table-column prop="organName" label="商家" align="center"></el-table-column>
-                    <el-table-column prop="loginIp" align="center" label="门店"></el-table-column>
-                    <el-table-column prop="loginStatus" align="center" label="设备号"></el-table-column>
-                    <el-table-column prop="operResult" align="center" label="所属代理商"></el-table-column>
-                    <el-table-column align="center" prop="loginTime" label="状态"></el-table-column>
-                    <el-table-column align="center" prop="loginTime" label="绑定日期"></el-table-column>
-                    <el-table-column align="center" prop="loginTime" label="操作人"></el-table-column>
-                    <el-table-column align="center" prop="loginTime" label="累计交易金额"></el-table-column>
+                    <el-table-column align="center" prop="loginUserName"  label="序号"></el-table-column>
+                    <el-table-column align="center" prop="sellerName" label="商家"></el-table-column>
+                    <el-table-column align="center" prop="storeName"  label="门店"></el-table-column>
+                    <el-table-column align="center" prop="deviceNo" label="设备号"></el-table-column>
+                    <el-table-column align="center" prop="operResult" label="所属代理商"></el-table-column>
+                    <el-table-column align="center" prop="isBind" label="状态"></el-table-column>
+                    <el-table-column align="center" prop="bindTime" label="绑定日期"></el-table-column>
+                    <el-table-column align="center" prop="bindUserName" label="操作人"></el-table-column>
+                    <el-table-column align="center" prop="totalMoney" label="累计交易金额"></el-table-column>
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button type="text" @click="headEdit">解绑</el-button>
@@ -57,8 +57,7 @@
                 </el-pagination>
             </div>
         </div>
-        <el-dialog align="center" width="500px" :visible.sync="dialogTableVisible" :lock-scroll="false"
-                   :before-close="handleClose">
+        <el-dialog align="center" width="500px" :visible.sync="dialogTableVisible" :lock-scroll="false">
             <CashierBindModel></CashierBindModel>
         </el-dialog>
     </div>
@@ -85,7 +84,7 @@
                 dialogTableVisible: false,
                 value: '',
                 total: 0,
-                listUrl: '/deviceManage/deviceYrBind/cashierBind',
+                listUrl: '/deviceManage/deviceYrBind/cashierList',
                 tableData: [{}]
             }
         },
@@ -118,7 +117,7 @@
             }
         },
         mounted() {
-            this.showTip()
+            // this.showTip()
         }
     }
 </script>

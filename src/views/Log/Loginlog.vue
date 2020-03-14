@@ -3,32 +3,31 @@
         <div class="searchData">
             <el-form ref="form" :model="searchData" label-width="80px">
                 <el-form-item label="操作人员" style="width: 220px">
-                    <el-input v-model="searchData.loginStaffName"></el-input>
+                    <el-input v-model="searchData.loginStaffName"   placeholder="请输入操作人员"></el-input>
                 </el-form-item>
                 <el-form-item label="IP地址" style="width: 310px">
-                    <el-input v-model="searchData.loginClientIp"></el-input>
+                    <el-input v-model="searchData.loginClientIp"   placeholder="请输入IP地址"></el-input>
                 </el-form-item>
                 <el-form-item label="登录时间">
-                    <p>{{value}}</p>
                     <el-date-picker
-                            v-model="searchData.loginTime"
+                            v-model="dateValue"
+                            @change="changeDate"
                             type="daterange"
                             format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd"
                             start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :default-time="['00:00:00', '23:59:59']">
+                            end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="状态" style="width: 220px">
                     <el-select v-model="searchData.loginStatus" placeholder="请选择">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                        <el-option label="成功" value="1"></el-option>
+                        <el-option label="失败" value="0"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="searchClick">搜索</el-button>
-                    <el-button>重置</el-button>
+                    <el-button @click="resetSearch">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -61,31 +60,37 @@
 <script>
     import httpRequest from "../../api/api";
     import {myMixins} from "../../mixins/mixin";
+
     export default {
         name: "Organization",
-        mixins:[myMixins],
+        mixins: [myMixins],
         data() {
             return {
                 //搜索数据
-                searchData:{
+                searchData: {
                     loginStaffName: '',
                     loginClientIp: '',
-                    loginTime: null,
+                    startDate: '',
+                    endDate: '',
                     loginStatus: '',
-                    page:1,
-                    size:10
+                    page: 1,
+                    size: 10
                 },
-                value:'',
-                total:0,
-                listUrl:'/log/getSysLoginLog',
+                dateValue: '',
+                total: 0,
+                listUrl: '/log/getSysLoginLog',
                 tableData: []
             }
         },
-        mounted(){
+
+        mounted() {
 
         },
         methods: {
-
+            changeDate(e) {
+                this.searchData.startDate = e[0]
+                this.searchData.endDate = e[1]
+            },
         }
 
     }

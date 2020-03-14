@@ -24,9 +24,10 @@
                 <el-table :data="tableData" border style="width: 99.9%"
                           row-key="menuId" lazy :load="loadData"
                           highlight-current-row
+                          :indent="10"
                           @current-change="handleCurrentChange"
                           :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                    <el-table-column prop="menuName" label="菜单名称" align="center"></el-table-column>
+                    <el-table-column prop="menuName" label="菜单名称"></el-table-column>
                     <el-table-column prop="menuSort" align="center" label="排序"></el-table-column>
                     <el-table-column prop="menuTypeName" align="center" label="类型"></el-table-column>
                     <el-table-column prop="menuUrl" align="center" label="请求地址"></el-table-column>
@@ -77,6 +78,7 @@
             this.getMenuList()
         },
         methods: {
+
             //重置
             resetSearch(){
                 Object.keys(this.searchData).forEach(key => this.searchData[key] = '');
@@ -115,6 +117,7 @@
                 httpRequest("/menuManage/hideOrShowMenu", "POST", {menuId:row.menuId})
                     .then(res=>{
                         if(res.success){
+
                             this.searchData.menuPid = 0
                             this.getMenuList()
                         }
