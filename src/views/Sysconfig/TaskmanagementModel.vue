@@ -50,9 +50,9 @@
                     taskStatus:'',//任务状态
                 },
                 url:{
-                    info:'/taskConfigManage/getTaskConfigInfo',
-                    add:'/taskConfigManage/addTaskConfig',
-                    edit:'/taskConfigManage/updateTaskConfig',
+                    info:'/managecenter/taskConfigManage/getTaskConfigInfo',
+                    add:'/managecenter/taskConfigManage/addTaskConfig',
+                    edit:'/managecenter/taskConfigManage/updateTaskConfig',
                 },
             }
         },

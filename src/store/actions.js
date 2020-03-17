@@ -8,7 +8,7 @@ const actions = {
     //登录
     Login({commit}, user) {
         return new Promise((resolve, reject) => {
-            httpRequest('/login/userLogin','post', user)
+            httpRequest('/managecenter/login/userLogin','post', user)
                 .then(resp => {
                     if(resp.success){
                         const token = resp.data.token;
@@ -29,7 +29,7 @@ const actions = {
     //登出
     LogOut({commit, state},backPath) {
         return new Promise((resolve, reject) => {
-            httpRequest('/login/logout')
+            httpRequest('/managecenter/login/logout')
                 .then(response => {
                     if(response.success){
                         Message.success(response.msg)

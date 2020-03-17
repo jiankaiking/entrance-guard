@@ -9,7 +9,9 @@
                 </ul>
             </div>
         </div>
-        <component :is="componentIs"></component>
+
+            <component :is="componentIs"></component>
+
     </div>
 </template>
 
@@ -74,15 +76,13 @@
                 pageType: '',  //新增，详情 类型判断
             };
         },
-        created() {
+        mounted() {
             this.pageType = this.$route.query.type;
-            if(this.pageType != 'add'){
-                httpRequest('/agentManage/getAgentBasicInfo', 'GET', {agentId: this.$route.query.agentId})
-                    .then(res=>{
-                        this.agentMessges = res.data;
-                    })
-            }else{
+            if(this.pageType == 'add' || this.pageType == 'children' ){
                 this.componentArr.pop()
+                if(this.pageType == 'children'){
+                    this.componentIs = 'Agentmessgesbasic'
+                }
             }
         },
 
@@ -90,7 +90,20 @@
             agentcheck(index) {
                     this.componentIs = this.componentArr[index].value;
             }
-        }
+        },
+        computed:{
+            myrouter(){
+                return this.$route.query
+            },
+        },
+        watch:{
+            myrouter(val,old){
+                if(val.type == "children"){
+                    this.componentIs = 'Agentmessgesbasic';
+                    this.componentArr.pop()
+                }
+            }
+        },
     }
 </script>
 

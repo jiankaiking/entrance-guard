@@ -210,8 +210,8 @@
                     payRemark:'',//支付备注
                 },
                 url:{
-                    add:"/deviceManage/deviceApply/saveDeviceDelivery",
-                    info:"/deviceManage/deviceApply/queryDeviceApplyInfo"
+                    add:"/managecenter/deviceManage/deviceApply/saveDeviceDelivery",
+                    info:"/managecenter/deviceManage/deviceApply/queryDeviceApplyInfo"
                 }
             }
         },

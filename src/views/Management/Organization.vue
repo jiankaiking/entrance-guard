@@ -63,7 +63,7 @@
                     organName:'',//机构名称、部门名称
                 },
                 loading:false,
-                listUrl:'/organManage/getOrganList',
+                listUrl:'/managecenter/organManage/getOrganList',
                 dialogTableVisible: false,
                 tableData: [],
                 abc:false,
@@ -99,7 +99,7 @@
             },
             //删除
             deleteOrgan(row){
-                httpRequest("/organManage/offOrNoOrgan","POST",{organId:row.organId})
+                httpRequest("/managecenter/organManage/offOrNoOrgan","POST",{organId:row.organId})
                     .then(res=>{
                         if(res.success){
                             this.getDataList()
@@ -107,7 +107,7 @@
                     })
             },
             changeStatus(row){
-                httpRequest("/organManage/offOrNoOrgan","POST",{organId:row.organId,organStatus:row.organStatus == 0?1:0})
+                httpRequest("/managecenter/organManage/offOrNoOrgan","POST",{organId:row.organId,organStatus:row.organStatus == 0?1:0})
                     .then(res=>{
                         if(res.success){
                             console.log(this.$refs.table)

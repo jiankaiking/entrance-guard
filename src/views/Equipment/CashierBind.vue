@@ -84,7 +84,7 @@
                 dialogTableVisible: false,
                 value: '',
                 total: 0,
-                listUrl: '/deviceManage/deviceYrBind/cashierList',
+                listUrl: '/managecenter/deviceManage/deviceYrBind/cashierList',
                 tableData: [{}]
             }
         },

@@ -67,7 +67,7 @@
                 },
                 total: null,
                 dialogTableVisible: false,
-                listUrl: '/paramManage/getParamList',
+                listUrl: '/managecenter/paramManage/getParamList',
                 tableData: []
             }
         },

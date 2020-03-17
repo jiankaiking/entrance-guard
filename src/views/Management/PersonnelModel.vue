@@ -152,9 +152,9 @@
                     loginEmail: '',//邮箱
                 },
                 url: {
-                    add: '/staffManage/addStaff',
-                    info: '/staffManage/getStaffInfo',
-                    edit: '/staffManage/editStaffInfo',
+                    add: '/managecenter/staffManage/addStaff',
+                    info: '/managecenter/staffManage/getStaffInfo',
+                    edit: '/managecenter/staffManage/editStaffInfo',
                 },
             }
         },
@@ -163,7 +163,7 @@
         },
         methods: {
             getOrganInfo() {
-                httpRequest('/organManage/getOrganInfo', 'get')
+                httpRequest('/managecenter/organManage/getOrganInfo', 'get')
             },
 
             //正面照

@@ -45,9 +45,9 @@
                 fromData: [],
                 toData: [],
                 url: {
-                    add: '/roleManage/addRole',
-                    info:'/roleManage/getRoleInfo',
-                    edit: '/roleManage/editRole'
+                    add: '/managecenter/roleManage/addRole',
+                    info:'/managecenter/roleManage/getRoleInfo',
+                    edit: '/managecenter/roleManage/editRole'
                 },
             };
         },
@@ -94,7 +94,7 @@
 
            //获取菜单
             getMenuAll() {
-                httpRequest("/menuManage/getMenuTreeToRole", "GET")
+                httpRequest("/managecenter/menuManage/getMenuTreeToRole", "GET")
                     .then(res => {
                         this.fromData = res.data
                     })
@@ -111,13 +111,13 @@
                         if(res.success){
                             this.modelFromdata =Object.assign(this.modelFromdata,res.data)
                             this.modelFromdata.menuIds = []
-                           return  httpRequest("/menuManage/getUnSelectedMenuTreeByRoleId","GET",{roleId:record.roleId})
+                           return  httpRequest("/managecenter/menuManage/getUnSelectedMenuTreeByRoleId","GET",{roleId:record.roleId})
                         }
                     })
                     .then(res=>{
                         if(res.success){
                             this.fromData = res.data;
-                            return  httpRequest("/menuManage/getSelectedMenuTreeByRoleId","GET",{roleId:record.roleId})
+                            return  httpRequest("/managecenter/menuManage/getSelectedMenuTreeByRoleId","GET",{roleId:record.roleId})
                         }
                     })
                     .then(res=>{

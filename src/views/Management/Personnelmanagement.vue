@@ -109,8 +109,8 @@
                 staffpassword: '',  // 重置密码
                 resetModel: false,
                 total: 0,
-                delUrl: '/staffManage/deleteStaffById',
-                listUrl: '/staffManage/getStaffInfoList',
+                delUrl: '/managecenter/staffManage/deleteStaffById',
+                listUrl: '/managecenter/staffManage/getStaffInfoList',
                 dialogTableVisible: false,
                 tableData: [],
                 addData: {}
@@ -127,7 +127,7 @@
 
             //机构树形
             getOrganTree() {
-                httpRequest('/organManage/getOrganTree', 'GET', {organId: 1})
+                httpRequest('/managecenter/organManage/getOrganTree', 'GET', {organId: 1})
                     .then(res => {
                         this.originData.push(res.data)
                         console.log(this.originData)
@@ -140,7 +140,7 @@
                     staffPhone: r.loginPhone,
                     password: this.staffpassword
                 }
-                httpRequest('/staffManage/resetPassword', 'POST', data)
+                httpRequest('/managecenter/staffManage/resetPassword', 'POST', data)
                     .then(res => {
                         console.log(res)
                     })
@@ -151,7 +151,7 @@
             },
             //停用启动员工
             changeStatus(id, status) {
-                httpRequest('/staffManage/offOrNoStaff', 'POST', {
+                httpRequest('/managecenter/staffManage/offOrNoStaff', 'POST', {
                     staffId: id,
                     userStatus: status == 0 ? 1 : '0',
                 })

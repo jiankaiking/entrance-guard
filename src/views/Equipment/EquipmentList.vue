@@ -103,7 +103,7 @@
                 total: '',
                 dialogTableVisible: false,
                 tableData: [],
-                listUrl: '/deviceManage/device/getDeviceListByStatus',   //表格数据接口
+                listUrl: '/managecenter/deviceManage/device/getDeviceListByStatus',   //表格数据接口
             }
         },
         mounted() {
@@ -121,7 +121,7 @@
             },
             //获取总设备数量
             getdevice() {
-                httpRequest("/deviceManage/device/selectCountByDeviceStatus", "GET")
+                httpRequest("/managecenter/deviceManage/device/selectCountByDeviceStatus", "GET")
                     .then(res => {
                         this.dataInfo = res.data;
                     })

@@ -104,8 +104,8 @@
                 typeData:[],
                 type: '',
                 url:{
-                    add:'/menuManage/addMenu',
-                    info:'/menuManage/getMenuInfo',
+                    add:'/managecenter/menuManage/addMenu',
+                    info:'/managecenter/menuManage/getMenuInfo',
                 },
                 tableData: [{}]
             }
@@ -135,14 +135,14 @@
             },
             //获取操作信息
             getOperatingInfo(id){
-                httpRequest("/menuManage/getMenuInfoAndRoleList","GET",{menuId:id})
+                httpRequest("/managecenter/menuManage/getMenuInfoAndRoleList","GET",{menuId:id})
                     .then(res=>{
                         this.tableData =res.data.records;
                     })
             },
             //获取链接目标类型
             getType(){
-                httpRequest("/sysDict/getDataListByType","GET",{dataType:'menu_mode'})
+                httpRequest("/managecenter/sysDict/getDataListByType","GET",{dataType:'menu_mode'})
                     .then(res=>{
                        this.typeData = res.data;
                     })

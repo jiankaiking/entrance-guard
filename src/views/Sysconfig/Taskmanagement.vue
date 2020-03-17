@@ -94,7 +94,7 @@
         },
         methods: {
             changeTaskStatus(row, index) {
-                httpRequest('/taskConfigManage/updateTaskStatus', 'POST',{taskId:row.taskId})
+                httpRequest('/managecenter/taskConfigManage/updateTaskStatus', 'POST',{taskId:row.taskId})
                     .then(res => {
                         if (res.success) {
                                 this.tableData[index].taskStatus = row.taskStatus == 0?1:0;

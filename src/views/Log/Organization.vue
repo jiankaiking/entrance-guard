@@ -70,7 +70,7 @@
                     size:10
                 },
                 dateValue: '',
-                listUrl:'/log/getSysOperationLogList',
+                listUrl:'/managecenter/log/getSysOperationLogList',
                 tableData: []
             }
         },

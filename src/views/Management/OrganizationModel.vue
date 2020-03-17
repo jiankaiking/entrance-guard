@@ -79,7 +79,7 @@
                 organType:[],
                 phone:'',
                 url:{
-                    add:'/organManage/editOrgan',
+                    add:'/managecenter/organManage/editOrgan',
                     info:'',
                 },
             }
@@ -92,7 +92,7 @@
             //机构选择获取负责人
             changeOrgan(e){
                 this.modelFromdata.userId = "";
-                httpRequest("/organManage/getChargeUserList","GET",{organId:e})
+                httpRequest("/managecenter/organManage/getChargeUserList","GET",{organId:e})
                     .then(res=>{
                         this.ChargeUserList = res.data;
                     })
@@ -106,10 +106,10 @@
             },
             //获取机构
             getChildOrganList(){
-                httpRequest("/organManage/getChildOrganList","GET")
+                httpRequest("/managecenter/organManage/getChildOrganList","GET")
                     .then(res=>{
                         this.OrganList = res.data
-                        return httpRequest("/sysDict/getDataListByType","GET",{dataType:"organ_type"})
+                        return httpRequest("/managecenter/sysDict/getDataListByType","GET",{dataType:"organ_type"})
                     })
                     .then(res=>{
                        this.organType = res.data;
