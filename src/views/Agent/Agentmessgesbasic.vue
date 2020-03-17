@@ -175,7 +175,6 @@
     import UploadImg from "../../components/uploadImg/uploadImg"
     export default {
         name: "Agentmessgesbasic",
-        inject: ['parentTest'],
         data() {
             return {
                 form: {
@@ -240,10 +239,6 @@
                         this.form = res.data;
                     })
             }
-        },
-        created() {
-            // this.form = Object.assign(this.form, this.parentTest.agentMessges)
-            // console.log(this.parentTest.pageType)
         },
         methods: {
             comBusExpDate(e){

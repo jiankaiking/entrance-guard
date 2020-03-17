@@ -70,13 +70,16 @@
         padding-top: 12px;
 
     }
+    .padding-catch .el-col {
+           padding: 0 !important; margin-right: 25px;
+    }
 
     .searchData .el-form-item {
         display: inline-block;
         margin-bottom: 0;
     }
 
-    .el-form-item {
+    .searchData .el-form-item {
         padding-bottom: 15px;
 
     }
