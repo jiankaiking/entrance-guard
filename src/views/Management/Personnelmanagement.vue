@@ -172,19 +172,9 @@
                 this.getTableData()
             },
             //重置密码
-<<<<<<< HEAD
             setPassword() {
                 const that = this;
                 httpRequest('/staffManage/resetPassword', 'POST', this.resetInfo)
-=======
-            setPassword(r) {
-                let data = {
-                    loginUserId: r.loginUserId,
-                    staffPhone: r.loginPhone,
-                    password: this.staffpassword
-                }
-                httpRequest('/managecenter/staffManage/resetPassword', 'POST', data)
->>>>>>> 8cb7df64dca2b527ea80c5ad209fb5f9281d2eeb
                     .then(res => {
                         if(res.success){
                                 that.$message.success("重置成功")
