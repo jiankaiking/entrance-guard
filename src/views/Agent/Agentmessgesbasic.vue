@@ -43,7 +43,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="*详细地址" prop="agentAddr">
+                    <el-form-item label="详细地址" prop="agentAddr">
                         <el-input v-model="form.agentAddr"></el-input>
                     </el-form-item>
                 </el-col>
@@ -129,21 +129,22 @@
                         <el-input v-model="form.idCardNo"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="11">
                     <el-form-item label="证件有效期">
                         <el-col :span="11">
                             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期"
                                             v-model="form.idCardStartDate" style="width: 100%;"></el-date-picker>
                         </el-col>
-                        <el-col class="line" :span="2">-</el-col>
+                        <el-col :span="1">-</el-col>
                         <el-col :span="11">
                             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期"
+                                            :disabled="this.form.idCardEndDate == '9999-12-31'"
                                             v-model="form.idCardEndDate" style="width: 100%;"></el-date-picker>
                         </el-col>
                     </el-form-item>
                 </el-col>
                 <el-col :span="2">
-                    <el-checkbox v-model="checked">备选项</el-checkbox>
+                    <el-checkbox @change="comBusExpDate">长期</el-checkbox>
                 </el-col>
             </el-row>
 
@@ -160,7 +161,7 @@
             </el-form-item>
             <el-form-item>
                 <div style="margin: 0 auto; width: 200px">
-                    <el-button>取消</el-button>
+                    <el-button @click="cancel">取消</el-button>
                     <el-button type="primary" @click="onSubmit('form')">保存</el-button>
                 </div>
             </el-form-item>
@@ -174,7 +175,6 @@
     import UploadImg from "../../components/uploadImg/uploadImg"
     export default {
         name: "Agentmessgesbasic",
-        inject: ['parentTest'],
         data() {
             return {
                 form: {
@@ -232,12 +232,18 @@
         components:{
             UploadImg
         },
-        created() {
-            this.form = Object.assign(this.form, this.parentTest.agentMessges)
-
-            console.log(this.parentTest.pageType)
+        mounted(){
+            if(this.$route.query.type != 'add'){
+                httpRequest('/sellerManagement/agentManage/getAgentBasicInfo', 'GET', {agentId: this.$route.query.agentId})
+                    .then(res=>{
+                        this.form = res.data;
+                    })
+            }
         },
         methods: {
+            comBusExpDate(e){
+                e?this.form.idCardEndDate = '9999-12-31':this.form.idCardEndDate = ''
+            },
             //正面照
             handleAvatarSuccess(res) {
                 this.form.idCardFront = res.data
@@ -248,25 +254,18 @@
             },
             //增加代理商 编辑代理商
             addAgentBasicInfo() {
-                let [url, msg] = ['', ''];
-                if (this.parentTest.pageType == 'details') {
-                    url = '/agentManage/editAgentBasicInfo';
-                    msg = '修改'
-                } else {
-                    url = '/agentManage/addAgentBasicInfo'
-                    msg = '添加'
-                }
                 console.log(this.form)
-                httpRequest('/agentManage/addAgentBasicInfo', 'post', this.form)
+                httpRequest('/sellerManagement/agentManage/editAgentBasicInfo', 'post', this.form)
                     .then(res => {
                         if (res.success) {
-                            this.$message({
-                                type: 'success',
-                                message: `${msg}成功`
-                            })
+                            this.$message.success(res.msg)
                             this.$router.push('/agent')
                         }
                     })
+            },
+            //取消
+            cancel(){
+                this.$router.push('/agent')
             },
             //提交按钮  先表单验证 必填项 再提交操作
             onSubmit(fromName) {
@@ -289,7 +288,7 @@
 
 <style scoped>
     .agent-message .el-form-item {
-        padding-bottom: 25px;
+        padding-bottom: 0px;
     }
 
     .avatar-uploader-icon {

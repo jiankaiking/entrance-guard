@@ -54,8 +54,8 @@
                 },
                 saveBtnfalg:true, // 添加还是详情
                 url:{
-                    info:"/deviceManage/deviceInStorehouse/findOne",
-                    add:"/deviceManage/deviceInStorehouse/insert",
+                    info:"/managecenter/deviceManage/deviceInStorehouse/findOne",
+                    add:"/managecenter/deviceManage/deviceInStorehouse/insert",
                 },
             }
         },

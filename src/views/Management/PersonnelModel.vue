@@ -182,9 +182,9 @@
                     position:{ required: true, message: '请输入职位', trigger: 'blur' },
                 },
                 url: {
-                    add: '/staffManage/addStaff',
-                    info: '/staffManage/getStaffInfo',
-                    edit: '/staffManage/editStaffInfo',
+                    add: '/managecenter/staffManage/addStaff',
+                    info: '/managecenter/staffManage/getStaffInfo',
+                    edit: '/managecenter/staffManage/editStaffInfo',
                 },
             }
         },
@@ -225,7 +225,7 @@
                 }
             },
             getOrganInfo() {
-                httpRequest('/organManage/getOrganInfo', 'get')
+                httpRequest('/managecenter/organManage/getOrganInfo', 'get')
             },
             //所属部门
             department() {

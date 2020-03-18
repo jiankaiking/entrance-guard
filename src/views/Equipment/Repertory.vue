@@ -100,7 +100,7 @@
             },
             //获取库存
             getDeviceInStorehouse(){
-                httpRequest("/deviceManage/deviceInStorehouse/sumDeviceCountOrderByDeviceTypeId","GET",this.searchData)
+                httpRequest("/managecenter/deviceManage/deviceInStorehouse/sumDeviceCountOrderByDeviceTypeId","GET",this.searchData)
                     .then(res=>{
                         this.repertoryData = res.data;
                     })

@@ -115,7 +115,7 @@
         methods:{
             //赠送
             saveBtn(){
-                httpRequest("/deviceManage/deviceOutbound/saveDeviceGive","POST",this.modelFromdata)
+                httpRequest("/managecenter/deviceManage/deviceOutbound/saveDeviceGive","POST",this.modelFromdata)
                     .then(res=>{
                         console.log(res)
                     })

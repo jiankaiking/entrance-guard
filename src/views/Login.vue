@@ -72,7 +72,7 @@
                     password: [{required: true, message: '密码不可为空', trigger: 'blur'}]
                 },
                 saveAccount: false,
-                codeImg:BASE_URL + '/login/getValidateCode',
+                codeImg:BASE_URL + '/managecenter/login/getValidateCode',
                 sweepLogin: false,  //扫码登录切换
                 userInfor: {  //用户名密码，验证码
                     userName: '',  //用户名
@@ -112,7 +112,7 @@
                 });
             },
             getCode(){
-                this.codeImg = '/api/login/getValidateCode?'+Math.random()
+                this.codeImg = '/api/managecenter/login/getValidateCode?'+Math.random()
             },
             //切换登录方式
             checkLogin() {

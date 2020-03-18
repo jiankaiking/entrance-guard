@@ -2,7 +2,7 @@
     <div>
         <el-form class="agent-from from-shadow" label-width="100px">
             <el-form-item label="代理费">
-                <el-row :gutter="24">
+                <el-row :gutter="24" class="padding-catch">
                     <el-col :span="2">
                         <el-select v-model="value" placeholder="请选择">
                             <el-option
@@ -13,13 +13,12 @@
                             </el-option>
                         </el-select>
                     </el-col>
-                    <el-col :span="3">
-                        <el-input v-model="agentManage.agentMoney" placeholder="请输入内容"></el-input>
-                    </el-col>
+                        <el-input v-model="agentManage.agentMoney" placeholder="请输入内容"></el-input><span  style="padding:0 15px;">元</span>
+                       <span style="padding:0 15px;">预存款</span><el-input v-model="agentManage.agentMoney" placeholder="请输入内容"></el-input>
                 </el-row>
             </el-form-item>
             <el-form-item label="代理等级">
-                <el-col :span="4">
+                <el-col :span="2">
                     <el-select v-model="agentManage.agentLevel" placeholder="请选择">
                         <el-option
                                 v-for="item in options"
@@ -31,7 +30,7 @@
                 </el-col>
             </el-form-item>
             <el-form-item label="代理位置">
-                <el-col :span="4">
+                <el-col :span="2">
                     <el-select v-model="agentManage.agentRegion" placeholder="请选择">
                         <el-option
                                 v-for="item in options"
@@ -40,6 +39,9 @@
                                 :value="item.value">
                         </el-option>
                     </el-select>
+                </el-col>
+                <el-col :span="7" style="padding-left: 25px">
+                    <CitySelect></CitySelect>
                 </el-col>
             </el-form-item>
         </el-form>
@@ -183,9 +185,10 @@
 </template>
 
 <script>
+    import httpRequest from "../../api/api";
+    import CitySelect from "../../components/select/CitySelect";
     export default {
         name: "information",
-        inject: ['parentTest'],
         data() {
             return {
                 agentManage: {
@@ -199,18 +202,26 @@
                     channelInfoList: '', // json格式的渠道、产品、费率信息列表
                 },
                 agentlevel: ['国', '省', '市', '区县', '街道'],
-                form: {},
+                agentInfo: {},
+                url:{
+                    info:"/sellerManagement/agentManage/getAgentAgentInfo"
+                },
                 options: [],
                 value: ''
             }
         },
-        created() {
-            this.form = this.parentTest.agentMessges;
+        components:{
+            CitySelect
         },
         methods: {
-            abc() {
-                console.log(this)
-            }
+            getAgentInfo(){
+                httpRequest(this.url.info,"GET",this.$route.query.agentId)
+                    .then(res=>{
+                        if(res.success){
+                            this.agentInfo = res.data;
+                        }
+                    })
+            },
         }
     }
 </script>
@@ -268,7 +279,9 @@
         background: #fcfcfc;
         border-radius: 4px;
     }
-
+    .el-input{
+        width: auto;
+    }
     .agent-from2 .agent-table .tdInput:last-child {
         margin-bottom: 0;
     }

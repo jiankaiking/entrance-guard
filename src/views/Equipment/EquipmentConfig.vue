@@ -69,7 +69,7 @@
                 dialogTableVisible:false,
                 value: '',
                 total: 0,
-                listUrl: '/deviceManage/deviceType/selectList',
+                listUrl: '/managecenter/deviceManage/deviceType/selectList',
                 tableData: []
             }
         },
@@ -78,7 +78,7 @@
             //     this.dialogTableVisible = true
             // },
             changeStatus(row){
-                httpRequest("/deviceManage/deviceType/updateDeviceShelvesStatus","POST", {
+                httpRequest("/managecenter/deviceManage/deviceType/updateDeviceShelvesStatus","POST", {
                     deviceTypeId:row.deviceTypeId,
                     shelvesStatus:row.shelvesStatus == 0?1:0})
                     .then(res=>{

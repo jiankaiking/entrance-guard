@@ -67,7 +67,7 @@
                 total: 0,
                 cliMenuId:0,
                 title:'',
-                listUrl: '/menuManage/getMenuList',
+                listUrl: '/managecenter/menuManage/getMenuList',
                 tableData: []
             }
         },
@@ -114,7 +114,7 @@
             },
             //隐藏菜单
             hideMenu(row){
-                httpRequest("/menuManage/hideOrShowMenu", "POST", {menuId:row.menuId})
+                httpRequest("/managecenter/menuManage/hideOrShowMenu", "POST", {menuId:row.menuId})
                     .then(res=>{
                         if(res.success){
 

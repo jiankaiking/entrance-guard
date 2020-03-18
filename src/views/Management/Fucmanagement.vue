@@ -69,7 +69,7 @@
                     page: 1,
                     size: 10
                 },
-                listUrl: '/roleManage/getRoleList',
+                listUrl: '/managecenter/roleManage/getRoleList',
                 total: 0,
                 dialogTableVisible: false,
                 tableData: []

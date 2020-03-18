@@ -30,7 +30,7 @@
         },
         mounted(){
             //获取设备类型
-            httpRequest("/deviceManage/deviceType/selectDeviceTypeList","GET")
+            httpRequest("/managecenter/deviceManage/deviceType/selectDeviceTypeList","GET")
                 .then(res=>{
                     if(res.success){
                         this.deviceType = res.data;

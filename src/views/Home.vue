@@ -36,8 +36,8 @@
             <div class="webapp">
                 <ul class="clear">
                     <li v-for="(item,index) in webappData">
-                        <img :src="item.codeUrl" alt="">
-                        <span>{{item.name}}</span>
+                        <img :src="item.qrcodeUrl" alt="qrcodeName">
+                        <span>{{item.qrcodeName}}</span>
                     </li>
                 </ul>
             </div>
@@ -67,12 +67,7 @@
                     {title: '空腹可以吃饭吗'},
                     {title: '哪个地方得女人最好看'}
                 ],
-                webappData: [
-                    {codeUrl: img, name: 'ios'},
-                    {codeUrl: img, name: 'webapp'},
-                    {codeUrl: img, name: '脸云智付'},
-                    {codeUrl: img, name: '小猪收款'}
-                ],
+                webappData: [],
                 marginLeft: 0,
                 leftFlag: true,
                 firstY: '',
@@ -84,11 +79,8 @@
         components: {
             vuedraggable,
         },
-        mounted(){
-            httpRequest("/index/getUserInfo","GET")
-                .then(res=>{
-                    console.log(res)
-                })
+        mounted() {
+            this.getIndexInfo()
         },
         computed: {
             getWidth(useData) {
@@ -96,6 +88,20 @@
             }
         },
         methods: {
+            getIndexInfo() {
+                httpRequest("/managecenter/index/getUserInfo", "GET")
+                    .then(res => {
+                        return httpRequest("/managecenter/index/getSystemList","GET")
+
+                    })
+                    .then(res => {
+                        return httpRequest("/managecenter/index/getCommonQrcode", "GET")
+                    })
+                    .then(res=>{
+                        if(res.success){this.webappData = res.data;}
+                        return httpRequest("/managecenter/index/getCommonFunctions", "GET")
+                    })
+            },
             rightRowclick() {
                 if (this.getWidth / 2 + this.marginLeft < 0 && this.leftFlag) {
                     this.marginLeft = this.marginLeft + 220;

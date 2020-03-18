@@ -99,13 +99,13 @@
                 },
                 btnDisabled: false,
                 messageCont: "获取短信验证码",
-                codeImg: BASE_URL + '/login/getSmsValidateCode',
+                codeImg: BASE_URL + '/managecenter/login/getSmsValidateCode',
             }
         },
         methods: {
             //刷新验证码
             getCode() {
-                this.codeImg = BASE_URL + '/login/getValidateCode?' + Math.random()
+                this.codeImg = BASE_URL + '/managecenter/login/getValidateCode?' + Math.random()
             },
             //倒计时
             countDown(num) {
@@ -130,7 +130,7 @@
                 if (this.btnDisabled) {
                     return;
                 }
-                httpRequest("/login/forgetPassWordByValiCode", "POST", {
+                httpRequest("/managecenter/login/forgetPassWordByValiCode", "POST", {
                     phoneNum: this.findData.phoneNum,
                     smsValidateCode: this.findData.smsValidateCode
                 })
@@ -142,7 +142,7 @@
             },
             //验证手机号验证码
             validatePhone() {
-                httpRequest("/login/verifySmsCode", "POST", {
+                httpRequest("/managecenter/login/verifySmsCode", "POST", {
                     phoneNum: this.findData.phoneNum,
                     code: this.findData.code
                 })
@@ -170,7 +170,7 @@
                     password:this.passwordFrom.password,
                     code:this.findData.code,
                 }
-                httpRequest("/login/updatePassWordByPhone","POST",data)
+                httpRequest("/managecenter/login/updatePassWordByPhone","POST",data)
                     .then(res=>{
                         this.status = 2
                     })

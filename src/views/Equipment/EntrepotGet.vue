@@ -91,7 +91,7 @@
                 total: 1,
                 dialogTableVisible: false,
                 tableData: [],
-                listUrl: '/deviceManage/deviceInStorehouse/selectList',   //表格数据接口
+                listUrl: '/managecenter/deviceManage/deviceInStorehouse/selectList',   //表格数据接口
             }
         },
         mounted(){

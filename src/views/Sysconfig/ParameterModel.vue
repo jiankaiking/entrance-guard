@@ -36,9 +36,9 @@
                     paramDesc:'',
                 },
                 url:{
-                    info:'/paramManage/getParamInfo',
-                    edit:'/paramManage/updateParam',
-                    add:'/paramManage/addParam',
+                    info:'/managecenter/paramManage/getParamInfo',
+                    edit:'/managecenter/paramManage/updateParam',
+                    add:'/managecenter/paramManage/addParam',
 
                 },
             }

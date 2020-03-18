@@ -121,8 +121,8 @@
                 },
                 resetModel: false,
                 total: 0,
-                delUrl: '/staffManage/deleteStaffById',
-                listUrl: '/staffManage/getStaffInfoList',
+                delUrl: '/managecenter/staffManage/deleteStaffById',
+                listUrl: '/managecenter/staffManage/getStaffInfoList',
                 dialogTableVisible: false,
                 tableData: [],
                 addData: {}
@@ -161,7 +161,7 @@
             },
             //机构树形
             getOrganTree() {
-                httpRequest('/organManage/getOrganTree', 'GET', {organId: 1})
+                httpRequest('/managecenter/organManage/getOrganTree', 'GET', {organId: 1})
                     .then(res => {
                         this.originData.push(res.data)
                     })
@@ -172,9 +172,19 @@
                 this.getTableData()
             },
             //重置密码
+<<<<<<< HEAD
             setPassword() {
                 const that = this;
                 httpRequest('/staffManage/resetPassword', 'POST', this.resetInfo)
+=======
+            setPassword(r) {
+                let data = {
+                    loginUserId: r.loginUserId,
+                    staffPhone: r.loginPhone,
+                    password: this.staffpassword
+                }
+                httpRequest('/managecenter/staffManage/resetPassword', 'POST', data)
+>>>>>>> 8cb7df64dca2b527ea80c5ad209fb5f9281d2eeb
                     .then(res => {
                         if(res.success){
                                 that.$message.success("重置成功")
@@ -190,7 +200,7 @@
             },
             //停用启动员工
             changeStatus(id, status) {
-                httpRequest('/staffManage/offOrNoStaff', 'POST', {
+                httpRequest('/managecenter/staffManage/offOrNoStaff', 'POST', {
                     staffId: id,
                     userStatus: status == 0 ? 1 : '0',
                 })

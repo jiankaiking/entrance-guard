@@ -78,7 +78,7 @@
                 },
                 dateValue: '',
                 total: 0,
-                listUrl: '/log/getSysLoginLog',
+                listUrl: '/managecenter/log/getSysLoginLog',
                 tableData: []
             }
         },

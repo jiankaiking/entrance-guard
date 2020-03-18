@@ -1,12 +1,12 @@
 <template>
     <el-row :gutter="24">
-        <el-col :span="8">
-            <el-select v-model="province" @change="provinceSelect">
+        <el-col :span="type == 'city'?12:8">
+            <el-select v-model="province" @change="provinceSelect" placeholder="选择省">
                 <el-option v-for="(item,index) in provinceArr" :label="item.regionName" :value="item.regionId"></el-option>
             </el-select>
         </el-col>
-        <el-col :span="8">
-            <el-select v-model="city" @change="citySelect">
+        <el-col :span="type == 'city'?12:8">
+            <el-select v-model="city" @change="citySelect"  placeholder="选择市">
                 <el-option v-for="(item,index) in cityArr" :label="item.regionName" :value="item.regionId"></el-option>
             </el-select>
         </el-col>
@@ -45,7 +45,7 @@
             }
         },
         mounted() {
-            httpRequest("/sysRegion/getRegion", "GET", {regionId: this.rId})
+            httpRequest("/managecenter/sysRegion/getRegion", "GET", {regionId: this.rId})
                 .then(res => {
                     this.provinceArr = res.data;
                     this.province = ''
@@ -55,7 +55,7 @@
         },
         methods: {
             provinceSelect(e) {
-                httpRequest("/sysRegion/getRegion", "GET", {regionId: e})
+                httpRequest("/managecenter/sysRegion/getRegion", "GET", {regionId: e})
                     .then(res => {
                         this.cityArr = res.data;
                         this.city = ''
@@ -63,7 +63,7 @@
                     })
             },
             citySelect(e) {
-                httpRequest("/sysRegion/getRegion", "GET", {regionId: e})
+                httpRequest("/managecenter/sysRegion/getRegion", "GET", {regionId: e})
                     .then(res => {
                         if(this.type == "city"){
                             this.$emit("selectCode",e)

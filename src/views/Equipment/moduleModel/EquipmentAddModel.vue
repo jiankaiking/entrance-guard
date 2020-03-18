@@ -93,9 +93,9 @@
                     {deviceNumber: '', devicePrice: ''},
                 ],
                 url: {
-                    add: '/deviceManage/deviceType/insert',
-                    info: '/deviceManage/deviceType/findOne',
-                    edit: '/deviceManage/deviceType/update'
+                    add: '/managecenter/deviceManage/deviceType/insert',
+                    info: '/managecenter/deviceManage/deviceType/findOne',
+                    edit: '/managecenter/deviceManage/deviceType/update'
                 }
             }
         },

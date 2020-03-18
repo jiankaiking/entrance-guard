@@ -78,7 +78,7 @@
                 total: 1,
                 dialogTableVisible: false,
                 tableData: [],
-                listUrl: '/deviceManage/deviceOutbound/queryDeviceOutbound',   //表格数据接口
+                listUrl: '/managecenter/deviceManage/deviceOutbound/queryDeviceOutbound',   //表格数据接口
             }
         },
         mounted() {

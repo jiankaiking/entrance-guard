@@ -119,7 +119,7 @@
                 multipleSelection: [],
                 total: 1,
                 tableData: [{}],
-                listUrl: '/deviceManage/deviceApply/queryDeviceApply',   //表格数据接口
+                listUrl: '/managecenter/deviceManage/deviceApply/queryDeviceApply',   //表格数据接口
             }
         },
         components: {

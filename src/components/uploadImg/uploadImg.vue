@@ -21,7 +21,7 @@
         data() {
             return {
                 myHeaders: {Authorization: token},
-                uploadImg: BASE_URL + '/upload/uploadImg',
+                uploadImg: 'api' + '/managecenter/upload/uploadImg',
             }
         },
         methods: {
