@@ -32,7 +32,7 @@
         },
         methods:{
             getTypeArr(){
-                httpRequest("/sysDict/getDataListByType","GET",{dataType:this.type})
+                httpRequest("/managecenter/sysDict/getDataListByType","GET",{dataType:this.type})
                     .then(res=>{
                         this.typeArr = res.data;
                     })
