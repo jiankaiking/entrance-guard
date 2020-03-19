@@ -4,8 +4,20 @@
     </div>
 </template>
 <script>
+
     export default {
-        name: 'app'
+        name: 'app',
+        mounted() {
+            window.addEventListener('message', this.handleMessage);
+        },
+        methods: {
+            //接受token
+            handleMessage(event) {
+                const data = event.data
+                this.$store.state.token = data.token;
+                localStorage.setItem("token",data.token)
+            },
+        }
     };
 </script>
 
@@ -70,8 +82,10 @@
         padding-top: 12px;
 
     }
+
     .padding-catch .el-col {
-           padding: 0 !important; margin-right: 25px;
+        padding: 0 !important;
+        margin-right: 25px;
     }
 
     .searchData .el-form-item {
