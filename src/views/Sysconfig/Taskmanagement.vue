@@ -84,7 +84,7 @@
                     size:10
                 },
                 total:0,
-                listUrl:'/taskConfigManage/getTaskConfigList',
+                listUrl:'/managecenter/taskConfigManage/getTaskConfigList',
                 dialogTableVisible: false,
                 tableData: []
             }
@@ -107,23 +107,3 @@
     }
 </script>
 
-<style scoped lang="scss">
-
-
-
-
-    .tableData {
-        background: #ffffff;
-        box-shadow: 0px 1px 6px 4px rgba(242, 242, 242, 1);
-
-        .tableBox {
-            padding: 30px;
-            box-sizing: border-box;
-
-        }
-
-        .pagination {
-            padding-bottom: 30px;
-        }
-    }
-</style>
