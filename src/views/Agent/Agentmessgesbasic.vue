@@ -2,18 +2,13 @@
     <div class="agent-message">
         <el-form ref="form" :model="form" :rules="rules" label-width="100px">
             <div class="title">合作方式</div>
-            <el-form-item>
-                <el-radio-group v-model="form.cooperType">
-                    <el-radio label="0">代理商</el-radio>
-                    <el-radio label="1">合伙人</el-radio>
-                    <el-radio label="2">oem单</el-radio>
+            <el-radio-group style="margin:10px 0 20px 100px" v-model="form.cooperType" >
+                    <el-radio  v-for="(item,index) in dictionary.agent_cooper_type" :label="item.dataValue">{{item.dataCode}}</el-radio>
                 </el-radio-group>
-            </el-form-item>
-            <div class="title">运营人元</div>
+            <div class="title">基本信息</div>
             <el-form-item label="代理商类型">
-                <el-radio-group v-model="form.agentType">
-                    <el-radio :label="1">企业</el-radio>
-                    <el-radio :label="2">个人</el-radio>
+                <el-radio-group v-model="form.agentType" >
+                    <el-radio  v-for="(item,index) in dictionary.agent_type" :label="item.dataValue">{{item.dataCode}}</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-row :gutter="24">
@@ -37,22 +32,23 @@
                         <el-input v-model="form.agentContact"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="type?9:6">
                     <el-form-item label="地址" prop="agentArea">
-                        <el-input v-model="form.agentArea"></el-input>
+                        <div style="height: 38px;width:220px;padding-left:20px; border:1px solid #DCDFE6;color:#606266" v-show="!type" @click="addressFun">{{form.area}}</div>
+                        <CitySelect v-show="type" @selectCode="selectCode"></CitySelect>
                     </el-form-item>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="type?5:6">
                     <el-form-item label="详细地址" prop="agentAddr">
                         <el-input v-model="form.agentAddr"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="type?5:6">
                     <el-form-item label="微信账号">
                         <el-input v-model="form.wxAccount"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="type?5:6">
                     <el-form-item label="QQ账号">
                         <el-input v-model="form.qqAccount"></el-input>
                     </el-form-item>
@@ -81,8 +77,7 @@
             <div class="title">银行信息</div>
             <el-form-item label="账号类型">
                 <el-radio-group v-model="form.bankAccountType">
-                    <el-radio :label="1">对公</el-radio>
-                    <el-radio :label="2">个人</el-radio>
+                    <el-radio  v-for="(item,index) in dictionary.agent_account_type" :label="item.dataValue">{{item.dataCode}}</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-row :gutter="24">
@@ -120,42 +115,39 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="证件类型" prop="idCardNo">
-                        <el-input v-model="form.idCardNo"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
                     <el-form-item label="证件号码" prop="idCardNo">
                         <el-input v-model="form.idCardNo"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="11">
+                <el-col :span="12">
                     <el-form-item label="证件有效期">
-                        <el-col :span="11">
+                        <el-col :span="10">
                             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期"
                                             v-model="form.idCardStartDate" style="width: 100%;"></el-date-picker>
                         </el-col>
-                        <el-col :span="1">-</el-col>
-                        <el-col :span="11">
+                        <el-col class="line" :span="2">-</el-col>
+                        <el-col :span="10">
                             <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期"
-                                            :disabled="this.form.idCardEndDate == '9999-12-31'"
                                             v-model="form.idCardEndDate" style="width: 100%;"></el-date-picker>
+                        </el-col>
+                        <el-col :span="2">
+                            <el-checkbox @change="comBusExpDate">长期</el-checkbox>
                         </el-col>
                     </el-form-item>
                 </el-col>
-                <el-col :span="2">
-                    <el-checkbox @change="comBusExpDate">长期</el-checkbox>
-                </el-col>
+
             </el-row>
 
             <div class="title">身份证照片</div>
             <el-form-item>
                 <el-row :gutter="10">
                     <el-col :span="3">
-                        <UploadImg :imgUrl.sync="form.idCardFront"></UploadImg>
+                        <uploadImg :imgUrl.sync="form.idCardFront"></uploadImg>
+                        <span>身份证正面</span>
                     </el-col>
                     <el-col :span="3">
-                        <UploadImg :imgUrl.sync="form.idCardReverse"></UploadImg>
+                        <uploadImg :imgUrl.sync="form.idCardReverse"></uploadImg>
+                        <span>身份证反面</span>
                     </el-col>
                 </el-row>
             </el-form-item>
@@ -173,10 +165,13 @@
     import httpRequest from "../../api/api";
     import validate from "../../mixins/validate";
     import UploadImg from "../../components/uploadImg/uploadImg"
+    import CitySelect from "../../components/select/CitySelect";
     export default {
         name: "Agentmessgesbasic",
+        inject: ['parentTest'],
         data() {
             return {
+                type:true, 
                 form: {
                     cooperType: '',//合作方式
                     agentType: '',//代理商类型 个人 or 企业
@@ -208,6 +203,7 @@
                     comBusLicNo: '',//统一社会信用代码 / 营业执照号
                     comBusUrl: '',//营业执照照片
                 },
+                dictionary:{},
                 rules: {  //表单验证规则
                     cooperType: validate.noEmpty,
                     agentType: validate.noEmpty,
@@ -215,7 +211,6 @@
                     agentTel: validate.phone,
                     responsibleName: validate.noEmpty,
                     agentContact: validate.phone,
-                    agentArea: validate.noEmpty,
                     agentAddr: validate.noEmpty,
                     salesman: validate.noEmpty,
                     operator: validate.noEmpty,
@@ -230,19 +225,44 @@
             }
         },
         components:{
-            UploadImg
+            UploadImg,CitySelect
+        },
+         created() {
+            if(this.$route.query.type=='details'){
+                this.detailInfo(this.$route.query.agentId)
+                this.type=false
+            }
+            this.form = Object.assign(this.form, this.agentMessges)
         },
         mounted(){
-            if(this.$route.query.type != 'add'){
-                httpRequest('/sellerManagement/agentManage/getAgentBasicInfo', 'GET', {agentId: this.$route.query.agentId})
-                    .then(res=>{
-                        this.form = res.data;
-                    })
-            }
+            httpRequest('managecenter/sysDict/getSysDict/', 'get')
+                .then(res => {
+                    if (res.success) {
+                        this.dictionary=res.data
+                }
+            })
         },
         methods: {
+             addressFun(){
+                this.type=true;
+            },
             comBusExpDate(e){
                 e?this.form.idCardEndDate = '9999-12-31':this.form.idCardEndDate = ''
+            },
+            detailInfo(id){
+                httpRequest('sellerManagement/agentManage/getAgentBasicInfo', 'get', {
+                    agentId:id
+                })
+                    .then(res => {
+                        if (res.success) {
+                            this.form=res.data
+                            this.$router.push({query: {type: 'details', agentId: res.data.agentId,signId:res.data.signId}})
+                        }
+                })
+            },
+            // 地址联动
+            selectCode(e,name){
+                this.form.agentArea = e;
             },
             //正面照
             handleAvatarSuccess(res) {
@@ -254,12 +274,27 @@
             },
             //增加代理商 编辑代理商
             addAgentBasicInfo() {
-                console.log(this.form)
-                httpRequest('/sellerManagement/agentManage/editAgentBasicInfo', 'post', this.form)
+                let [url, msg] = ['', ''];
+                if (this.$route.query.type == 'details') {
+                    url = 'sellerManagement/agentManage/editAgentBasicInfo';
+                    msg = '修改'
+                } else {
+                    url = 'sellerManagement/agentManage/editAgentBasicInfo'
+                    // url = 'sellerManagement/agentManage/offOrNoAgent'
+                    msg = '添加'
+                }
+                httpRequest(url, 'POST', this.form)
                     .then(res => {
                         if (res.success) {
-                            this.$message.success(res.msg)
+                            this.$message({
+                                type: 'success',
+                                message: `${msg}成功`
+                            })
+                            if(this.$route.query.type=='add'){
+                                this.$router.push({query: {type: 'add', agentId: res.data}})
+                            }else{
                             this.$router.push('/agent')
+                            }
                         }
                     })
             },
@@ -269,7 +304,6 @@
             },
             //提交按钮  先表单验证 必填项 再提交操作
             onSubmit(fromName) {
-                console.log(this.form)
                 this.$refs[fromName].validate((valid) => {
                     console.log(valid)
                     if (valid) {
