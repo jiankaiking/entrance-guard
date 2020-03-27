@@ -68,7 +68,7 @@
         data() {
             return {
                 searchData: {
-                    deviceTypeId: '', //设备型号
+                    deviceTypeId: null, //设备型号
                     queryCriteria: '',  //查询条件
                     agent_pid: '',  //上级代理商id
                     size: 10,

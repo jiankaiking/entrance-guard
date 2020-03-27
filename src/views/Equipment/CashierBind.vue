@@ -10,13 +10,12 @@
                 </el-form-item>
                 <el-form-item label="绑定日期">
                     <el-date-picker
-                            v-model="searchData.searchTime"
-                            type="daterange"
+                            v-model="searchData.startTime"
+                            placeholder="选择绑定日期"
+                            type="date"
                             format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :default-time="['00:00:00', '23:59:59']">
+                            >
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
@@ -28,16 +27,16 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table :data="tableData" border empty-text style="width: 100%">
-                    <el-table-column align="center" prop="loginUserName"  label="序号"></el-table-column>
+                <el-table :data="tableData" v-loading="loading" border empty-text style="width: 100%">
+                    <el-table-column align="center" width="60" type="index" label="序号"></el-table-column>
                     <el-table-column align="center" prop="sellerName" label="商家"></el-table-column>
                     <el-table-column align="center" prop="storeName"  label="门店"></el-table-column>
                     <el-table-column align="center" prop="deviceNo" label="设备号"></el-table-column>
-                    <el-table-column align="center" prop="operResult" label="所属代理商"></el-table-column>
+                    <el-table-column align="center" prop="agentName" label="所属代理商"></el-table-column>
                     <el-table-column align="center" prop="isBind" label="状态"></el-table-column>
                     <el-table-column align="center" prop="bindTime" label="绑定日期"></el-table-column>
-                    <el-table-column align="center" prop="bindUserName" label="操作人"></el-table-column>
-                    <el-table-column align="center" prop="totalMoney" label="累计交易金额"></el-table-column>
+                    <el-table-column align="center" prop="operUserName" label="操作人"></el-table-column>
+                    <el-table-column align="center" prop="transactionAmount" label="累计交易金额"></el-table-column>
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button type="text" @click="headEdit">解绑</el-button>
@@ -77,10 +76,14 @@
                 searchData: {
                     name: '', //代理商、商户、门店
                     deviceNo: '', //设备号
-                    searchTime:'',//时间
+                    startTime:'',//时间
+                    agentId:'', //代理商ID
+                    sellerId:'',//商户ID
+                    storeId:'',//门店ID
                     page: 1,
                     size: 10
                 },
+                'agentArr':[],
                 dialogTableVisible: false,
                 value: '',
                 total: 0,
@@ -114,7 +117,13 @@
                         done();
                     }
                 })
-            }
+            },
+            getAgent(){
+                httpRequest("","GET")
+                    .then(res=>{
+                        this.agentArr = res.data;
+                    })
+            },
         },
         mounted() {
             // this.showTip()

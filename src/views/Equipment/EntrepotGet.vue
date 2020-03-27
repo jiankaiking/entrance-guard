@@ -19,7 +19,7 @@
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
                         <el-button @click="resetSearch" type="success" plain>重置</el-button>
                         <el-button @click="headAdd" type="success" plain>新增入库</el-button>
-                        <el-button @click="agentAdd" type="success" plain>导出</el-button>
+                        <el-button  type="success" plain>导出</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -81,7 +81,7 @@
         data() {
             return {
                 searchData: {
-                    deviceTypeId: '', //设备类型
+                    deviceTypeId: null, //设备类型
                     searchTime: '',  //查询条件
                     orderNum: '',  // 入库id
                     size: 10,

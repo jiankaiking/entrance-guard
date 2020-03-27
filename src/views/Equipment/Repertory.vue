@@ -36,7 +36,7 @@
             </div>
         </div>
         <el-dialog title="提示" align="center" :visible.sync="dialogTableVisible"
-                :lock-scroll="false" width="40%" :before-close="handleClose">
+                :lock-scroll="false" width="40%">
             <PresentModel :deviceTypeId="deviceTypeId" style="padding: 0 50px; box-sizing: border-box" v-if="cliIndex == 1"  @close="modalClose" @ok="modalFormOk"></PresentModel>
             <EntrepotAddModel ref="modalForm" v-if="cliIndex == 2" style="padding: 0 150px; box-sizing: border-box"  @close="modalClose" @ok="modalFormOk"></EntrepotAddModel>
         </el-dialog>
@@ -56,9 +56,9 @@
         data() {
             return {
                 searchData: {
-                    deviceTypeId: ''
+                    deviceTypeId: null
                 },
-                repertoryData: [{}],
+                repertoryData: [],
                 deviceType:[],
                 deviceTypeId:'',
                 dialogTableVisible:false,

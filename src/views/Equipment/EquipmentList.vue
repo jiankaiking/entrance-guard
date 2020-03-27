@@ -100,7 +100,7 @@
                     {name: "解除绑定申请", value: 5}
                 ],
                 dataInfo: {},
-                total: '',
+                total: 0,
                 dialogTableVisible: false,
                 tableData: [],
                 listUrl: '/managecenter/deviceManage/device/getDeviceListByStatus',   //表格数据接口
