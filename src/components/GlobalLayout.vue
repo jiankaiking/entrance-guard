@@ -22,7 +22,7 @@
                         children: []
                     },
                     {
-                        path: "/home/index",     //菜单项所对应的路由路径
+                        path: "/home/index1",     //菜单项所对应的路由路径
                         title: "代理商管理",     //菜单项名称
                         children: [
                             {
@@ -95,7 +95,7 @@
                         ],
                     },
                     {
-                        path: "/home/index1",
+                        path: "/home/index4",
                         title: "结算管理",
                         children: [
                             {

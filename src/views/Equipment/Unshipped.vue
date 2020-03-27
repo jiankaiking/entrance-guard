@@ -4,31 +4,56 @@
             <div class="searchData">
                 <el-form ref="form" :model="searchData" label-width="80px">
                     <el-form-item label="订单状态">
-                        <el-select v-model="searchData.applyStatus" placeholder="选择省">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                        <el-select v-model="searchData.applyStatus" placeholder="选择订单状态">
+                            <el-option
+                                        v-for="item in applyList"
+                                        :key="item.dataValue"
+                                        :label="item.dataCode"
+                                        :value="item.dataValue">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="支付类型">
-                        <el-select v-model="searchData.agentArea" placeholder="选择市">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                        <el-select v-model="searchData.payType" placeholder="支付方式">
+                            <el-option
+                                        v-for="item in payList"
+                                        :key="item.dataValue"
+                                        :label="item.dataCode"
+                                        :value="item.dataValue">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="申请时间">
-                        <el-select v-model="searchData.agentArea" placeholder="选择市">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
+                        <el-date-picker
+                            v-model="searchData.searchTime"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            format='yyyy-MM-dd'
+                            @change="timeChage"
+                            value-format="yyyy-MM-dd"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="pickerOptions">
+                            </el-date-picker>
                     </el-form-item>
                     <el-form-item label="申请人">
-                        <el-select v-model="searchData.agentArea" placeholder="选择市">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                        <el-input type="text" v-model="searchData.operation">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="代理商名称" label-width="100px">
+                        <el-select v-model="searchData.agentId" placeholder="请选择代理商">
+                                <el-option
+                                        v-for="item in selectFactoryList"
+                                        :key="item"
+                                        :value="item">
+                                {{item}}
+                                </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label-width="20px">
-                        <el-input placeholder="代理商名称/联系人/联系方式" v-model="searchData.search"></el-input>
+                    <el-form-item label="订单号">
+                        <el-input type="text" placeholder="请输入订单号" v-model="searchData.applyOrderNum"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
@@ -86,8 +111,7 @@
                    :visible.sync="modelFlag" :lock-scroll="false">
             <MessagesBox></MessagesBox>
         </el-dialog>
-
-        <ShippedAddModel ref="modalForm" class="overspread-model" v-if="parentTest.dialogTableVisible"
+        <ShippedAddModel ref="modalForm" class="overspread-model" :payList='payList' :selectFactoryList="selectFactoryList" v-if="parentTest.dialogTableVisible"
                          @backrank="backrank"></ShippedAddModel>
     </div>
 </template>
@@ -105,20 +129,51 @@
         data() {
             return {
                 searchData: {
-                    search: '', //查询条件，代理商、订单号
                     applyStatus: '',  //申请状态
-                    payType: '',  //支付类型
-                    searchTime: '',//查询时间
+                    payType: 0,  //支付类型
+                    startTime:'',
+                    endTime:'',
                     operation: '',//申请人
                     size: 10,
-                    page: 1
+                    applyOrderNum:'',
+                    page: 1,
+                    searchTime:[],
                 },
+                selectFactoryList:[],
+                 pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                        picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                    },
                 dialogTitle: '',
                 modelFlag: false,
                 dialogTableVisible: false,
                 multipleSelection: [],
                 total: 1,
                 tableData: [{}],
+                payList:[],
                 listUrl: '/managecenter/deviceManage/deviceApply/queryDeviceApply',   //表格数据接口
             }
         },
@@ -130,13 +185,28 @@
         beforeDestroy() {
             this.parentTest.hiddDialogTableVisible()
         },
+        mounted(){
+            httpRequest("managecenter/sysDict/getSysDict", "GET")
+                    .then(res => {
+                        this.payList = res.data.device_pay_channel;
+                        this.applyList=res.data.device_apply_status;
+            })
+            httpRequest("managecenter/deviceManage/deviceType/selectFactoryList", "GET")
+                    .then(res => {
+                        this.selectFactoryList = res.data;
+                    })
+        },
         methods: {
             //确认发货
             trueDelivery() {
-
+               this.modelFlag=true
             },
             modelMessage() {
 
+            },
+            timeChage(){
+                this.searchData.startTime=this.searchData.searchTime[0]
+                this.searchData.endTime=this.searchData.searchTime[1]
             },
             //完款
             acccc() {
