@@ -84,7 +84,7 @@
             }
         },
         mounted() {
-
+this.getCode()
         },
         methods: {
             //登录按钮  表单验证，验证成功 action提交

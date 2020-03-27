@@ -31,8 +31,9 @@ export const myMixins = {
                 .then((res) => {
                    // console.log(res)
                     if (res.code == 200) {
-                        this.total = res.data.total;
-                        this.tableData = res.data.records?res.data.records:res.data.rows;
+                        this.total = res.data.total?res.data.total:res.data.totalCount
+
+                        this.tableData = res.data.records?res.data.records:res.data.list;
                     }
                 })
                 .finally(res=>{
@@ -87,6 +88,7 @@ export const myMixins = {
         resetSearch() {
             Object.keys(this.searchData).forEach(key => this.searchData[key] = '');
             this.searchData.size = 10;
+            this.searchData.currentPage = 1;
             this.searchData.page = 1;
             this.getTableData()
         },

@@ -7,17 +7,17 @@
 
     export default {
         name: 'app',
-        mounted() {
-            window.addEventListener('message', this.handleMessage);
-        },
-        methods: {
-            //接受token
-            handleMessage(event) {
-                const data = event.data
-                this.$store.state.token = data.token;
-                localStorage.setItem("token",data.token)
-            },
-        }
+        // mounted() {
+        //     window.addEventListener('message', this.handleMessage);
+        // },
+        // methods: {
+        //     //接受token
+        //     handleMessage(event) {
+        //         const data = event.data
+        //         this.$store.state.token = data.token;
+        //         localStorage.setItem("token",data.token)
+        //     },
+        // }
     };
 </script>
 

@@ -14,7 +14,7 @@ import router from "../router";
 
 
 const service = axios.create({
-   // baseURL: '/sellerManagement',   //请求api
+  //  baseURL: 'http://192.168.0.110:8701',   //请求api
     baseURL: '/api',   //请求api
 
     timeout: 5000,     //请求超时时间
@@ -31,7 +31,6 @@ service.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
     return config;
 }, error => {
-
     Promise.reject(error)
 });
 
@@ -50,11 +49,12 @@ service.interceptors.response.use(
                         router.push({path:"/login",query:{redirect:hisUrl}})
                     }
                 });
+                return ;
             }
             Message.error(response.data.msg)
         }
 
-        return response.data;
+        return response.data?response.data:response
     },
     error => {
         //响应错误提示

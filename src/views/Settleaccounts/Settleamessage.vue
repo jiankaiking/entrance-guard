@@ -5,17 +5,17 @@
             <el-row :gutter="24">
                 <el-col :span="6">
                     <el-form-item label="代理商名称">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.agentInfo.agentName"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="联系人">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.agentInfo.responsibleName"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="代理区域">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.agentInfo.area"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -23,41 +23,41 @@
             <el-row :gutter="24">
                 <el-col :span="6">
                     <el-form-item label="佣金结算金额">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.agentInfo.area"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="佣金结算时间">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.agentInfo.area"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="24">
                 <el-col :span="6">
                     <el-form-item label="设备补贴结算金额">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.settlementInfo.equipmentAmount"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="设备补贴结算时间">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.settlementInfo.endTime"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="活动补贴结算金额">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.settlementInfo.activityAmount"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="活动补贴结算时间">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.settlementInfo.activityAmount"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="6">
-                    <el-form-item label="活动补贴结算时间">
-                        <el-input></el-input>
+                    <el-form-item label="应付总金额">
+                        <el-input :value="settInfo.settlementInfo.totalAmount"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -65,74 +65,115 @@
             <el-row :gutter="24">
                 <el-col :span="6">
                     <el-form-item label="申请时间">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.applyInfo.applyTime"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="快递单号">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.applyInfo.courierNumber"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="收款人">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.applyInfo.payee"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="收款银行">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.applyInfo.payeeBank"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="6">
                     <el-form-item label="收款账户">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.applyInfo.payeeAccount"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="6">
                     <el-form-item label="关于发票">
-                        <el-input></el-input>
+                        <el-input :value="settInfo.applyInfo.invoiceStatus"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item>
-                <el-row :gutter="10">
+            <el-row :gutter="10">
+                <el-form-item>
                     <el-col :span="6">
-                        <el-upload
-                                class="avatar-uploader"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload">
-                            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                            <i v-else class="el-icon-plus avatar-uploader-icon"></i><span
-                                class="upload-text">上传图片</span>
-                        </el-upload>
+                        <uploadImg :imgUrl="settInfo.applyInfo.invoiceUrl"></uploadImg>
                     </el-col>
-                </el-row>
-            </el-form-item>
-            <div class="instructions">
-                <p><label>应结金额:</label>若有发票，则应结金额 = 申请结算金额</p>
-                <p>若无发票，则应结金额 = 申请结算金额*(100 - 16%)</p>
-                <p>无发票，需扣除16个税点</p>
-            </div>
-            <el-form-item>
-                <div style="margin: 130px auto 0; width: 500px;">
-                    <el-button type="info">返回</el-button>
-                    <el-button type="primary" style="margin:0 90px">驳回</el-button>
-                    <el-button type="success">结算1</el-button>
+                </el-form-item>
+            </el-row>
+            <el-row>
+                <div class="instructions">
+                    <p><label>应结金额:</label>若有发票，则应结金额 = 申请结算金额</p>
+                    <p>若无发票，则应结金额 = 申请结算金额*(100 - 16%)</p>
+                    <p>无发票，需扣除16个税点</p>
                 </div>
-            </el-form-item>
+            </el-row>
+            <el-row>
+                <el-form-item>
+                    <div style="padding: 130px 0 0 0; width: 500px;">
+                        <el-button type="info" plain @click="back">返回</el-button>
+                        <el-button
+                                @click="settleAccounts(settInfo.settlementInfo,2)"
+                                type="primary" plain style="margin:0 90px"
+                                v-if="settInfo.settlementInfo.status == 1">驳回
+                        </el-button>
+                        <el-button type="success" plain
+                                   @click="settleAccounts(settInfo.settlementInfo,3)"
+                                   v-if="settInfo.settlementInfo.status == 1">结算
+                        </el-button>
+                    </div>
+                </el-form-item>
+            </el-row>
         </el-form>
     </div>
 </template>
 
 <script>
+    import httpRequest from "../../api/api";
+    import uploadImg from "../../components/uploadImg/uploadImg";
+
     export default {
-        name: "Settleamessage"
+        name: "Settleamessage",
+        data() {
+            return {
+                settInfo: {
+                    agentInfo:{},
+                    applyInfo:{},
+                    settlementInfo:{}
+                }
+            }
+        },
+        components: {
+            uploadImg
+        },
+        mounted() {
+            this.getInfo()
+        },
+
+        methods: {
+            getInfo() {
+                let id = this.$route.query.id;
+                httpRequest("/managecenter/center/settlement/manage/settlement/detail", "GET", {id})
+                    .then(res => {
+                        this.settInfo = res.data;
+                    })
+            },
+            settleAccounts(row, status) {
+                httpRequest("/managecenter/center/settlement/manage/settlement", 'POST', {id: row.id, status: status})
+                    .then(res => {
+                        if (res.success) {
+                            this.getInfo()
+                        }
+                    })
+            },
+            back(){
+                this.$router.go(-1)
+            },
+        }
     }
 </script>
 
@@ -146,13 +187,16 @@
         background: #f8f8f8;
         border-radius: 8px;
     }
+
     .instructions p {
         color: #333333;
         font-size: 14px;
     }
+
     .instructions p:first-child {
         position: relative;
     }
+
     .instructions p label {
         position: absolute;
         left: -65px;
@@ -189,6 +233,7 @@
         box-shadow: 0px 1px 6px 4px #f2f2f2;
         border-radius: 8px;
     }
+
     .settleamessage-container .title {
         position: relative;
         color: #000000;
@@ -197,6 +242,7 @@
         padding-left: 30px;
         margin-bottom: 25px;
     }
+
     .settleamessage-container .title:before {
         position: absolute;
         content: "";

@@ -1,15 +1,5 @@
 <template>
     <div class="sidebar-container">
-        <el-dropdown>
-            <div  style="width: 225px; height: 50px; text-align: center; line-height: 50px">
-                机电
-            </div>
-            <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item  @click.native="jumpSystem(item.systemId)" v-for="(item,index) in systemArr">
-                    <span style="padding: 25px; box-sizing: border-box;">{{item.systemName}}</span>
-                </el-dropdown-item>
-            </el-dropdown-menu>
-        </el-dropdown>
         <el-menu
                 :default-active="this.$route.path"
                 unique-opened
@@ -17,7 +7,6 @@
                 mode="vertical"
                 background-color="#fff"
                 text-color="#666666"
-                @select="muneselect"
                 active-text-color="red">
             <SidebarItem v-for="menu in menuList" :key="menu.path" :item="menu"/>
         </el-menu>
@@ -37,12 +26,9 @@
             }
         },
         methods:{
-            muneselect(key,keypath,z){
-           //     console.log(key,keypath,z)
-            }
         },
         computed:{
-            ...mapState(["systemArr"])
+
         }
     }
 </script>
