@@ -13,7 +13,13 @@
                     <el-table-column align="center" prop="sellerCount" label="商户数量"></el-table-column>
                     <el-table-column align="center" prop="address" label="状态">
                         <template slot-scope="scope">
-                            <el-button type="text">{{scope.row.sonAgentStatus == 0?'停止':'启动'}}</el-button>
+                            <el-button type="text"><el-switch
+                                        :active-value="1"
+                                        :inactive-value="0"
+                                        :value="parseInt(scope.row.agentStatus)"
+                                        active-text="正常"
+                                        inactive-text="停用">
+                                </el-switch></el-button>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" label="操作">
@@ -62,7 +68,7 @@
 
             goInfo(row){
 
-                 this.$router.push({path: '/agentmessges', query: {type: 'children', agentId: row.agentId}})
+                 this.$router.push({path: '/agentmessges', query: {type: 'details', agentId: row.agentId}})
             },
         }
 

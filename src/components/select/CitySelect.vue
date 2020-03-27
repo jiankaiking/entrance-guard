@@ -1,18 +1,18 @@
 <template>
     <el-row :gutter="24">
         <el-col :span="type == 'city'?12:8">
-            <el-select v-model="province" @change="provinceSelect" placeholder="选择省">
-                <el-option v-for="(item,index) in provinceArr" :label="item.regionName" :value="item.regionId"></el-option>
+            <el-select v-model="province" @change="provinceSelect">
+                <el-option v-for="(item,index) in provinceArr" :label="item.regionLongName" :value="item.regionLongCode"></el-option>
             </el-select>
         </el-col>
         <el-col :span="type == 'city'?12:8">
-            <el-select v-model="city" @change="citySelect"  placeholder="选择市">
-                <el-option v-for="(item,index) in cityArr" :label="item.regionName" :value="item.regionId"></el-option>
+            <el-select v-model="city" @change="citySelect">
+                <el-option v-for="(item,index) in cityArr" :label="item.regionName" :value="item.regionLongCode+'/'+item.regionName"></el-option>
             </el-select>
         </el-col>
         <el-col :span="7" v-if="type != 'city'">
             <el-select v-model="region" @change="selectCode">
-                <el-option v-for="(item,index) in regionArr" :label="item.regionName" :value="item.regionId"></el-option>
+                <el-option v-for="(item,index) in regionArr" :label="item.regionName" :value="item.regionLongCode+'/'+item.regionName"></el-option>
             </el-select>
         </el-col>
     </el-row>
@@ -41,21 +41,27 @@
                 region:{},
                 cityArr: [],
                 regionArr: [],
-                rId: 1  // 查询id
+                rId: 0  // 查询id
             }
         },
         mounted() {
-            httpRequest("/managecenter/sysRegion/getRegion", "GET", {regionId: this.rId})
+             this.initial()
+        },
+        methods: {
+            initial(){
+                this.provinceArr=[],
+                this.cityArr=[],
+                this.regionArr=[],
+                httpRequest("managecenter/sysRegion/getRegionByCode", "GET", {regionLongCode: this.rId})
                 .then(res => {
                     this.provinceArr = res.data;
                     this.province = ''
                     this.city = ''
                     this.region = ''
                 })
-        },
-        methods: {
+            },
             provinceSelect(e) {
-                httpRequest("/managecenter/sysRegion/getRegion", "GET", {regionId: e})
+                httpRequest("managecenter/sysRegion/getRegionByCode", "GET", {regionLongCode: e})
                     .then(res => {
                         this.cityArr = res.data;
                         this.city = ''
@@ -63,19 +69,18 @@
                     })
             },
             citySelect(e) {
-                httpRequest("/managecenter/sysRegion/getRegion", "GET", {regionId: e})
+                httpRequest("managecenter/sysRegion/getRegionByCode", "GET", {regionLongCode: e.split('/')[0]})
                     .then(res => {
                         if(this.type == "city"){
-                            this.$emit("selectCode",e)
+                            this.$emit("selectCode",e.split('/')[0],e.split('/')[1]=='市辖区'?this.city.split('/')[1]:e.split('/')[1])
                         }else{
                             this.regionArr = res.data;
                         }
                         this.region = ''
                     })
             },
-            selectCode(e){
-
-                this.$emit("selectCode",e)
+            selectCode(e,name){
+                this.$emit("selectCode",e.split('/')[0],e.split('/')[1]=='市辖区'?this.city.split('/')[1]:e.split('/')[1])
             },
         }
     }
