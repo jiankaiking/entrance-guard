@@ -26,8 +26,8 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="searchClick">搜索</el-button>
-                    <el-button @click="resetSearch">重置</el-button>
+                    <el-button type="primary" plain @click="searchClick">搜索</el-button>
+                    <el-button @click="resetSearch" plain>重置</el-button>
                 </el-form-item>
             </el-form>
         </div>

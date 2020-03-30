@@ -2,21 +2,44 @@
     <div class="main-contenner">
         <div class="searchData">
             <el-form ref="form" :model="searchData" label-width="80px">
-                <el-form-item label="查询" style="width: 220px">
-                    <el-input v-model="searchData.name" placeholder="请输入商家/门店/代理商名称"></el-input>
+                <el-form-item label-width="20px">
+                         <el-select v-model="searchData.sellerId" @change="AgentChang" placeholder="请选择商家名称">
+                         <el-option v-for="item in selectSellerList" 
+                         :key="item.sellerId" 
+                         :label="item.mercNm"
+                         :value="item.sellerId">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label-width="20px" v-if="StoreListStatus">
+                         <el-select v-model="searchData.storeId" placeholder="请选择门店名称">
+                         <el-option v-for="item in selectStoreList" 
+                         :key="item.storeId" 
+                         :label="item.storeName"
+                         :value="item.storeId">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item  label-width="20px">
+                         <el-select v-model="searchData.agentId" placeholder="请选择代理商名称">
+                         <el-option v-for="item in selectAgentList" 
+                         :key="item.agentId" 
+                         :label="item.agentName"
+                         :value="item.agentId">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label-width="20px">
                     <el-input v-model="searchData.deviceNo" placeholder="请输入设备号"></el-input>
                 </el-form-item>
                 <el-form-item label="绑定日期">
                     <el-date-picker
-                            v-model="searchData.searchTime"
-                            type="daterange"
+                            v-model="searchData.startTime"
+                            placeholder="选择绑定日期"
+                            type="date"
                             format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :default-time="['00:00:00', '23:59:59']">
+                            >
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
@@ -28,19 +51,19 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table :data="tableData" border empty-text style="width: 100%">
-                    <el-table-column align="center" prop="loginUserName"  label="序号"></el-table-column>
+                <el-table :data="tableData" v-loading="loading" border empty-text style="width: 100%">
+                    <el-table-column align="center" width="60" type="index" label="序号"></el-table-column>
                     <el-table-column align="center" prop="sellerName" label="商家"></el-table-column>
                     <el-table-column align="center" prop="storeName"  label="门店"></el-table-column>
                     <el-table-column align="center" prop="deviceNo" label="设备号"></el-table-column>
-                    <el-table-column align="center" prop="operResult" label="所属代理商"></el-table-column>
+                    <el-table-column align="center" prop="agentName" label="所属代理商"></el-table-column>
                     <el-table-column align="center" prop="isBind" label="状态"></el-table-column>
                     <el-table-column align="center" prop="bindTime" label="绑定日期"></el-table-column>
-                    <el-table-column align="center" prop="bindUserName" label="操作人"></el-table-column>
-                    <el-table-column align="center" prop="totalMoney" label="累计交易金额"></el-table-column>
+                    <el-table-column align="center" prop="operUserName" label="操作人"></el-table-column>
+                    <el-table-column align="center" prop="transactionAmount" label="累计交易金额"></el-table-column>
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                            <el-button type="text" @click="headEdit">解绑</el-button>
+                            <el-button type="text" @click="headEdit(scope.row)">{{scope.row.isBind=='已绑定'?'解绑':'绑定'}}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -58,7 +81,7 @@
             </div>
         </div>
         <el-dialog align="center" width="500px" :visible.sync="dialogTableVisible" :lock-scroll="false">
-            <CashierBindModel></CashierBindModel>
+            <CashierBindModel ref="modalForm" @close="modalClose" @ok="modalFormOk"></CashierBindModel>
         </el-dialog>
     </div>
 </template>
@@ -77,15 +100,23 @@
                 searchData: {
                     name: '', //代理商、商户、门店
                     deviceNo: '', //设备号
-                    searchTime:'',//时间
+                    startTime:'',//时间
+                    agentId:'', //代理商ID
+                    sellerId:'',//商户ID
+                    storeId:'',//门店ID
                     page: 1,
                     size: 10
                 },
+                agentArr:[],
                 dialogTableVisible: false,
                 value: '',
                 total: 0,
                 listUrl: '/managecenter/deviceManage/deviceYrBind/cashierList',
-                tableData: [{}]
+                tableData: [{}],
+                selectAgentList:[],///代理商
+                selectSellerList:[],///商家
+                selectStoreList:[],///门店
+                StoreListStatus:false,
             }
         },
         components: {
@@ -114,9 +145,30 @@
                         done();
                     }
                 })
+            },
+            getAgent(){
+                httpRequest("","GET")
+                    .then(res=>{
+                        this.agentArr = res.data;
+                    })
+            },
+            AgentChang(e){
+                httpRequest("managecenter/deviceManage/device/selectStoreList", "GET",{sellerId:e})
+                    .then(res => {
+                        this.selectStoreList = res.data;
+                        this.StoreListStatus=true
+                })
             }
         },
         mounted() {
+            httpRequest("managecenter/deviceManage/device/selectAgentList", "GET")
+                    .then(res => {
+                        this.selectAgentList = res.data;
+            })
+            httpRequest("managecenter/deviceManage/device/selectSellerList", "GET")
+                    .then(res => {
+                        this.selectSellerList = res.data;
+            })
             // this.showTip()
         }
     }

@@ -7,10 +7,19 @@
                         <EquimentSelect :deviceTypeId.sync="searchData.deviceTypeId"></EquimentSelect>
                     </el-form-item>
                     <el-form-item label="发货时间">
-                        <el-select v-model="searchData.searchTime" placeholder="选择市">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
+                        <el-date-picker
+                            v-model="searchTime"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            format='yyyy-MM-dd'
+                            @change="timeChage"
+                            value-format="yyyy-MM-dd"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="pickerOptions">
+                            </el-date-picker>
                     </el-form-item>
                     <el-form-item label-width="20px">
                         <el-input placeholder="入库单号" v-model="searchData.orderNum"></el-input>
@@ -19,7 +28,7 @@
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
                         <el-button @click="resetSearch" type="success" plain>重置</el-button>
                         <el-button @click="headAdd" type="success" plain>新增入库</el-button>
-                        <el-button @click="agentAdd" type="success" plain>导出</el-button>
+                        <el-button  type="success" plain>导出</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -81,16 +90,45 @@
         data() {
             return {
                 searchData: {
-                    deviceTypeId: '', //设备类型
-                    searchTime: '',  //查询条件
+                    deviceTypeId: null, //设备类型
+                    startTime:'',
+                    endTime:'',  //查询条件
                     orderNum: '',  // 入库id
                     size: 10,
                     page: 1
                 },
+                searchTime:[],
                 deviceType:[],
                 total: 1,
                 dialogTableVisible: false,
                 tableData: [],
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                        picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
                 listUrl: '/managecenter/deviceManage/deviceInStorehouse/selectList',   //表格数据接口
             }
         },
@@ -98,6 +136,12 @@
             if(this.$route.query.deviceTypeId != undefined){
                 this.searchData.deviceTypeId = this.$route.query.deviceTypeId
             }
+        },
+        methods:{
+            timeChage(){
+                this.searchData.startTime=this.searchTime[0]
+                this.searchData.endTime=this.searchTime[1]
+            },
         },
         components:{
             EquimentSelect,

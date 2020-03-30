@@ -1,6 +1,6 @@
 <template>
     <el-select v-model="deviceTypeId" placeholder="选择设备类型" :disabled="disabled" @change="selectType">
-        <el-option v-for="(item,index) in deviceType"
+        <el-option v-for="item in deviceType"
                    :label="item.deviceTypeCode"
                    :key="item.deviceTypeId"
                    :value="item.deviceTypeId">
@@ -26,6 +26,7 @@
         data(){
             return{
                 deviceType:[],
+                id:'',
             }
         },
         mounted(){

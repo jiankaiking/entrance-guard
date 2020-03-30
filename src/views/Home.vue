@@ -49,6 +49,7 @@
 <script>
     import img from '@/assets/images/active.jpeg'
     import httpRequest from "../api/api";
+    import {mapActions} from 'vuex'
     import vuedraggable from 'vuedraggable'
 
     export default {
@@ -79,27 +80,31 @@
         components: {
             vuedraggable,
         },
-        mounted() {
-            this.getIndexInfo()
-        },
         computed: {
             getWidth(useData) {
                 return 220 * this.useData.length;
             }
         },
+        mounted() {
+            // this.getIndexInfo()
+
+
+        },
         methods: {
+
             getIndexInfo() {
                 httpRequest("/managecenter/index/getUserInfo", "GET")
                     .then(res => {
-                        return httpRequest("/managecenter/index/getSystemList","GET")
-
-                    })
-                    .then(res => {
                         return httpRequest("/managecenter/index/getCommonQrcode", "GET")
                     })
+                    .then(res => {
+                        if (res.success) {
+                            this.webappData = res.data;
+                        }
+                        return httpRequest("/managecenter/index/getMenuTreeByUser", "GET")
+                    })
                     .then(res=>{
-                        if(res.success){this.webappData = res.data;}
-                        return httpRequest("/managecenter/index/getCommonFunctions", "GET")
+                        console.log(res)
                     })
             },
             rightRowclick() {

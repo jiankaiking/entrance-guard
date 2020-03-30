@@ -39,7 +39,7 @@
             </el-form-item>
             <p class="text"><i class="el-icon-warning-outline"></i>建议使用字母、数字和符号两种以上的组合，8-20个字符</p>
             <p class="title">再次输入新密码</p>
-                <el-form-item prop="password" prop="passwordTrue">
+                <el-form-item  prop="passwordTrue">
                     <el-input placeholder="请输入密码" v-model="passwordFrom.passwordTrue">
                         <i slot="suffix" class="el-icon-view"></i>
                     </el-input>

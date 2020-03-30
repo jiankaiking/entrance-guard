@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "echarts": "^4.7.0",
     "el-tree-transfer": "^2.2.6",
     "element-ui": "^2.4.5",
     "vue": "^2.6.11",
@@ -23,8 +24,8 @@
     "@vue/cli-plugin-router": "^4.2.0",
     "@vue/cli-plugin-vuex": "^4.2.0",
     "@vue/cli-service": "^4.2.0",
-    "node-sass": "^4.13.1",
-    "sass-loader": "^8.0.2",
+    "node-sass": "^4.9.2",
+    "sass-loader": "^7.0.3",
     "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.6.11"
   },

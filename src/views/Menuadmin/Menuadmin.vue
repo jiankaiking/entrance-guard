@@ -13,9 +13,9 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="getMenuList">搜索</el-button>
-                    <el-button type="primary" @click="addMenu">新增</el-button>
-                    <el-button @click="resetSearch">重置</el-button>
+                    <el-button type="primary" plain @click="getMenuList">搜索</el-button>
+                    <el-button type="success" plain @click="addMenu">新增</el-button>
+                    <el-button plain @click="resetSearch">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>

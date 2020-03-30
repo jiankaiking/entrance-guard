@@ -211,7 +211,8 @@
         width: 22%;
         background: #ffffff;
         height: 100%;
-
+        box-shadow:0px 1px 6px 4px rgba(242,242,242,1);
+        border-radius:8px;
         padding: 20px 33px;
         box-sizing: border-box;
     }

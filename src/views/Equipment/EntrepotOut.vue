@@ -6,14 +6,44 @@
                     <el-form-item label="设备型号">
                         <EquimentSelect :deviceTypeId.sync="searchData.deviceTypeId"></EquimentSelect>
                     </el-form-item>
-                    <el-form-item>
-                        <el-select v-model="searchData.agentArea" placeholder="支付方式">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                    <el-form-item label="支付方式">
+                        <el-select v-model="searchData.payChannel">
+                                <el-option v-for="item in device_pay_channel" 
+                                :key="item.dataValue" 
+                                :label="item.dataCode" 
+                                :value="item.dataValue">
+                                </el-option>
+                            </el-select>
+                    </el-form-item>
+                    <el-form-item label="发货时间">
+                        <el-date-picker
+                            v-model="searchTime"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            format='yyyy-MM-dd'
+                            @change="timeChage"
+                            value-format="yyyy-MM-dd"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="pickerOptions">
+                            </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="出库人">
+                        <el-input v-model="searchData.consignor" placeholder="请输入快递单号"></el-input>
+                    </el-form-item>
+                    <el-form-item label="代理商名称" label-width="100px">
+                    <el-select v-model="searchData.agentId" >
+                            <el-option v-for="item in selectAgentList" 
+                            :key="item.agentId" 
+                            :label="item.agentName"
+                            :value="item.agentId">
+                            </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="发货人">
-                        <el-input placeholder="代理商名称/联系人/联系方式" v-model="searchData.queryCriteria"></el-input>
+                    <el-form-item label-width="20px" >
+                        <el-input v-model="searchData.search" placeholder="请输入快递单号"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
@@ -32,7 +62,7 @@
                     <el-table-column align="center" prop="orderAmount" label="总价"></el-table-column>
                     <el-table-column align="center" prop="payChannelName" label="支付方式"></el-table-column>
                     <el-table-column align="center" prop="sendTime" label="发货时间"></el-table-column>
-                    <el-table-column align="center" prop="sellerCount" label="收货人"></el-table-column>
+                    <el-table-column align="center" prop="consignee" label="收货人"></el-table-column>
                     <el-table-column align="center" prop="consignor" label="发货人"></el-table-column>
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
@@ -68,25 +98,71 @@
         data() {
             return {
                 searchData: {
-                    deviceTypeId: '', //设备型号
-                    queryCriteria: '',  //查询条件
-                    agent_pid: '',  //上级代理商id
+                    deviceTypeId: null, //设备型号
+                    startTime:'',
+                    endTime:'',
+                    consignor:'', //发货人
+                    payChannel:'',//支付方式
+                    agentId: '',  //代理商id
+                    search:'',
                     size: 10,
                     page: 1
                 },
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                        picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                    },
                 deviceType:[],
+                searchTime:[],
                 total: 1,
+                device_pay_channel:[], ///支付方式
+                selectAgentList:[],
                 dialogTableVisible: false,
                 tableData: [],
                 listUrl: '/managecenter/deviceManage/deviceOutbound/queryDeviceOutbound',   //表格数据接口
             }
         },
         mounted() {
+            httpRequest("managecenter/sysDict/getSysDict", "GET")
+                    .then(res => {
+                        this.device_pay_channel = res.data.device_pay_channel;
+            })
+             httpRequest("managecenter/deviceManage/device/selectAgentList", "GET")
+                    .then(res => {
+                        this.selectAgentList = res.data;
+            })
             if(this.$route.query.deviceTypeId != undefined){
                 this.searchData.deviceTypeId = this.$route.query.deviceTypeId
             }
         },
         methods:{
+             timeChage(){
+                this.searchData.startTime=this.searchTime[0]
+                this.searchData.endTime=this.searchTime[1]
+            },
             backrank(){
                 this.dialogTableVisible = false;
             },

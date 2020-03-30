@@ -20,14 +20,7 @@
                     <el-row>
                         <el-col :span="4">
                     <el-form-item label="设备型号">
-                        <el-select v-model="searchData.deviceTypeId" @change="changeDeviceType" placeholder="选择设备型号">
-                            <el-option
-                                    v-for="item in deviceTypeList"
-                                    :key="item.deviceTypeId"
-                                    :label="item.deviceTypeCode"
-                                    :value="item.deviceTypeId">
-                            </el-option>
-                        </el-select>
+                        <EquimentSelect  :deviceTypeId.sync="searchData.deviceTypeId"></EquimentSelect>
                     </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -56,17 +49,16 @@
                                         :value="item.deviceTypeId">
                                 </el-option>
                         </el-select>
-                        <el-form-item>
+                        </el-form-item>
                     </el-col>
                     <el-col :span="3" >
                     <el-form-item label-width="20px">
-                        <el-select v-model="searchData.search" placeholder="请选择代理商">
-                                <el-option
-                                        v-for="item in selectFactoryList"
-                                        :key="item"
-                                        :value="item">
-                                {{item}}
-                                </el-option>
+                        <el-select v-model="searchData.agentId">
+                            <el-option v-for="item in selectAgentList" 
+                            :key="item.agentId" 
+                            :label="item.agentName"
+                            :value="item.agentId">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                     </el-col>
@@ -100,8 +92,8 @@
                     <el-table-column align="center" prop="bindTime" label="绑定时间"></el-table-column>
                     <el-table-column align="center" prop="auditUser" label="操作人"></el-table-column>
                     <el-table-column align="center" label="操作">
-                        <template>
-                            <el-button plain type="text">详情</el-button>
+                        <template slot-scope="scope">
+                            <el-button plain type="text" @click="detali(scope.row)">详情</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -118,13 +110,18 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog :lock-scroll="false" :title="title" custom-class="customClass" :visible.sync="dialogTableVisible"
+                   style="text-align: center;">
+            <component v-if="dialogTableVisible" :deviceId='deviceId' @close="close" @untie='untie($event)' @searchClick='searchClick' :is="'EquipmentInfo'"></component>
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import {myMixins} from "../../mixins/mixin";
     import httpRequest from "../../api/api";
-
+    import EquimentSelect from "../../components/select/EquimentSelect";
+    import EquipmentInfo from "./moduleModel/EquipmentInfo";
     export default {
         name: "EquipmentKList",
         mixins: [myMixins],
@@ -133,7 +130,7 @@
                 searchData: {
                     bindStatus: 3, //代理区域
                     searchTime: '',  //查询条件
-                    deviceTypeId: '',  //上级代理商id\
+                    deviceTypeId: null,  //上级代理商id\
                     search:'',
                     size: 10,
                     page: 1
@@ -173,17 +170,53 @@
                     {name: "解除绑定申请", value: 5}
                 ],
                 dataInfo: {},
-                total: '',
+                total: 0,
                 dialogTableVisible: false,
                 tableData: [],
                 selectFactoryList:[],
+                selectAgentList:[],
+                deviceTypeList:[],
+                title:'绑定设备',
+                deviceId:'',
+                dialogTableVisible: false,
                 listUrl: '/managecenter/deviceManage/device/getDeviceListByStatus',   //表格数据接口
             }
         },
         mounted() {
             this.getdevice()
         },
+        components:{
+            EquimentSelect,
+            EquipmentInfo
+        },
         methods: {
+            detali(row){
+                this.dialogTableVisible = true;
+                this.deviceId=row.deviceId
+                    this.$nextTick(function(){
+                        this.deviceId=row.deviceId
+                    })
+                    this.title=row.bindStatus
+                    // if(row==''){
+                    //     this.title='设备信息'
+                    // }else{
+                    //     if(row.bindStatus=='绑定申请驳回'){
+                    //         this.title='绑定申请驳回'
+                    //     }else if(row.bindStatus=='解绑申请驳回'){
+                    //         this.title='解绑申请驳回'
+                    //     }else if(row.bindStatus=='已解绑'){
+                    //         this.title='已解绑'
+                    //     }else{
+                    //     this.title='已绑定'
+                    //     }
+                    // }
+            },
+            untie(data){
+                this.title=data
+            },
+            close(){
+                this.modalClose()
+            },
             equipmentClick(index){
                 this.equipmentIndex = index
             },
@@ -204,9 +237,9 @@
                     .then(res => {
                         this.deviceTypeList = res.data;
                     })
-                    httpRequest("managecenter/deviceManage/deviceType/selectFactoryList", "GET")
+                    httpRequest("managecenter/deviceManage/device/selectAgentList", "GET")
                     .then(res => {
-                        this.selectFactoryList = res.data;
+                        this.selectAgentList = res.data;
                     })
             }
 

@@ -31,8 +31,9 @@ export const myMixins = {
                 .then((res) => {
                    // console.log(res)
                     if (res.code == 200) {
-                        this.total = res.data.total;
-                        this.tableData = res.data.records?res.data.records:res.data.rows;
+                        this.total = res.data.total?res.data.total:res.data.totalCount
+
+                        this.tableData = res.data.records?res.data.records:res.data.list;
                     }
                 })
                 .finally(res=>{
@@ -85,8 +86,12 @@ export const myMixins = {
         },
         //搜索重置
         resetSearch() {
-            Object.keys(this.searchData).forEach(key => this.searchData[key] = '');
+            Object.keys(this.searchData).forEach(
+                key => key=='deviceTypeId'? this.searchData[key]=null:
+                this.searchData[key] = ''
+            );
             this.searchData.size = 10;
+            this.searchData.currentPage = 1;
             this.searchData.page = 1;
             this.getTableData()
         },

@@ -2,10 +2,16 @@
     <el-form label-width="100px" :model="modelFromdata">
         <el-row>
             <el-col :span="12">
-                <el-form-item label="代理商名称">
-                    <el-input placeholder="请选择" v-model="modelFromdata.agentId" />
+                    <el-form-item label="代理商名称"  v-if="type!=1">
+                         <el-select v-model="modelFromdata.agentId" >
+                         <el-option v-for="item in selectAgentList" 
+                         :key="item.agentId" 
+                         :label="item.agentName"
+                         :value="item.agentId">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="赠送数量">
+                <el-form-item label="设备数量"> 
                     <el-input placeholder="请输入设备数量"  v-model="modelFromdata.deliveryCount"  />
                 </el-form-item>
             </el-col>
@@ -15,8 +21,8 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row>
-            <el-col :span="12">
+        <el-row >
+            <el-col :span="12" v-if="type!=1">
                 <el-form-item label="赠送原因">
                     <el-input placeholder="请输入内容"  v-model="modelFromdata.presentDescription"></el-input>
                 </el-form-item>
@@ -30,12 +36,23 @@
         <el-row>
             <el-col :span="12">
                 <el-form-item label="发货厂商">
-                    <el-input placeholder="请输入内容"  v-model="modelFromdata.sendOutFactoryType"></el-input>
+                    <el-select v-model="modelFromdata.sendOutFactoryType" @change="sendOutFactoryChange">
+                         <el-option v-for="item in device_delivery_factory_list" 
+                         :key="item.dataValue" 
+                         :label="item.dataCode"
+                         :value="item.dataValue">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item label="收货人">
+                <el-form-item label="收货人" v-if="type!=1">
                     <el-input placeholder="请输入收货人姓名"  v-model="modelFromdata.consignee"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item label="收货人" v-if="type==1">
+                    <el-input placeholder="请输入收货人姓名"  v-model="modelFromdata.consignor"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -58,25 +75,36 @@
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item label="收货地址">
-                    <el-input placeholder="请输入设备SN码" v-model="modelFromdata.consigneeArea"></el-input>
+                <el-form-item label="收货地址" v-if="type!=1">
+                    <el-input placeholder="请输入收货地址" v-model="modelFromdata.consigneeArea"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
         <el-row>
             <el-col :span="12">
-                <el-form-item label="快递公司">
+                <el-form-item label="快递公司" >
                     <el-input placeholder="请输入快递公司"  v-model="modelFromdata.expressCompany"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="12" >
-                <el-form-item label="详细地址">
+                <el-form-item label="详细地址" v-if="type!=1">
                     <el-input placeholder="请输入详细地址"  v-model="modelFromdata.consigneeAdds"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12" >
+                <el-form-item label="发货时间" v-if="type==1">
+                     <el-date-picker
+                    v-model="modelFromdata.deliveryTime"
+                    type="date"
+                    format='yyyy-MM-dd'
+                    value-format='yyyy-MM-dd'
+                    placeholder="选择日期">
+                    </el-date-picker>
                 </el-form-item>
             </el-col>
         </el-row>
         <el-form-item label-width="0">
-            <el-button>取消</el-button>
+            <el-button @click="close">取消</el-button>
             <el-button @click="saveBtn">保存</el-button>
         </el-form-item>
     </el-form>
@@ -88,12 +116,20 @@
 
     export default {
         name: "PresentModel",
-        props:["deviceTypeId"],
+        props:{
+            deviceTypeId:{
+                type:Number,
+            },
+            type:{
+                type:Number,
+            }
+        },
         data(){
             return{
+                sendOutFactoryStatus:false,
                 modelFromdata:{
                     deviceTypeId:this.deviceTypeId, //设备类型id
-                    agentId:1101,//代理商ID
+                    agentId:null,//代理商ID
                     deliveryCount:'',//赠送数量
                     presentDescription:'',//赠送原因
                     sendOutFactoryType:'',//发货厂商
@@ -106,18 +142,62 @@
                     consigneeArea:'',//收货人省市区
                     consigneeAdds:'',//收货人详细地址
                     snCode:'', //sn码
+                    deliveryTime:''
                 },
+                selectAgentList:[],
+                device_delivery_factory_list:[]
             }
         },
         components:{
             uploadImg
         },
+        mounted(){
+            httpRequest("managecenter/deviceManage/device/selectAgentList", "GET")
+                    .then(res => {
+                        this.selectAgentList = res.data;
+            })
+            httpRequest("managecenter/sysDict/getSysDict", "GET")
+                    .then(res => {
+                        this.device_delivery_factory_list = res.data.device_delivery_factory_list;
+            })
+        },
         methods:{
+            //取消
+            close(){
+               this.$emit('close')
+            },
+            sendOutFactoryChange(){
+                if(this.modelFromdata.sendOutFactoryType==1){
+                    this.modelFromdata.sendOutFactoryName='近店科技'
+                }else{
+                    this.modelFromdata.sendOutFactoryName=''
+                }
+            },
             //赠送
             saveBtn(){
-                httpRequest("/managecenter/deviceManage/deviceOutbound/saveDeviceGive","POST",this.modelFromdata)
+                var url;
+                if(this.type==1){
+                    url='managecenter/deviceManage/deviceApply/confirmDelivery'
+                    delete this.modelFromdata.agentId
+                    delete this.modelFromdata.presentDescription
+                    delete this.modelFromdata.consignee
+                    delete this.modelFromdata.consigneeArea
+                    delete this.modelFromdata.consigneeAdds
+                    delete this.modelFromdata.deviceTypeId
+                    this.modelFromdata.deviceApplyId=this.deviceTypeId
+                }else{
+                    url='/managecenter/deviceManage/deviceOutbound/saveDeviceGive'
+                    delete this.modelFromdata.deliveryTime
+                }
+                httpRequest(url,"POST",this.modelFromdata)
                     .then(res=>{
-                        console.log(res)
+                        if(res.success){
+                            this.$message({
+                                    type: 'success',
+                                    message: res.msg
+                                })
+                            this.$emit('modalClose')
+                        }
                     })
             },
         }

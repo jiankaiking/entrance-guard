@@ -84,7 +84,7 @@
             }
         },
         mounted() {
-
+this.getCode()
         },
         methods: {
             //登录按钮  表单验证，验证成功 action提交
@@ -112,7 +112,7 @@
                 });
             },
             getCode(){
-                this.codeImg = '/api/managecenter/login/getValidateCode?'+Math.random()
+                this.codeImg = '/sellerManagement/managecenter/login/getValidateCode?'+Math.random()
             },
             //切换登录方式
             checkLogin() {

@@ -13,7 +13,6 @@ const router = new Router({
             redirect: '/home/index',
             meta: {
                 keepAlive: true
-
             },
             children: [
                 {
@@ -85,24 +84,6 @@ const router = new Router({
                 {
                     path: '/agentmessges',
                     component: () => import('@/components/AgentHeader'),
-                    // redirect: '/agentmessges/basic',
-                    // children: [
-                    //     {
-                    //         path: '/agentmessges/basic',
-                    //         name: 'agentmessgesbasic',
-                    //         component: () => import('@/views/Agent/Agentmessgesbasic')
-                    //     },
-                    //     {
-                    //         path: '/agentmessges/information',
-                    //         name: 'information',
-                    //         component: () => import('@/views/Agent/Information'),
-                    //     },
-                    //     {
-                    //         path: '/agentmessges/generation',
-                    //         name: 'generation',
-                    //         component: () => import('@/views/Agent/Generation'),
-                    //     }
-                    // ]
                 },
                 //合作商
                 {
@@ -154,7 +135,7 @@ const router = new Router({
                     name: 'commission',
                     component: () => import('@/views/Settleaccounts/Commission'),
                 },
-                //设备补贴
+                //补贴
                 {
                     path: '/accounts/subsidy',
                     name: 'subsidy',

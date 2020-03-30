@@ -1,64 +1,62 @@
 <template>
     <div class="main-contenner">
         <div class="searchData">
-            <el-form ref="form" :model="searchData" label-width="30px">
-                <el-form-item style="width: 140px">
-                    <el-select v-model="searchData.province" placeholder="选择省">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
+            <el-form ref="form" class="search-from" :model="searchData" label-width="30px">
+                <el-form-item style="width: 20%">
+                    <CitySelect type="city" @selectCode="selectCode"></CitySelect>
                 </el-form-item>
-                <el-form-item style="width: 140px">
-                    <el-select v-model="searchData.province" placeholder="选择市">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item style="width: 218px">
-                    <el-select v-model="searchData.province" placeholder="代理人名称/联系人/联系方">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
+                <el-form-item>
+                    <el-input></el-input>
                 </el-form-item>
                 <el-form-item style="width: 160px" label="状态" label-width="60px">
-                    <el-select v-model="searchData.province" placeholder="请选择活动区域">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                    <el-select v-model="searchData.status" placeholder="结算状态">
+                        <el-option label="未结算" value="1"></el-option>
+                        <el-option label="已驳回" value="2"></el-option>
+                        <el-option label="已结算" value="3"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="申请结算时间" label-width="120px">
-                    <el-date-picker
-                            v-model="searchData.province"
-                            type="daterange"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期">
-                    </el-date-picker>
+                    <el-col :span="11">
+                        <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期"
+                                        v-model="searchData.startTime" style="width: 100%;"></el-date-picker>
+                    </el-col>
+                    <el-col style="text-align: center" :span="1">-</el-col>
+                    <el-col :span="11">
+                        <el-date-picker
+                                value-format="yyyy-MM-dd" type="date" placeholder="选择日期"
+                                v-model="searchData.endTime"
+                                style="width: 100%;"></el-date-picker>
+                    </el-col>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="onSubmit" type="primary" plain>搜索</el-button>
-                    <el-button @click="onSubmit" type="info" plain>新增</el-button>
+                    <el-button @click="searchClick" type="primary" plain>搜索</el-button>
+                    <el-button @click="resetSearch" type="info" plain>重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <div class="tableData">
             <div class="tableBox">
                 <el-table
-                        empty-text
-                        header-row-style="color:#000000"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
-                    <el-table-column align="center" prop="date" label="序号"></el-table-column>
-                    <el-table-column align="center" prop="name" label="代理商名称"></el-table-column>
-                    <el-table-column align="center" prop="address" label="联系人"></el-table-column>
-                    <el-table-column align="center" prop="address" label="结算金额"></el-table-column>
-                    <el-table-column align="center" prop="address" label="代理区域"></el-table-column>
-                    <el-table-column align="center" prop="address" label="结算状态"></el-table-column>
-                    <el-table-column align="center" prop="address" label="申请时间"></el-table-column>
+                        empty-text  :headerRowStyle="{color:'#000000'}" :data="tableData"
+                        border v-loading="loading" style="width: 100%;">
+                    <el-table-column align="center" type="index" width="80" label="序号"></el-table-column>
+                    <el-table-column align="center" prop="agentName" label="代理商名称"></el-table-column>
+                    <el-table-column align="center" prop="responsibleName" label="联系人"></el-table-column>
+                    <el-table-column align="center" prop="totalAmount" label="结算金额"></el-table-column>
+                    <el-table-column align="center" prop="area" label="代理区域"></el-table-column>
+                    <el-table-column align="center"  label="结算状态">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.status == 1">待结算</span>
+                            <span v-if="scope.row.status == 2">结算驳回</span>
+                            <span v-if="scope.row.status == 3">已结算</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" prop="applyTime" label="申请时间"></el-table-column>
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                            <el-button type="text" @click="settleAccounts()">结算</el-button>
-                            <el-button type="text" @click="showModel">详情</el-button>
+                            <el-button type="text" v-if="scope.row.status == 1" @click="settleAccounts(scope.row,2)">驳回</el-button>
+                            <el-button type="text" v-if="scope.row.status == 1" @click="settleAccounts(scope.row,3)">结算</el-button>
+                            <el-button type="text" @click="goInfo(scope.row)">详情</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -74,14 +72,14 @@
                 >
                 </el-pagination>
             </div>
-
         </div>
-
     </div>
 </template>
 
 <script>
     import {myMixins} from "../../mixins/mixin";
+    import CitySelect from "../../components/select/CitySelect";
+    import httpRequest from "../../api/api";
 
     export default {
         name: "accountslist",
@@ -89,20 +87,44 @@
         data() {
             return {
                 searchData: {
-                    province:123,
+                    startTime:'',
+                    endTime:'',
+                    status:'',
+                    currentPage:1,
+                    size:10
                 },
                 total:0,
-
+                cityCode:'',
                 dialogTableVisible: false,
                 tableData: [],
-                listUrl:'abc/get'
+                listUrl:'/managecenter/center/settlement/manage/settlement/list'
             }
         },
-        methods: {}
+        components:{
+            CitySelect
+        },
+        methods: {
+            selectCode(e){
+
+            },
+            settleAccounts(row,status){
+                httpRequest("/managecenter/center/settlement/manage/settlement",'POST',{id:row.id, status:status})
+                    .then(res=>{
+                        if(res.success){
+                            this.getTableData()
+                        }
+                    })
+            },
+            goInfo(row){
+                this.$router.push({path:'/accounts/settleamessage',query:{id:row.id}})
+            },
+        }
 
     }
 </script>
 
 <style scoped>
-
+.search-from{
+    display: flex; justify-content: flex-start;align-items: center;
+}
 </style>

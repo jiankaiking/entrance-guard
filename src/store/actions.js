@@ -26,6 +26,36 @@ const actions = {
                 })
         })
     },
+    //获取机构
+    GET_ORGAN({commit}){
+        return new Promise((resolve, reject) => {
+            httpRequest('/managecenter/index/getOrganListByUser')
+                .then(response => {
+                    if(response.success){
+                        commit('GET_ORGAN',response.data);
+                    }
+                    resolve(response);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+    //获取系统
+    GET_STYEMITEM({commit}){
+        return new Promise((resolve, reject) => {
+            httpRequest('/managecenter/index/getSystemList')
+                .then(response => {
+                    if(response.success){
+                        commit('GET_STYEMITEM',response.data);
+                    }
+                    resolve(response);
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
     //登出
     LogOut({commit, state},backPath) {
         return new Promise((resolve, reject) => {

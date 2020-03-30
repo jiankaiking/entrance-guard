@@ -2,18 +2,11 @@
     <div class="main-contenner">
         <div class="searchData">
             <el-form ref="form" :model="searchData" label-width="25px">
-                <el-form-item>
-                    <el-select v-model="searchData.agentArea" placeholder="选择省">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-select v-model="searchData.agentArea" placeholder="选择市">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
+                <el-col :span="4">
+                    <el-form-item>
+                        <CitySelect @selectCode="selectCode" type="city"></CitySelect>
+                    </el-form-item>
+                </el-col>
                 <el-form-item>
                     <el-input placeholder="代理商名称/联系人/联系方式" v-model="searchData.queryCriteria"></el-input>
                 </el-form-item>
@@ -25,68 +18,27 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table
-                        empty-text
-                        v-loading = "loading"
-                        element-loading-text = "数据正在加载中"
-                        element-loading-spinner = "el-icon-loading"
-                        :headerRowStyle="{color:'#000000'}"
-                        :data="tableData"
-                        border
-                        style="width: 100%;">
-                    <el-table-column
-                            align="center"
-                            prop="agentId"
-                            label="序号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="agentName"
-                            label="商户名称"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="address"
-                            label="商户联系人">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="responsibleName"
-                            label="行业类目">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="responsibleName"
-                            label="所在区域">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="150"
-                            label="账号状态">
+                <el-table empty-text v-loading = "loading" element-loading-text = "数据正在加载中"
+                        element-loading-spinner = "el-icon-loading" :headerRowStyle="{color:'#000000'}" :data="tableData"
+                        border style="width: 100%;">
+                    <el-table-column align="center" type="index" width="80" label="序号"></el-table-column>
+                    <el-table-column align="center" prop="name" label="商户名称"></el-table-column>
+                    <el-table-column align="center" prop="address" label="商户联系人"></el-table-column>
+                    <el-table-column align="center" prop="responsibleName" label="行业类目"></el-table-column>
+                    <el-table-column align="center" prop="region" label="所在区域"></el-table-column>
+                    <el-table-column align="center" width="150" label="账号状态">
                         <template slot-scope="scope">
-                            <el-button
-                                    type="text"
-                                    @click="changeSonStatus(scope.row,scope.$index,0)">
+                            <el-button type="text" @click="changeSonStatus(scope.row,scope.$index,0)">
                                 <el-switch
-                                        :active-value="1"
-                                        :inactive-value="0"
-                                        :value="scope.row.agentStatus"
+                                        :active-value="1" :inactive-value="0" :value="scope.row.status"
                                         active-text="正常"
                                         inactive-text="停用">
                                 </el-switch>
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column
-                            align="center"
-                            prop="createTime"
-                            label="创建时间">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作">
+                    <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button type="info" plain size="mini" @click="showModel(scope.row)">详情</el-button>
                         </template>
@@ -112,6 +64,7 @@
 
 <script>
     import {myMixins} from "../../mixins/mixin";
+    import CitySelect from "../../components/select/CitySelect";
     import httpRequest from "../../api/api";
 
     export default {
@@ -120,9 +73,8 @@
         data() {
             return {
                 searchData: {
-                    agentArea: '', //代理区域
+                    time: '', //代理区域
                     queryCriteria: '',  //查询条件
-                    agent_pid: '',  //上级代理商id
                     size: 10,
                     page: 1
                 },
@@ -130,12 +82,15 @@
                 total: '',
                 dialogTableVisible: false,
                 tableData: [],
-                listUrl: '/agentManage/getAgentList',   //表格数据接口
+                listUrl: '/sellerManagement/sellerMange/getSellerList',   //表格数据接口
             }
         },
         mounted() {
         },
         methods: {
+            selectCode(){
+
+            },
             //改变代理商状态以及子代功能.  type 等于0 是代理商状态  1 是子代功能
             changeSonStatus(row, index, type) {
                 let [url, data] = ['',  {agentId: row.agentId}];
@@ -168,7 +123,11 @@
             agentAdd() {
                 this.$router.push({path: '/agentmessges', query: {type: 'add'}})
             },
+
         },
+        components:{
+            CitySelect
+        }
     }
 </script>
 
