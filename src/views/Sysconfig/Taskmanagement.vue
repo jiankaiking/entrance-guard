@@ -19,7 +19,7 @@
         </div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table empty-text header-row-style="color:#000000"
+                <el-table empty-text :headerRowStyle="{color:'#000000'}"
                         v-loading = "loading" :data="tableData" border style="width: 99.9%;">
                     <el-table-column align="center" prop="taskId" label="序号"></el-table-column>
                     <el-table-column align="center" prop="taskName" label="任务名称"></el-table-column>

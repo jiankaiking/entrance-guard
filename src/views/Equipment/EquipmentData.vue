@@ -6,7 +6,7 @@
                     <EquimentSelect :deviceTypeId.sync="deviceTypeId"></EquimentSelect>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="searchClick" plain>搜索</el-button>
+                    <el-button type="primary"  plain>搜索</el-button>
                     <el-button>重置</el-button>
                 </el-form-item>
             </el-form>
@@ -33,7 +33,7 @@
                             <el-input></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" plain @click="searchClick">搜索</el-button>
+                            <el-button type="primary" plain >搜索</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -61,7 +61,7 @@
         name: "EquipmentData",
         data() {
             return {
-                deviceTypeId: '',
+                deviceTypeId: null,
                 value: '',
             }
         },

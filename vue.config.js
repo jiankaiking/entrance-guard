@@ -26,7 +26,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                 target: 'http://192.168.0.110:8888',//managecenter sellerManagement
+                 target: 'http://192.168.0.199:8888',//managecenter sellerManagement
 
                 changeOrigin: true,
                 ws: true,
