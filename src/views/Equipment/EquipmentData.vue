@@ -1,6 +1,7 @@
 <template>
     <div class="main-contenner">
-        <div class="searchData">
+        正在开发中
+        <!-- <div class="searchData">
             <el-form ref="form" label-width="80px">
                 <el-form-item label="设备型号" style="width: 220px">
                     <EquimentSelect :deviceTypeId.sync="deviceTypeId"></EquimentSelect>
@@ -48,7 +49,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -66,8 +67,8 @@
             }
         },
         mounted() {
-            this.drawLine()
-            this.drawLine1()
+            // this.drawLine()
+            // this.drawLine1()
         },
         methods: {
             drawLine() {

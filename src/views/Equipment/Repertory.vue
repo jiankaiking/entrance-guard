@@ -46,13 +46,14 @@
 <script>
 
     import httpRequest from "../../api/api";
+    import {myMixins} from "../../mixins/mixin";
     import EquimentSelect from "../../components/select/EquimentSelect";
     import EntrepotAddModel from "./moduleModel/EntrepotAddModel";
     import PresentModel from "./moduleModel/PresentModel";
 
     export default {
         name: "Repertory",
-
+        mixins: [myMixins],
         data() {
             return {
                 searchData: {
@@ -74,7 +75,9 @@
                 this.deviceTypeId = deviceTypeId;
                 this.dialogTableVisible = true;
                 this.$nextTick(()=>{
-                    this.$refs.modalForm.add(deviceTypeId)
+                    if(this.cliIndex==2){
+                    this.$refs['modalForm'].add(deviceTypeId)
+                    }
                 })
             },
             //补货成功

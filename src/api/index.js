@@ -15,7 +15,7 @@ import router from "../router";
 
 const service = axios.create({
   //  baseURL: 'http://192.168.0.110:8701',   //请求api
-    baseURL: '/api',   //请求api
+    baseURL: '/sellerManagement',   //请求api
 
     timeout: 5000,     //请求超时时间
     withCredentials: true //允许携带cookie
@@ -23,9 +23,9 @@ const service = axios.create({
 
 //请求拦截
 service.interceptors.request.use(config => {
-    if(store.state.token){
+    // if(store.state.token){
         config.headers['Authorization'] = store.state.token
-    }
+    // }
 
     config.method === 'post' ? config.data = qs.stringify({...config.data}) : config.params = {...config.data};
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded';

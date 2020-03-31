@@ -28,10 +28,11 @@ module.exports = {
             '/api': {
                  target: 'http://192.168.0.199:8888',//managecenter sellerManagement
 
+
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
-                    '^/api': ''
+                    '^/sellerManagement': ''
                 }
             },
         }

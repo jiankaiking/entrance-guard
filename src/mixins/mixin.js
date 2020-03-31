@@ -86,7 +86,10 @@ export const myMixins = {
         },
         //搜索重置
         resetSearch() {
-            Object.keys(this.searchData).forEach(key => this.searchData[key] = '');
+            Object.keys(this.searchData).forEach(
+                key => key=='deviceTypeId'? this.searchData[key]=null:
+                this.searchData[key] = ''
+            );
             this.searchData.size = 10;
             this.searchData.currentPage = 1;
             this.searchData.page = 1;
