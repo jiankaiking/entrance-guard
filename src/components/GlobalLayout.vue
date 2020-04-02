@@ -24,13 +24,12 @@
             httpRequest("/managecenter/index/getMenuTreeByUser", "GET")
                 .then(res=>{
                     if(res.success){
-                       res.data.filter((item,index)=>{
-                           if(item.menuUrl == null){
-                               item.menuUrl = index.toString()
-                           }
-                       })
-                        this.menuList = res.data;
-                        // console.log(res.data)
+                        res.data.filter((item,index)=>{
+                            if(item.menuUrl == null){
+                                item.menuUrl = index.toString()
+                            }
+                        })
+                        this.menuList = JSON.parse(JSON.stringify(res.data))
                     }
                 })
         },

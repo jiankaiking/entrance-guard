@@ -105,7 +105,7 @@
                     .then(res => {
                         if (res.success) {
                             this.userMsg = res.data;
-                            let data = JSON.parse(JSON.stringify(res.data))
+                            let data = JSON.stringify(res.data)
                             this.SET_USERINFO(data)
                         }
                     })

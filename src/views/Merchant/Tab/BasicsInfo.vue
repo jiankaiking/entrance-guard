@@ -15,7 +15,7 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="账号状态">
-                        <el-input :value="mechantInfo.accountStatus"></el-input>
+                        <el-input :value="mechantInfo.accountStatus == 0?'停用':'启用'"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
