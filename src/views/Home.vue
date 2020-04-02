@@ -16,7 +16,7 @@
                               :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}" v-model="useData"  ref="commonly">
                     <transition-group>
                         <div v-for="(item,index) in useData" :key="index" class="item" @click="router(item.menuUrl)">
-                            <img :src="item.menuUrl" alt="">
+                            <img :src="item.menuIcon?item.menuIcon:image" alt="">
                             <p>{{item.menuName}}</p>
                         </div>
                     </transition-group>
@@ -39,7 +39,7 @@
             </div>
             <div class="webapp">
                 <ul class="clear">
-                    <li v-for="(item,index) in webappData">
+                    <li v-for="(item,index) in webappData" :key="index">
                         <img :src="item.qrcodeUrl" :alt="item.qrcodeName">
                         <span>{{item.qrcodeName}}</span>
                     </li>
@@ -66,6 +66,7 @@
                 webappData: [],
                 marginLeft: 0,
                 leftFlag: true,
+                image:img,
                 firstY: '',
                 firstDrag: null,
                 endDrag: null,
@@ -293,6 +294,7 @@
             padding: 13px 0;
             box-sizing: border-box;
             margin-right: 45px;
+            margin-bottom: 30px;
 
             img {
                 width: 50px;
