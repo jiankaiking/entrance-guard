@@ -1,15 +1,16 @@
 <template>
     <div class="histonav">
-        <ul class="clear">
-            <li @contextmenu.prevent="show($event,index)"
-                ref="box" v-for="(item,index) in historyNav"
-
-                @click="changePath(item)">
-                <span>{{item.name}}</span>
-                <i class="el-icon-close"></i>
-            </li>
-
-        </ul>
+        <div>
+            <ul class="clear">
+                <li @contextmenu.prevent="show($event,index)"
+                    ref="box" v-for="(item,index) in this.$store.state.menuTagArr"
+                    :key="index"
+                    @click="changePath(item.path)">
+                    <span>{{item.title}}</span>
+                    <i class="el-icon-close" @click="closeTag(index)"></i>
+                </li>
+            </ul>
+        </div>
         <p>近店 / 权限管理 / 组织架构管理</p>
         <div class="menucont" v-show="showMenu" :style="{left:left,top:top}">
             <ul>
@@ -23,35 +24,36 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
+
     export default {
         name: "GlobalHistorynav",
         data() {
             return {
                 historyNav: [{name: '首页'}, {name: '首页'}, {name: '首页'}],
-                showMenu:false,
+                showMenu: false,
                 left: '',
                 top: ''
             }
         },
-        mounted(){
-          //  console.log(this.$route.path)
-            document.addEventListener('click', (e)=> {
+        mounted() {
+             console.log(this.$route.matched)
+            document.addEventListener('click', (e) => {
                 if (e.target.className != 'closeAll') {
-                    this.showMenu= false;
-                }else{
+                    this.showMenu = false;
+                } else {
                     console.log(1)
                 }
-
             })
         },
         methods: {
-            changeColor(index){
+            changeColor(index) {
                 console.log(1)
             },
 
             //关闭全部
             closeAll() {
-
+                console.log(this.menuTagArr)
             },
             //关闭右边
             closeRight() {
@@ -66,17 +68,23 @@
             closeAnother() {
 
             },
-            changePath(){
-
+            changePath(id) {
+                this.$router.push({path:id}) 
+            },
+            closeTag(index){
+                this.$store.state.menuTagArr.splice(index,1);
+                sessionStorage.setItem('menuTagArr',JSON.stringify(this.$store.state.menuTagArr))
             },
             show(e, index) {
-
                 this.navIndex = index
                 this.left = e.clientX + 'px';
                 this.showMenu = true;
                 this.top = e.clientY + 'px'
             },
         },
+        computed: {
+            ...mapState(['menuTagArr'])
+        }
     }
 </script>
 
@@ -98,14 +106,17 @@
         color: #4589A5;
         border-radius: 18px;
     }
+
     .histonav .clear li:hover {
         cursor: pointer;
         background: #38B8EE;
         color: #ffffff;
     }
+
     .histonav .clear li:hover i {
         color: #ffffff;
     }
+
     .histonav .menucont {
         box-shadow: 2px 2px 10px #aaa !important;
         background: #fff;
@@ -113,6 +124,7 @@
         position: fixed;
         z-index: 220;
     }
+
     .histonav .menucont li {
         padding: 0 18px;
         height: 50px;
@@ -120,17 +132,21 @@
         color: rgba(0, 0, 0, 0.65);
         cursor: default;
     }
+
     .histonav .menucont li i {
         margin-right: 5px;
         font-size: 16px;
     }
+
     .histonav .menucont li:hover {
         cursor: pointer;
         color: #409EFF;
     }
+
     .histonav .menucont li:hover i {
         color: #409EFF;
     }
+
     .histonav p {
         color: #666666;
         font-size: 14px;

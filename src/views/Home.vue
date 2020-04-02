@@ -8,8 +8,9 @@
             </div>
             <i class="el-icon-arrow-left" @click="leftRowclick"></i>
                 <i class="el-icon-arrow-right" @click="rightRowclick"></i>
+
             <div class="useContenner" ref="parentCommonly">
-                <vuedraggable :options="{animation:300}" class="wrapper"
+                <vuedraggable :options="{animation:300}" class="wrapper clear"
                               @change="changeAddress"
                               @end="end"
                               :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}" v-model="useData"  ref="commonly">
@@ -28,7 +29,7 @@
             </div>
             <div class="hotMessge">
                 <ul class="clear">
-                    <li v-for="(item,index) in messgesData">{{item.title}}</li>
+                    <li v-for="(item,index) in messgesData" :key="index">{{item.title}}</li>
                 </ul>
             </div>
         </div>
@@ -60,7 +61,7 @@
         data() {
             return {
                 dragging: null,
-                useData: [{ menuName: '首页' },],
+                useData: [{menuName: '首页'},],
                 messgesData: [{title: '空腹可以吃饭吗'}, {title: '哪个地方得女人最好看'}],
                 webappData: [],
                 marginLeft: 0,
@@ -69,7 +70,7 @@
                 firstDrag: null,
                 endDrag: null,
                 endY: '',
-                remove:false
+                remove: false
             }
         },
         components: {
@@ -82,13 +83,13 @@
         },
         mounted() {
             httpRequest("/managecenter/index/getCommonFunctions", "GET")
-                    .then(res => {
-                        if(res.success){
-                            this.useData=res.data
-                        }
-           })
+                .then(res => {
+                    if (res.success) {
+                        this.useData = res.data
+                    }
+                })
             this.getIndexInfo(),
-            window.document.body.style.backgroundColor = '#ffffff'
+                window.document.body.style.backgroundColor = '#ffffff'
         },
         methods: {
             router(event){
@@ -98,61 +99,61 @@
             end(evt,){
                 if(this.remove){
                     console.log('内部')
-                }else{
-                    var newArr=[]
-                    for(var i=0;i<this.useData.length;i++){
-                        if(i!=evt.newIndex){
-                         newArr.push(this.useData[i].menuId)
+                } else {
+                    var newArr = []
+                    for (var i = 0; i < this.useData.length; i++) {
+                        if (i != evt.newIndex) {
+                            newArr.push(this.useData[i].menuId)
                         }
-                    }   
-                    var str=newArr.join(',')
+                    }
+                    var str = newArr.join(',')
                     this.commonlyUsed(str)
                 }
             },
             // 接收从菜单移动过来的参数
-            drop (event) {
-                this.remove=true
+            drop(event) {
+                this.remove = true
                 var menuId = event.dataTransfer.getData('menuId')
-                if(menuId){
-                    var newArr=[menuId]
-                    for(var i=0;i<this.useData.length;i++){
-                        if(menuId!=this.useData[i].menuId){
+                if (menuId) {
+                    var newArr = [menuId]
+                    for (var i = 0; i < this.useData.length; i++) {
+                        if (menuId != this.useData[i].menuId) {
                             newArr.push(this.useData[i].menuId)
                         }
-                    }   
-                    var str=newArr.join(',')
+                    }
+                    var str = newArr.join(',')
                     this.commonlyUsed(str)
                 }
             },
             // 常用调整请求
-            commonlyUsed(str){
-                httpRequest("/managecenter/index/updateCommonFunctions", "post",{menuIds:str})
-                        .then(res => {
-                            if(res.success){
-                                httpRequest("/managecenter/index/getCommonFunctions", "GET")
+            commonlyUsed(str) {
+                httpRequest("/managecenter/index/updateCommonFunctions", "post", {menuIds: str})
+                    .then(res => {
+                        if (res.success) {
+                            httpRequest("/managecenter/index/getCommonFunctions", "GET")
                                 .then(res => {
-                                    if(res.success){
-                                        this.useData=res.data
-                                        this.remove=false
+                                    if (res.success) {
+                                        this.useData = res.data
+                                        this.remove = false
                                     }
                                 })
-                            }
+                        }
                     })
             },
-            dragover (event) {
+            dragover(event) {
                 event.preventDefault()
             },
             ...mapActions(["GET_STYEMITEM"]),
             ...mapActions(["GET_ORGAN"]),
             // 常用发生变化移动的
-            changeAddress(evt){
+            changeAddress(evt) {
                 // console.log(evt.element.menuId)
-                var newArr=[]
-                    for(var i=0;i<this.useData.length;i++){
-                         newArr.push(this.useData[i].menuId)
-                    }   
-                    var str=newArr.join(',')
-                    this.commonlyUsed(str)
+                var newArr = []
+                for (var i = 0; i < this.useData.length; i++) {
+                    newArr.push(this.useData[i].menuId)
+                }
+                var str = newArr.join(',')
+                this.commonlyUsed(str)
             },
             getIndexInfo() {
                 httpRequest("/managecenter/index/getUserInfo", "GET")
@@ -163,16 +164,16 @@
                         if (res.success) {
                             this.webappData = res.data;
                         }
-                        return httpRequest('/managecenter/index/getCommonFunctions',"GET")
+                        return httpRequest('/managecenter/index/getCommonFunctions', "GET")
                     })
-                    .then(res=>{
-                        if(res.success){
+                    .then(res => {
+                        if (res.success) {
                             this.useData = res.data;
                         }
-                        return httpRequest("/managecenter/index/getHotNews","GET")
+                        return httpRequest("/managecenter/index/getHotNews", "GET")
                     })
-                    .then(res=>{
-                        if(res.success){
+                    .then(res => {
+                        if (res.success) {
 
                         }
                     })
@@ -192,8 +193,8 @@
                     this.marginLeft = this.marginLeft + 220;
                 }
             }
-        
-        
+
+
         }
     }
 </script>
@@ -206,6 +207,7 @@
         overflow: hidden;
         position: relative;
     }
+
     .indexPage {
         overflow: hidden;
 
@@ -255,6 +257,7 @@
             margin-top: -23px;
             background: #fff;
         }
+
         .el-icon-arrow-left {
             position: absolute;
             left: 0px;

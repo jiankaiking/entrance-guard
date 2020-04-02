@@ -100,6 +100,7 @@
                     .then(res => {
                         if (res.data.success) {
                             let userInfo = res.data.data;
+                            window.sessionStorage.setItem("user",JSON.stringify(userInfo))
                             that.auth_success({token, userInfo})
                             this.GET_ORGAN()
                             this.GET_STYEMITEM()

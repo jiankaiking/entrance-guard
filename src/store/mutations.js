@@ -4,7 +4,6 @@ const mutations = {
     auth_success(state, data) {
         state.status = 'success';
         let a = JSON.parse(JSON.stringify(data.userInfo));
-
         state.user = a;
         state.token = data.token;
 
@@ -15,6 +14,9 @@ const mutations = {
     logout(state) {
         state.status = '';
         state.token = '';
+    },
+    SET_USERINFO(state,data){
+        state.user = data;
     },
     SET_TOKEN(state,data){
         state.user = data.user;

@@ -31,9 +31,11 @@
         <el-menu
                 unique-opened
                 mode="vertical"
+              
+                :default-active="$route.path"
+                router
                 background-color="#fff"
                 text-color="#666666"
-                @select="muneselect"
                 active-text-color="red">
             <SidebarItem v-for="menu in menuList" :key="menu.menuId" :item="menu"/>
         </el-menu>

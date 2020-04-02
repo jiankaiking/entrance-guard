@@ -28,7 +28,7 @@
         </el-form-item>
         <el-form-item label-width="30px">
             <template>
-                <el-button type="primary" @click="handleOk">立即创建</el-button>
+                <el-button type="primary" plain @click="handleOk">立即创建</el-button>
                 <el-button @click="close">取消</el-button>
             </template>
         </el-form-item>

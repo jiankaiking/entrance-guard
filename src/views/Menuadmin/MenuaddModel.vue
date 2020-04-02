@@ -18,7 +18,7 @@
             </el-form-item>
             <el-form-item label="链接目标">
                 <el-select v-model="modelFromdata.menuMode">
-                    <el-option v-for="(item,index) in typeData" :value="item.dataValue" :label="item.dataCode">
+                    <el-option v-for="(item,index) in typeData" :key="index" :value="item.dataValue" :label="item.dataCode">
                     </el-option>
                 </el-select>
 <!--                <el-input v-model="modelFromdata.menuMode"></el-input>-->
@@ -39,7 +39,7 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="备注">
-                <el-input type="textarea" v-model="modelFromdata.menuRemarks"></el-input>
+                <el-input type="textarea" :rows="6" v-model="modelFromdata.menuRemarks"></el-input>
             </el-form-item>
         </el-form>
         <el-form label-width="150px" v-if="type == 'info'" class="menuinfo-form">
@@ -74,7 +74,7 @@
             </el-form-item>
         </el-form>
         <div class="btn-box">
-            <el-button type="primary" @click="ok">立即创建</el-button>
+            <el-button type="primary" @click="ok" plain>立即创建</el-button>
             <el-button @click="close">取消</el-button>
         </div>
     </div>
@@ -184,7 +184,7 @@
         text-align: center;
     }
     .btn-box{
-        width: 100%; display: flex; justify-content: space-between; padding:0 100px; box-sizing: border-box;
+        width: 100%; display: flex; justify-content: center; padding:0 100px; box-sizing: border-box;
     }
     /*.menuInfo .el-form-item{*/
     /*    margin-bottom: 0;*/
