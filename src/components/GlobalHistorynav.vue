@@ -7,7 +7,7 @@
                     :key="index"
                     @click="changePath(item.path)">
                     <span>{{item.title}}</span>
-                    <i class="el-icon-close" @click="closeTag(index)"></i>
+                    <i class="el-icon-close close" @click="closeTag(index)"></i>
                 </li>
             </ul>
         </div>
@@ -89,9 +89,16 @@
 </script>
 
 <style scoped>
+    .histonav .clear{
+        height: 50px;
+        overflow: hidden;
+    }
+    .histonav .clear li+li{
+        margin-bottom: 20px;
+    }
     .histonav .clear li {
         float: left;
-        width: 138px;
+        /* width: 138px; */
         padding: 0 27px;
         box-sizing: border-box;
         display: flex;
@@ -105,8 +112,13 @@
         font-size: 14px;
         color: #4589A5;
         border-radius: 18px;
+        position: relative;
     }
-
+    .histonav .clear li .close{
+        position: relative;
+        right: -10px;
+        bottom: 0px;
+    }
     .histonav .clear li:hover {
         cursor: pointer;
         background: #38B8EE;
