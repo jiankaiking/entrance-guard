@@ -48,7 +48,7 @@
                 </el-pagination>
             </div>
         </div>
-        <el-dialog width="500px" :lock-scroll="false" title="新增角色" align="center" :visible.sync="dialogTableVisible"  :before-close="handleClose">
+        <el-dialog width="500px" :lock-scroll="false" title="新增角色" align="center" :visible.sync="dialogTableVisible" >
             <FucmanagementModel ref="modalForm" @close="modalClose" @ok="modalFormOk"></FucmanagementModel>
         </el-dialog>
     </div>

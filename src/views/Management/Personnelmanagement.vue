@@ -13,8 +13,8 @@
                     :data="originData"
                     :props="{children: 'children',label: 'organName'}"
                     default-expand-all
-                    accordion="false"
-                    auto-expand-parent="false"
+                    :accordion="false"
+                    :auto-expand-parent="false"
                     :filter-node-method="filterNode"
                     @node-expand="expandedStructure"
                     ref="tree"/>

@@ -4,7 +4,7 @@
             <div class="banner-userinfo">
                 <el-dropdown @command="handleCommand">
                     <div class="userMsg">
-                        <img class="userVia" src="../assets/images/active.jpeg" alt="">
+                        <img class="userVia" :src="user.userIcon" alt="">
                         <span class="el-dropdown-link">
                         {{user.userName}}
                         </span>
@@ -13,6 +13,9 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="logout" @click.native="LogOut($route)">
                             退出登录
+                        </el-dropdown-item>
+                        <el-dropdown-item command="logout" @click.native="myInfo">
+                            查看信息
                         </el-dropdown-item>
                         <el-dropdown-item command="logout" @click.native="changePassword">
                             修改密码
@@ -26,8 +29,8 @@
 
 <script>
     import {mapState,mapActions} from 'vuex';
-    export default {
-        data() {
+            export default {
+                data() {
             return {
             }
         },
@@ -35,15 +38,14 @@
             ...mapState(['user'])
         },
         methods: {
-
             ...mapActions(["LogOut"]),
-
             changePassword(){
                 this.$router.push("/findpassword")
             },
+            myInfo(){
+                this.$router.push("/user")
+            },
             handleCommand(command) {
-                console.log(1)
-
             }
         }
     };

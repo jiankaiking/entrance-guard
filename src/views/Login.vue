@@ -1,5 +1,5 @@
 <template>
-    <div class="loginMain">
+    <div class="loginMain" style="background-size: cover">
         <div class="main-logo"><img src="../assets/images/loginlogo.png" alt=""></div>
         <div class="login-box">
             <h2 class="login-title">欢迎登录脸云物连</h2>
@@ -10,28 +10,32 @@
                 <!-- 扫码登录 -->
                 <div class="sweep-login">
                     <p>{{sweepLogin?'扫码登录':'账号密码登录'}}</p>
-                    <img @click="checkLogin" :src="sweepLogin?'1.jpg':'2.jpg'" alt="">
+
+                    <img class="checkimg" @click="checkLogin" :src="sweepLogin?'1.jpg':'2.jpg'" alt="">
+
                 </div>
                 <div class="sweep-box" v-show="sweepLogin">
                     <p>扫一扫</p>
                     <img src="../assets/images/logo.png" alt="">
                 </div>
                 <!-- 扫码登录end -->
-
                 <el-form v-show="!sweepLogin" label-width="0" ref="loginForm" :model="userInfor" :rules="rules"
                          style="padding-top: 20px">
                     <el-form-item prop="userName">
-                        <el-input placeholder="请输入账号" v-model="userInfor.userName">
+                        <el-input placeholder="请输入账号" clearable @keyup.enter.native="search('loginForm')"
+                                  v-model="userInfor.userName">
                             <i slot="prefix" class="el-icon-user"></i>
                         </el-input>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input placeholder="请输入密码" type="password"  clearable v-model="userInfor.password">
+                        <el-input placeholder="请输入密码" @keyup.enter.native="search('loginForm')" type="password"
+                                  clearable v-model="userInfor.password">
                             <i slot="prefix" class="el-icon-lock"></i>
                         </el-input>
                     </el-form-item>
-                    <el-form-item>
-                        <el-input placeholder="请输入验证码" v-model="userInfor.validateCode">
+                    <el-form-item prop="validateCode">
+                        <el-input placeholder="请输入验证码" @keyup.enter.native="search('loginForm')"
+                                  v-model="userInfor.validateCode">
                             <i slot="prefix" class="el-icon-lock"></i>
                             <template slot="suffix">
                                 <div class="login-code"><img @click="getCode" :src="codeImg" alt=""></div>
@@ -60,49 +64,72 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
-   import httpRequest from "../api/api";
-    import BASE_URL from '../api/config'
+    import {mapActions, mapMutations} from 'vuex'
+    import httpRequest from "../api/api";
+    import BASE_URL from '../api/config';
+    import axios from 'axios'
+
     export default {
         name: "Login",
         data() {
             return {
                 rules: {  //用户名密码验证
                     userName: [{required: true, message: '账号不可为空', trigger: 'blur'}],
-                    password: [{required: true, message: '密码不可为空', trigger: 'blur'}]
+                    password: [{required: true, message: '密码不可为空', trigger: 'blur'}],
+                    validateCode: [{required: true, message: '验证码不可为空', trigger: 'blur'}]
                 },
                 saveAccount: false,
-                codeImg:BASE_URL + '/managecenter/login/getValidateCode',
+                codeImg: '',
                 sweepLogin: false,  //扫码登录切换
                 userInfor: {  //用户名密码，验证码
                     userName: '',  //用户名
                     password: '', //密码
-                    loginClient:'PC',
-                    loginSncode:'dhaskdj132132',
+                    loginClient: 'PC',
+                    businessSystemID:1,
+                    loginSncode: 'dhaskdj132132',
                     validateCode: '' //验证码
                 },
             }
         },
         mounted() {
-this.getCode()
+            let that = this;
+            let token = this.$route.query.token;
+            if (token) {
+                sessionStorage.setItem('token', token);
+                axios.get("/api/managecenter/index/getUserInfo", {headers: {'Authorization': token}})
+                    .then(res => {
+                        if (res.data.success) {
+                            let userInfo = res.data.data;
+                            that.auth_success({token, userInfo})
+                            this.GET_ORGAN()
+                            this.GET_STYEMITEM()
+                            this.$router.push('/')
+                        }
+                    })
+            } else {
+                this.getCode()
+            }
         },
         methods: {
+
+            search(fromName) {
+                this.onSubmit(fromName)
+            },
+            ...mapMutations(['auth_success']),
+            ...mapActions(['GET_ORGAN', 'GET_STYEMITEM']),
             //登录按钮  表单验证，验证成功 action提交
             onSubmit(fromName) {
-
                 let _that = this;
                 this.$refs[fromName].validate((valid) => {
                     if (valid) {
                         this.$store.dispatch('Login', this.userInfor)
-                            .then(res=>{
-                                if(res.success){
-                                    if(this.$route.query.redirect){
-                                        this.$router.push(this.$route.query.redirect)
-                                    }else{
-                                        this.$router.push("/")
-                                    }
+                            .then(res => {
+                                if (res.success) {
+                                    this.GET_ORGAN()
+                                    this.GET_STYEMITEM()
+                                    this.$router.push('/')
 
-                                }else{
+                                } else {
                                     this.getCode()
                                 }
                             })
@@ -111,8 +138,8 @@ this.getCode()
                     }
                 });
             },
-            getCode(){
-                this.codeImg = '/sellerManagement/managecenter/login/getValidateCode?'+Math.random()
+            getCode() {
+                this.codeImg = '/api/managecenter/login/getValidateCode?' + Math.random()
             },
             //切换登录方式
             checkLogin() {
@@ -120,7 +147,6 @@ this.getCode()
             },
             //忘记密码
             fogetPassword() {
-                console.log(123)
                 this.$router.push('/findpassword')
             },
         }
@@ -128,24 +154,48 @@ this.getCode()
 </script>
 
 <style lang="scss" scoped>
-    .el-icon-lock,.el-icon-user{
+    .el-icon-lock, .el-icon-user {
         font-size: 22px;
         margin-top: 8px;
         color: #979797;
     }
+
+    .checkimg {
+        margin-left: 20px;
+        position: relative;
+    }
+
+    .checkimg::before {
+        position: absolute;
+        background: #ffffff;
+        content: '';
+        width: 90px;
+        height: 50px;
+        left: -38px;
+        top: 14px;
+        transform: rotateZ(45deg);
+        bottom: -10px;
+    }
+
     .loginCneter {
         position: relative;
+
         .sweep-login {
             position: absolute;
             top: 0;
             right: 0;
+
             img {
                 width: 50px;
                 height: 50px;
                 display: block;
+                cursor: pointer;
             }
+
             p {
                 font-size: 14px;
+                position: relative;
+                z-index: 3;
                 color: #979797;
                 line-height: 50px;
                 float: left;
@@ -157,6 +207,7 @@ this.getCode()
         width: 90px;
         height: 30px;
         margin: 5px 0;
+
         img {
 
             width: 90px;
@@ -166,6 +217,7 @@ this.getCode()
 
     .sweep-box {
         text-align: center;
+
         img {
             margin: 48px auto;
             display: block;
@@ -180,12 +232,16 @@ this.getCode()
         box-sizing: border-box;
 
     }
+
     .loginMain {
         width: 100%;
-        height: 935px;
+        height: 100vh;
+
         background: url("../assets/images/loginbgc.png") no-repeat center;
         overflow: hidden;
         position: relative;
+        display: flex;
+        align-items: center;
 
         .main-logo {
             position: absolute;
@@ -213,10 +269,9 @@ this.getCode()
         box-sizing: border-box;
         position: absolute;
         right: 582px;
-        width: 493px;
-        margin: 215px auto 160px;
         padding: 0px 35px 15px 35px;
-        border-radius:10px;
+        border-radius: 10px;
+
         .el-form-item {
             padding: 0 60px 25px;
         }

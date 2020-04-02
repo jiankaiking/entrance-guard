@@ -73,14 +73,14 @@
             },
         },
         watch:{
-            // myrouter(val,old){
+            myrouter(val,old){
 
-            //     if(val.type == "children"){
-            //         this.componentIs = 'Agentmessgesbasic';
-            //         this.componentArr.pop()
-            //     }
-                
-            // },
+                if(val.pageType == "children"){
+                    this.componentIs = 'Agentmessgesbasic';
+                    this.componentArr.pop()
+                }
+
+            },
             $route: {
                 handler: function(val, oldVal){
                     if(this.$route.query.type=='add'){

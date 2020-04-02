@@ -4,22 +4,27 @@
         <el-row>
             <el-col :span="11">
                 <ul class="show-table">
-                    <li><span>商户类型</span><span>321321</span></li>
-                    <li><span>商户名称</span><span>321321</span></li>
-                    <li><span>联系人</span><span>321321</span></li>
-                    <li><span>地址</span><span>321321</span></li>
-                    <li><span>邮箱</span><span>321321</span></li>
-                    <li><span>费率</span><span>321321</span></li>
+                    <li><span>商户类型</span>
+                        <span v-if="tableMsg.incomType == '1'">小微</span>
+                        <span v-if="tableMsg.incomType == '2'">企业</span>
+                        <span v-if="tableMsg.incomType == '3'">快速</span>
+                        <span v-if="tableMsg.incomType == '4'">个体工商户</span>
+                    </li>
+                    <li><span>商户名称</span><span>{{tableMsg.mercNm}}</span></li>
+                    <li><span>联系人</span><span>{{tableMsg.stoeCntNm}}</span></li>
+                    <li><span>地址</span><span>{{tableMsg.stoeAdds}}</span></li>
+                    <li><span>邮箱</span><span>{{tableMsg.mailbox}}</span></li>
+                    <li><span>费率</span><span>{{tableMsg.mercNm}}</span></li>
                 </ul>
             </el-col>
             <el-col :span="11" :offset="2">
                 <ul class="show-table">
-                    <li><span>经营类目</span><span>321321</span></li>
-                    <li><span>商户简称</span><span>321321</span></li>
-                    <li><span>联系电话</span><span>321321</span></li>
-                    <li><span>详细地址</span><span>321321</span></li>
-                    <li><span>营业执照号</span><span>321321</span></li>
-                    <li><span>商户号</span><span>321321</span></li>
+                    <li><span>经营类目</span><span>{{tableMsg.mccCd}}</span></li>
+                    <li><span>商户简称</span><span>{{tableMsg.scanStoeCnm}}</span></li>
+                    <li><span>联系电话</span><span>{{tableMsg.stoeCntTel}}</span></li>
+                    <li><span>详细地址</span><span>{{tableMsg.address}}</span></li>
+                    <li><span>营业执照号</span><span>{{tableMsg.comBusLicNo}}</span></li>
+                    <li><span>商户号</span><span>{{tableMsg.comBusLicNo}}</span></li>
                 </ul>
             </el-col>
         </el-row>
@@ -27,12 +32,12 @@
         <el-row>
             <el-col :span="11">
                 <ul class="show-table">
-                    <li><span>登录账号</span><span>321321</span></li>
+                    <li><span>登录账号</span><span>{{tableMsg.mobile}}</span></li>
                 </ul>
             </el-col>
             <el-col :span="11" :offset="2">
                 <ul class="show-table">
-                    <li><span>登录密码</span><span>321321</span></li>
+                    <li><span>登录密码</span><span>{{tableMsg.loginPwd}}</span></li>
                 </ul>
             </el-col>
         </el-row>
@@ -40,17 +45,17 @@
         <el-row>
             <el-col :span="11">
                 <ul class="show-table">
-                    <li><span>结算类型</span><span>321321</span></li>
-                    <li><span>开户银行</span><span>321321</span></li>
-                    <li><span>开户支行</span><span>321321</span></li>
-                    <li><span>银行卡号</span><span>321321</span></li>
+                    <li><span>结算类型</span><span>{{tableMsg.stlSign == 1?'对私':'对公'}}</span></li>
+                    <li><span>开户银行</span><span>{{tableMsg.bankName}}</span></li>
+                    <li><span>开户支行</span><span>{{tableMsg.branchBankName}}</span></li>
+                    <li><span>银行卡号</span><span>{{tableMsg.stlOac}}</span></li>
                 </ul>
             </el-col>
             <el-col :span="11" :offset="2">
                 <ul class="show-table">
-                    <li><span>账户类型</span><span>321321</span></li>
-                    <li><span>开户所在地</span><span>321321</span></li>
-                    <li><span>账户名</span><span>321321</span></li>
+                    <li><span>账户类型</span><span>{{tableMsg.stlOac}}</span></li>
+                    <li><span>开户所在地</span><span>{{tableMsg.bankAddrCode}}</span></li>
+                    <li><span>账户名</span><span>{{tableMsg.bankAcnm}}</span></li>
                 </ul>
             </el-col>
         </el-row>
@@ -58,13 +63,13 @@
         <el-row>
             <el-col :span="11">
                 <ul class="show-table">
-                    <li><span>法人姓名</span><span>321321</span></li>
-                    <li><span>身份证到期日</span><span>321321</span></li>
+                    <li><span>法人姓名</span><span>{{tableMsg.fullName}}</span></li>
+                    <li><span>身份证到期日</span><span>{{tableMsg.crpEndDt}}</span></li>
                 </ul>
             </el-col>
             <el-col :span="11" :offset="2">
                 <ul class="show-table">
-                    <li><span>法人身份证</span><span>321321</span></li>
+                    <li><span>法人身份证</span><span>{{tableMsg.idCardEndDate}}</span></li>
                 </ul>
             </el-col>
         </el-row>
@@ -72,31 +77,55 @@
         <el-row>
             <el-col :span="11">
                 <ul class="show-table">
-                    <li><span>所属代理商</span><span>321321</span></li>
+                    <li><span>所属代理商</span><span>{{tableMsg.agentName}}</span></li>
                 </ul>
             </el-col>
             <el-col :span="11" :offset="2">
                 <ul class="show-table">
-                    <li><span>开通时间</span><span>321321</span></li>
+                    <li><span>开通时间</span><span>{{tableMsg.openTime}}</span></li>
                 </ul>
             </el-col>
         </el-row>
         <div class="title">附件材料</div>
         <el-row>
-            <ul class="show-image">
-                <li><img src="" alt=""></li>
-                <li><img src="" alt=""></li>
-                <li><img src="" alt=""></li>
-                <li><img src="" alt=""></li>
+            <ul class="show-image" v-if="tableMsg.newLandImg">
+                <li><img :src="tableMsg.newLandImg.bankCardPhoto" alt=""></li>
+                <li><img :src="tableMsg.newLandImg.cashierPhoto" alt=""></li>
+                <li><img :src="tableMsg.newLandImg.comBusUrl" alt=""></li>
+                <li><img :src="tableMsg.newLandImg.idCardFront" alt=""></li>
+                <li><img :src="tableMsg.newLandImg.idCardReverse" alt=""></li>
+                <li><img :src="tableMsg.newLandImg.scenePhoto" alt=""></li>
+                <li><img :src="tableMsg.newLandImg.settleIdcardContrary" alt=""></li>
+                <li><img :src="tableMsg.newLandImg.settleIdcardFront" alt=""></li>
+                <li><img :src="tableMsg.newLandImg.storePhoto" alt=""></li>
+                <li v-for="item in tableMsg.newLandImg.settlPhoto"><img :src="item" alt=""></li>
             </ul>
         </el-row>
-        <div class="back-button"><el-button>返回</el-button></div>
+        <div class="back-button"><el-button @click="back">返回</el-button></div>
     </div>
 </template>
 
 <script>
+    import httpRequest from "../../api/api";
     export default {
-        name: "NewLandAudit"
+        name: "NewLandAudit",
+        data(){
+            return{
+                tableMsg:{}
+            }
+        },
+        mounted() {
+            let e = this.$route.query;
+            httpRequest("/sellerManagement/newLand/getNewLandInfo","GET",{channelId:e.channelId})
+                .then(res=>{
+                    this.tableMsg = res.data;
+                })
+        },
+        methods:{
+            back(){
+                this.$router.go(-1)
+            }
+        }
     }
 </script>
 
@@ -105,10 +134,13 @@
         width: 100%; text-align: center; margin-top: 80px;
     }
     .show-image{
-        display: flex;
+        display: flex; justify-content: flex-start; flex-wrap: wrap;
     }
     .show-image li{
-        background: #ffffff; width: 150px; height: 84px; border: 1px solid #CACACA; margin-left: 22px;
+        background: #ffffff; width: 150px; height: 84px; border: 1px solid #CACACA; margin-left: 22px; margin-bottom: 20px;
+    }
+    .show-image img{
+        width: 150px; height: 84px; display: block;
     }
     .business-form {
         padding: 25px 50px;

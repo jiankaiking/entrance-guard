@@ -27,12 +27,10 @@ module.exports = {
         proxy: {
             '/api': {
                  target: 'http://192.168.0.199:8888',//managecenter sellerManagement
-
-
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
-                    '^/sellerManagement': ''
+                    '^/api': ''
                 }
             },
         }

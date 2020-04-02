@@ -67,8 +67,7 @@
         methods: {
 
             goInfo(row){
-
-                 this.$router.push({path: '/agentmessges', query: {type: 'details', agentId: row.agentId}})
+                 this.$router.push({path: '/agentmessges', query: {type: 'details',pageType:'children', agentId: row.agentId}})
             },
         }
 

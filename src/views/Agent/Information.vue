@@ -62,7 +62,7 @@
                 </el-tag>
             </el-form-item>
             <div class="title">代理规则</div>
-            <el-table 
+            <el-table
                         v-if="rlue"
                         empty-text
                         element-loading-text = "数据正在加载中"
@@ -96,17 +96,17 @@
                         <template slot-scope="scope">
                             <div v-for="(item,index) in scope.row.payMediaCodeVos" :key="index">
                                 <div class="spacing">{{item.remark}}</div>
-                            </div>                                
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" width="256" label="费率">
                         <template slot-scope="scope">
                             <div v-for="(item,index) in scope.row.payMediaCodeVos" :key="index">
                                <div style="width:100px;margin:20px auto;">
-                                    <el-input type="number" v-model="item['prdRate']"></el-input>    
+                                    <el-input type="number" v-model="item['prdRate']"></el-input>
                                 </div>
-                            </div> 
-                            
+                            </div>
+
                         </template>
                     </el-table-column>
                 </el-table>
@@ -128,7 +128,7 @@
                 </el-form-item>
                 <el-form-item label="上传附件">
                     <el-col :span="6" class="file-upload">
-                        <el-upload 
+                        <el-upload
                          v-show="Fileupload"
                         action="/api/sellerManagement/managecenter/upload/uploadFile"
                         list-type="picture-card"
@@ -153,7 +153,7 @@
                 </el-form-item>
                 <el-form-item>
                     <div class="formsubmit-btn">
-                        <el-button>取消</el-button>
+                        <el-button @click="back">取消</el-button>
                         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
                     </div>
                 </el-form-item>
@@ -170,7 +170,6 @@
     import validate from "../../mixins/validate";
     export default {
         name: "information",
-        inject: ['parentTest'],
         data() {
             return {
                 myHeaders: {Authorization: token},
@@ -254,6 +253,9 @@
             // this.dropDownData()
         },
         methods: {
+            back(){
+                this.$router.push('/agent')
+            },
             // 通道选择关联
             aisle(e,index){
                 if(e){
@@ -405,7 +407,7 @@
                     return false;
                 }
                 });
-                
+
             },
               // 获取代理费，代理等级，代理位置数据
             dropDownData() {
@@ -423,7 +425,7 @@
                             var special=''
                             var channelInfoList=[]
                             if(this.$route.query.signId){
-                                
+
                                 channelInfoList=JSON.parse(this.agentManage.channelInfoList)
                             }
                             for(var i=0;i<this.list.length;i++){
@@ -432,7 +434,7 @@
 
                                 // }
                                 // if(this.list[i].channelName=='微信'){
-                                    
+
                                 // }
                                 if(channelInfoList.length!=0&&this.list[i].channelId==channelInfoList[i].channelId){
                                     this.list[i]['checked']=true
@@ -447,13 +449,13 @@
                                         this.list[i].payMediaCodeVos[j]['checked']=false
                                         this.list[i].payMediaCodeVos[j]['prdRate']=''
                                     }
-                                    
+
                                 }
                             }
                              this.list = JSON.parse(JSON.stringify(this.list))
                             this.rlue=true
                         }
-                })                    
+                })
             }
         }
     }
@@ -470,7 +472,7 @@
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button{
             -webkit-appearance: none !important;
-            margin: 0; 
+            margin: 0;
         }
 </style>
 <style scoped>
@@ -478,7 +480,7 @@
             text-decoration:none;
             color: #409EFF;
         }
-    
+
         .spacing{
         margin: 20px 0;
     }

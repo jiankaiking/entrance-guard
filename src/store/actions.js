@@ -13,15 +13,15 @@ const actions = {
                     if(resp.success){
                         const token = resp.data.token;
                         const userInfo = resp.data.userInfo;
-                        localStorage.setItem('token', token);
-                        localStorage.setItem('user', JSON.stringify(userInfo));
+                        sessionStorage.setItem('token', token);
+                        sessionStorage.setItem('user', JSON.stringify(userInfo));
                         commit('auth_success',{ token, userInfo});
                     }
                     resolve(resp);
                 })
                 .catch(err => {
                     commit('auth_error')
-                    localStorage.removeItem('token')
+                    sessionStorage.removeItem('token')
                     reject(err)
                 })
         })
@@ -32,6 +32,7 @@ const actions = {
             httpRequest('/managecenter/index/getOrganListByUser')
                 .then(response => {
                     if(response.success){
+                        sessionStorage.setItem('organArr',JSON.stringify(response.data));
                         commit('GET_ORGAN',response.data);
                     }
                     resolve(response);
@@ -47,6 +48,8 @@ const actions = {
             httpRequest('/managecenter/index/getSystemList')
                 .then(response => {
                     if(response.success){
+                        let data = response.data;
+                        sessionStorage.setItem('systemArr',JSON.stringify(data));
                         commit('GET_STYEMITEM',response.data);
                     }
                     resolve(response);
@@ -63,9 +66,7 @@ const actions = {
                 .then(response => {
                     if(response.success){
                         Message.success(response.msg)
-                        localStorage.removeItem('user');
-                        localStorage.removeItem('token');
-                        delete axios.defaults.headers.common['Authorization'];
+                        sessionStorage.clear()
                         if(backPath){
                             router.push({path:'/login',query:{redirect:backPath.fullPath}})
                         }else{

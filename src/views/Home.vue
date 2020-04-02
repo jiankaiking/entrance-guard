@@ -9,11 +9,12 @@
             <div class="useContenner">
                 <i class="el-icon-arrow-right" @click="rightRowclick"></i>
                 <vuedraggable :options="{animation:300}" class="wrapper"
+                              @change="changeAddress"
                               :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}" v-model="useData">
                     <transition-group>
                         <div v-for="(item,index) in useData" :key="index" class="item">
-                            <img :src="item.imgUrl" alt="">
-                            <p>{{item.name}}</p>
+                            <img :src="item.menuUrl" alt="">
+                            <p>{{item.menuName}}</p>
                         </div>
                     </transition-group>
                 </vuedraggable>
@@ -36,7 +37,7 @@
             <div class="webapp">
                 <ul class="clear">
                     <li v-for="(item,index) in webappData">
-                        <img :src="item.qrcodeUrl" alt="qrcodeName">
+                        <img :src="item.qrcodeUrl" :alt="item.qrcodeName">
                         <span>{{item.qrcodeName}}</span>
                     </li>
                 </ul>
@@ -57,17 +58,8 @@
         data() {
             return {
                 dragging: null,
-                useData: [
-                    {path: '', name: '首页', imgUrl: img},
-                    {path: '', name: '代理商', imgUrl: img},
-                    {path: '', name: '商户', imgUrl: img},
-                    {path: '', name: '代理商', imgUrl: img},
-                    {path: '', name: '代理商', imgUrl: img},
-                ],
-                messgesData: [
-                    {title: '空腹可以吃饭吗'},
-                    {title: '哪个地方得女人最好看'}
-                ],
+                useData: [{ menuName: '首页' },],
+                messgesData: [{title: '空腹可以吃饭吗'}, {title: '哪个地方得女人最好看'}],
                 webappData: [],
                 marginLeft: 0,
                 leftFlag: true,
@@ -86,12 +78,18 @@
             }
         },
         mounted() {
-            // this.getIndexInfo()
-
+            this.getIndexInfo()
+            this.GET_STYEMITEM()
+            this.GET_ORGAN()
+            window.document.body.style.backgroundColor = '#ffffff'
 
         },
         methods: {
-
+            ...mapActions(["GET_STYEMITEM"]),
+            ...mapActions(["GET_ORGAN"]),
+            changeAddress(evt){
+                console.log(evt)
+            },
             getIndexInfo() {
                 httpRequest("/managecenter/index/getUserInfo", "GET")
                     .then(res => {
@@ -101,10 +99,18 @@
                         if (res.success) {
                             this.webappData = res.data;
                         }
-                        return httpRequest("/managecenter/index/getMenuTreeByUser", "GET")
+                        return httpRequest('/managecenter/index/getCommonFunctions',"GET")
                     })
                     .then(res=>{
-                        console.log(res)
+                        if(res.success){
+                            this.useData = res.data;
+                        }
+                        return httpRequest("/managecenter/index/getHotNews","GET")
+                    })
+                    .then(res=>{
+                        if(res.success){
+
+                        }
                     })
             },
             rightRowclick() {
@@ -122,14 +128,11 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .common-use {
         width: 100%;
         background-color: #ffffff;
 
     }
-
     .indexPage {
         overflow: hidden;
 
@@ -196,6 +199,7 @@
         }
 
         .item {
+            vertical-align: top;
             display: inline-block;
             text-align: center;
             width: 168px;

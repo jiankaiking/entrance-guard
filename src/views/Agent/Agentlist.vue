@@ -80,14 +80,14 @@
         data() {
             return {
                 searchData: {
-                    agentArea: '', //代理区域
+                    areaCode: '', //代理区域
                     queryCriteria: '',  //查询条件
                     agent_pid: '',  //上级代理商id
                     size: 10,
                     page: 1
                 },
 
-                total: '',
+                total: 0,
                 dialogTableVisible: false,
                 tableData: [],
                 listUrl: '/sellerManagement/agentManage/getAgentList',   //表格数据接口
@@ -101,7 +101,7 @@
         methods: {
 
             selectCode(e){
-                this.searchData.agentArea = e;
+                this.searchData.areaCode = e;
             },
           //改变代理商状态以及子代功能.  type 等于0 是代理商状态  1 是子代功能
             changeSonStatus(row, index, type) {

@@ -33,17 +33,17 @@
         <el-form class="forget-from" ref="resetForm" v-else-if="status == 1" :model="passwordFrom" :rules="rules">
             <p class="title">设置新密码</p>
             <el-form-item style="margin-bottom: 0;padding-bottom: 0;" prop="password">
-                    <el-input placeholder="请输入密码 " v-model="passwordFrom.password">
-                        <i slot="suffix" class="el-icon-view"></i>
-                    </el-input>
+                <el-input placeholder="请输入密码 " v-model="passwordFrom.password">
+                    <i slot="suffix" class="el-icon-view"></i>
+                </el-input>
             </el-form-item>
             <p class="text"><i class="el-icon-warning-outline"></i>建议使用字母、数字和符号两种以上的组合，8-20个字符</p>
             <p class="title">再次输入新密码</p>
-                <el-form-item  prop="passwordTrue">
-                    <el-input placeholder="请输入密码" v-model="passwordFrom.passwordTrue">
-                        <i slot="suffix" class="el-icon-view"></i>
-                    </el-input>
-                </el-form-item>
+            <el-form-item prop="password" >
+                <el-input placeholder="请输入密码" v-model="passwordFrom.passwordTrue">
+                    <i slot="suffix" class="el-icon-view"></i>
+                </el-input>
+            </el-form-item>
             <el-form-item>
                 <el-button class="next-Button" @click="passwordSubmit('resetForm')">提交</el-button>
             </el-form-item>

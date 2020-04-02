@@ -168,10 +168,10 @@
     import CitySelect from "../../components/select/CitySelect";
     export default {
         name: "Agentmessgesbasic",
-        inject: ['parentTest'],
+
         data() {
             return {
-                type:true, 
+                type:true,
                 form: {
                     cooperType: '',//合作方式
                     agentType: '',//代理商类型 个人 or 企业
@@ -256,7 +256,7 @@
                     .then(res => {
                         if (res.success) {
                             this.form=res.data
-                            this.$router.push({query: {type: 'details', agentId: res.data.agentId,signId:res.data.signId}})
+                            // this.$router.push({query: {type: 'details', agentId: res.data.agentId,signId:res.data.signId}})
                         }
                 })
             },
