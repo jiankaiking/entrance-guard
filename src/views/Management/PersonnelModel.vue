@@ -229,7 +229,7 @@
             },
             //所属部门
             department() {
-                httpRequest('/organManage/getChildOrganList', 'GET')
+                httpRequest('/managecenter/organManage/getChildOrganList', 'GET')
                     .then(res => {
                         this.options=res.data
                     })
@@ -258,11 +258,11 @@
                         delete res.data.organName;
                         this.modelFromdata = res.data;
                     })
-                    httpRequest('roleManage/getUnSelectedRoleListByUserId', 'GET',{staffId: record.staffId})
+                    httpRequest('/managecenter/roleManage/getUnSelectedRoleListByUserId', 'GET',{staffId: record.staffId})
                     .then(res => {
                         this.noRoles=res.data
                     })
-                    httpRequest('/roleManage/getSelectedRoleListByUserId', 'get',{staffId: record.staffId})
+                    httpRequest('/managecenter/roleManage/getSelectedRoleListByUserId', 'get',{staffId: record.staffId})
                     .then(res => {
                         this.alreadyRoles=res.data
                         var arr=[]

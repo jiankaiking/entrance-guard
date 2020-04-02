@@ -2,7 +2,7 @@
     <div class="indexPage">
         <div class="dataStatic">
         </div>
-        <div class="common-use">
+        <div class="common-use" @drop="drop" @dragover="dragover">
             <div class="common-use-title">
                 <span>常用功能</span>
             </div>
@@ -13,7 +13,7 @@
                     <transition-group>
                         <div v-for="(item,index) in useData" :key="index" class="item">
                             <img :src="item.imgUrl" alt="">
-                            <p>{{item.name}}</p>
+                            <p>{{item.menuName}}</p>
                         </div>
                     </transition-group>
                 </vuedraggable>
@@ -87,11 +87,22 @@
         },
         mounted() {
             // this.getIndexInfo()
-
-
+            httpRequest("/managecenter/index/getCommonFunctions", "GET")
+                    .then(res => {
+                        if(res.success){
+                            this.useData=res.data
+                        }
+           })
         },
         methods: {
-
+            drop (event) {
+                console.log(event.dataTransfer)
+            let data = event.dataTransfer.getData('item')
+            // this.dropData = data
+            },
+            dragover (event) {
+                event.preventDefault()
+            },
             getIndexInfo() {
                 httpRequest("/managecenter/index/getUserInfo", "GET")
                     .then(res => {

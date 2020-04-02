@@ -112,7 +112,7 @@ this.getCode()
                 });
             },
             getCode(){
-                this.codeImg = '/sellerManagement/managecenter/login/getValidateCode?'+Math.random()
+                this.codeImg = '/api/managecenter/login/getValidateCode?'+Math.random()
             },
             //切换登录方式
             checkLogin() {

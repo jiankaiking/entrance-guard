@@ -48,7 +48,7 @@
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
                         <el-button @click="resetSearch" type="success" plain>重置</el-button>
-                        <el-button @click="resetSearch" type="success" plain>导出</el-button>
+                        <el-button @click="exportData" type="success" plain>导出</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -142,6 +142,7 @@
                 selectAgentList:[],
                 dialogTableVisible: false,
                 tableData: [],
+                exportUrl:'/api/managecenter/deviceManage/deviceOutbound/exportDeviceOutbound',///导出
                 listUrl: '/managecenter/deviceManage/deviceOutbound/queryDeviceOutbound',   //表格数据接口
             }
         },
