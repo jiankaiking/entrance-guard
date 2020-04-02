@@ -89,40 +89,67 @@
         <div class="title">附件材料</div>
         <el-row>
             <ul class="show-image" v-if="tableMsg.newLandImg">
-                <li><img :src="tableMsg.newLandImg.bankCardPhoto" alt=""></li>
-                <li><img :src="tableMsg.newLandImg.cashierPhoto" alt=""></li>
-                <li><img :src="tableMsg.newLandImg.comBusUrl" alt=""></li>
-                <li><img :src="tableMsg.newLandImg.idCardFront" alt=""></li>
-                <li><img :src="tableMsg.newLandImg.idCardReverse" alt=""></li>
-                <li><img :src="tableMsg.newLandImg.scenePhoto" alt=""></li>
-                <li><img :src="tableMsg.newLandImg.settleIdcardContrary" alt=""></li>
-                <li><img :src="tableMsg.newLandImg.settleIdcardFront" alt=""></li>
-                <li><img :src="tableMsg.newLandImg.storePhoto" alt=""></li>
-                <li v-for="item in tableMsg.newLandImg.settlPhoto"><img :src="item" alt=""></li>
+                <li><img :src="tableMsg.newLandImg.bankCardPhoto" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
+                <li><img :src="tableMsg.newLandImg.cashierPhoto" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
+                <li><img :src="tableMsg.newLandImg.comBusUrl" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
+                <li><img :src="tableMsg.newLandImg.idCardFront" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
+                <li><img :src="tableMsg.newLandImg.idCardReverse" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
+                <li><img :src="tableMsg.newLandImg.scenePhoto" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
+                <li><img :src="tableMsg.newLandImg.settleIdcardContrary" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
+                <li><img :src="tableMsg.newLandImg.settleIdcardFront" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
+                <li><img :src="tableMsg.newLandImg.storePhoto" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
+                <li v-for="item in tableMsg.newLandImg.settlPhoto">
+                    <img :src="item" alt="">
+                    <div class="imgText">法人身份证正面照</div>
+                </li>
             </ul>
         </el-row>
-        <div class="back-button"><el-button @click="back">返回</el-button></div>
+        <div class="back-button">
+            <el-button @click="back">返回</el-button>
+        </div>
     </div>
 </template>
 
 <script>
     import httpRequest from "../../api/api";
+
     export default {
         name: "NewLandAudit",
-        data(){
-            return{
-                tableMsg:{}
+        data() {
+            return {
+                tableMsg: {}
             }
         },
         mounted() {
             let e = this.$route.query;
-            httpRequest("/sellerManagement/newLand/getNewLandInfo","GET",{channelId:e.channelId})
-                .then(res=>{
+            httpRequest("/sellerManagement/newLand/getNewLandInfo", "GET", {
+                channelId: e.channelId,
+                sellerId: e.sellerId
+            })
+                .then(res => {
                     this.tableMsg = res.data;
                 })
         },
-        methods:{
-            back(){
+        methods: {
+            back() {
                 this.$router.go(-1)
             }
         }
@@ -130,39 +157,69 @@
 </script>
 
 <style scoped>
-    .back-button{
-        width: 100%; text-align: center; margin-top: 80px;
+    .back-button {
+        width: 100%;
+        text-align: center;
+        margin-top: 80px;
     }
-    .show-image{
-        display: flex; justify-content: flex-start; flex-wrap: wrap;
+
+    .show-image {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
     }
-    .show-image li{
-        background: #ffffff; width: 150px; height: 84px; border: 1px solid #CACACA; margin-left: 22px; margin-bottom: 20px;
+
+    .show-image li {
+        background: #ffffff;
+        width: 150px;
+        height: 84px;
+        border: 1px solid #CACACA;
+        margin-left: 22px;
+        margin-bottom: 50px;
+
     }
-    .show-image img{
-        width: 150px; height: 84px; display: block;
+    .show-image .imgText{
+        padding: 15px 0; text-align: center;
     }
+
+    .show-image img {
+        width: 150px;
+        height: 84px;
+        display: block;
+    }
+
     .business-form {
         padding: 25px 50px;
     }
+
     .show-table li {
         display: flex;
         border-bottom: 1px solid #CACACA;
     }
-    .show-table span{
-        text-align: center; line-height: 56px;
+
+    .show-table span {
+        text-align: center;
+        line-height: 56px;
     }
-    .show-table span:first-child{
+
+    .show-table span:first-child {
         border-right: 1px solid #CACACA;
         width: 224px;
     }
-    .show-table span:last-child{
+
+    .show-table span:last-child {
         width: 100%;
     }
+
     .show-table {
-        margin-bottom: 25px; color: #333333; font-size: 16px;
-        border: 1px solid #CACACA; border-bottom: none;  border-radius: 8px;
+        margin-bottom: 25px;
+        color: #333333;
+        font-size: 16px;
+        border: 1px solid #CACACA;
+        border-bottom: none;
+        border-radius: 8px;
     }
+
     .title {
         position: relative;
         color: #000000;
@@ -171,6 +228,7 @@
         padding-left: 30px;
         margin-bottom: 25px;
     }
+
     .title::before {
         position: absolute;
         content: '';

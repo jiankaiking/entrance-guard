@@ -84,6 +84,9 @@
             window.document.body.style.backgroundColor = '#ffffff'
 
         },
+        destroyed(){
+            window.document.body.style.backgroundColor = '#FAF7FA'
+        },
         methods: {
             ...mapActions(["GET_STYEMITEM"]),
             ...mapActions(["GET_ORGAN"]),

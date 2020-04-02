@@ -81,6 +81,7 @@
 
 <script>
     import httpRequest from "../../api/api";
+    import {mapMutations} from 'vuex'
 
     export default {
         name: "Usermessges",
@@ -98,14 +99,15 @@
         },
 
         methods: {
+            ...mapMutations(['SET_USERINFO']),
             getInfo() {
-
                 httpRequest("/managecenter/index/getUserInfo", "GET")
                     .then(res => {
                         if (res.success) {
                             this.userMsg = res.data;
+                            let data = JSON.parse(JSON.stringify(res.data))
+                            this.SET_USERINFO(data)
                         }
-
                     })
             },
             saveInfo() {

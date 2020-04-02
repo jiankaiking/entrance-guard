@@ -154,9 +154,14 @@
         methods: {
             //签约详情
             goInfo(row) {
+                if(row.status == 2){
+                    this.$router.push({path: "/newland/info", query: {channelId: row.channelId, sellerId: row.sellerId}})
+                }else if(row.status == 1){
+                    this.$router.push({path: "/newlandaudit", query: {channelId: row.channelId, sellerId: row.sellerId}})
+                }
                 // this.$router.push({path: "/newlandaudit", query: {channelId: row.channelId, sellerId: row.sellerId}})
-                 this.$router.push({path: "/newland/info", query: {channelId: row.channelId, sellerId: row.sellerId}})
-                console.log(row)
+                //  this.$router.push({path: "/newland/info", query: {channelId: row.channelId, sellerId: row.sellerId}})
+                 console.log(row)
             },
 
 

@@ -27,6 +27,25 @@
 </script>
 
 <style>
+    .tableBox .el-table{
+        margin: 2px;
+    }
+    .el-menu-item-group .el-menu-item{
+        text-align: center;
+    }
+    .el-menu-item-group__title{
+        display: none;
+    }
+    .el-textarea__inner{
+        font-family: '微软雅黑';
+    }
+.business-form{
+    background: #ffffff; box-shadow: 0px 1px 6px 4px rgba(242, 242, 242, 1);
+    border-radius: 8px;
+}
+    body .el-table th.gutter{
+        display: table-cell!important;
+    }
     .el-header{
         padding: 0 !important; height: 70px !important;
     }

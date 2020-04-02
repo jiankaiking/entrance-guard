@@ -43,7 +43,7 @@
                 </el-table>
             </div>
         </div>
-        <el-dialog :title="title" center :lock-scroll="false" width="500px" :visible.sync="dialogTableVisible">
+        <el-dialog :title="title" center   width="50%" :visible.sync="dialogTableVisible">
             <MenuaddModel ref="modalForm" @close="close" @ok="modelFormOk"></MenuaddModel>
         </el-dialog>
     </div>
@@ -130,6 +130,7 @@
                         this.tableData = res.data;
                     })
             },
+            //加载子节点菜单
             loadData(tree, treeNode, resolve){
                 this.searchData.menuPid = tree.menuId
                 httpRequest(this.listUrl, "GET", this.searchData)
