@@ -29,7 +29,7 @@
                 </el-col>
             </el-form-item>
             <el-form-item label="显示排序">
-                <el-input-number v-model="modelFromdata.menuSort" @change="handleChange" :min="1"
+                <el-input-number v-model="modelFromdata.menuSort" :min="1"
                                  :max="10"></el-input-number>
             </el-form-item>
             <el-form-item label="*菜单类型">
@@ -186,9 +186,9 @@
     .btn-box{
         width: 100%; display: flex; justify-content: space-between; padding:0 100px; box-sizing: border-box;
     }
-    .menuInfo .el-form-item{
-        margin-bottom: 0;
-    }
+    /*.menuInfo .el-form-item{*/
+    /*    margin-bottom: 0;*/
+    /*}*/
 
     .avatar {
         width: 50px;

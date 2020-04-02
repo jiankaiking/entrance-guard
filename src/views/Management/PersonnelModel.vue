@@ -124,12 +124,12 @@
                 </el-form-item>
             </el-form>
             <div v-show="!tabSelected" class="roleInfo">
-                <treeTransfer :title="['未选','已选']" 
-                :from_data='noRoles' 
-                node_key="roleId"  :to_data='alreadyRoles' 
-                :defaultProps="{label:'roleName'}"   
+                <treeTransfer :title="['未选','已选']"
+                :from_data='noRoles'
+                node_key="roleId"  :to_data='alreadyRoles'
+                :defaultProps="{label:'roleName'}"
                  @addBtn='addMove'
-                  @removeBtn='remove' 
+                  @removeBtn='remove'
                   mode='transfer'>
                 </treeTransfer>
                 <!-- <el-transfer v-model="alreadyRoles" :props="{
@@ -141,8 +141,8 @@
                     </div>
             </div>
     </div>
-        
-    
+
+
 </template>
 
 <script>
@@ -239,7 +239,7 @@
                 this.modelFromdata.staffPhotos = res.data
             },
             add() {
-                this.newBtnStatus=false
+
                 for(var key in this.modelFromdata){
                     if(key=='staffStatus'){
                         this.modelFromdata[key] = "1"
@@ -276,7 +276,7 @@
                 this.$emit('close');
             },
             closeMessage(){
-                this.$refs.form.clearValidate(); 
+                this.$refs.form.clearValidate();
             },
             handleOk(modelFromdata) {
                 this.$refs.form.validate((valid) => {
@@ -294,7 +294,7 @@
                         return false;
                     }
                 });
-                
+
 
             },
         },
@@ -305,7 +305,7 @@
     .organ-from .el-select {
         width: 48% !important;
     }
-    
+
 </style>
 
 

@@ -7,22 +7,39 @@
 
     export default {
         name: 'app',
-        // mounted() {
-        //     window.addEventListener('message', this.handleMessage);
-        // },
-        // methods: {
-        //     //接受token
-        //     handleMessage(event) {
-        //         const data = event.data
-        //         this.$store.state.token = data.token;
-        //         localStorage.setItem("token",data.token)
-        //     },
-        // }
+        mounted() {
+            window.addEventListener('message', this.handleMessage);
+        },
+        methods: {
+            //接受token
+            handleMessage(event) {
+
+                if(event.data.token){
+                    console.log(event.data)
+                    const data = event.data;
+                    sessionStorage.setItem("token",data.token)
+                    this.$store.state.token = data.token;
+
+                }
+            },
+        }
     };
 </script>
 
 <style>
-
+    .el-header{
+        padding: 0 !important; height: 70px !important;
+    }
+    .myDefult-btn{
+        background: #38B8EE !important; color: #ffffff !important;
+    }
+    .myDefult-btn-plan{
+        background: #ffffff !important; color: #38B8EE !important; border: 1px solid #38B8EE;
+    }
+    address, caption, cite, code, dfn, em, strong, th, var {
+        font-style: normal;
+        font-weight: normal;
+    }
     .el-select {
         width: 100%;
     }

@@ -11,9 +11,6 @@ const router = new Router({
             path: '/',
             component: () => import('@/views/dashboard'),
             redirect: '/home/index',
-            meta: {
-                keepAlive: true
-            },
             children: [
                 {
                     path: '/home/index', name: 'homeindex', component: () => import('@/views/Home'),
@@ -154,9 +151,16 @@ const router = new Router({
                     component: () => import('@/views/Merchant/MerchantList'),
                 },
                 {
-                    path: '/merchant/list1',
-                    name: 'MerchantInfo',
-                    component: () => import('@/views/Merchant/MerchantInfo'),
+                    path:'/newlandaudit',
+                    component: () => import('../views/Merchant/NewLandAudit.vue')
+                },
+                {
+                    path:'/newland/info',
+                    component: () => import('../views/Merchant/Newland.vue')
+                },
+                {
+                    path: '/merchant/info',
+                    component: () => import('../views/Merchant/MerchantInfo.vue')
                 },
                 //设备列表
                 {
@@ -228,18 +232,11 @@ router.beforeEach((to, from, next) => {
     } else {
         window.document.body.style.backgroundColor = '#f8f8f8'
     }
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!isLogin()) {
-            router.push({
-                name: 'Login',
-                query: {
-                    from: to.path
-                }
-            });
-            return;
-        }
+    if(to.name == 'Login' && window.sessionStorage.getItem('token')){
+        next({path:'/'})
+    }else{
+        next()
     }
-    next();
 });
 
 export default router;

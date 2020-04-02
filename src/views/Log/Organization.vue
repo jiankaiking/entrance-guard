@@ -69,6 +69,7 @@
                     page:1,
                     size:10
                 },
+                total:0,
                 dateValue: '',
                 listUrl:'/managecenter/log/getSysOperationLogList',
                 tableData: []

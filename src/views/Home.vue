@@ -7,12 +7,15 @@
                 <span>常用功能</span>
             </div>
             <div class="useContenner">
+                <i class="el-icon-arrow-left" @click="leftRowclick"></i>
                 <i class="el-icon-arrow-right" @click="rightRowclick"></i>
                 <vuedraggable :options="{animation:300}" class="wrapper"
+                              @change="changeAddress"
+                              @end="end"
                               :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}" v-model="useData">
                     <transition-group>
                         <div v-for="(item,index) in useData" :key="index" class="item">
-                            <img :src="item.imgUrl" alt="">
+                            <img :src="item.menuUrl" alt="">
                             <p>{{item.menuName}}</p>
                         </div>
                     </transition-group>
@@ -36,7 +39,7 @@
             <div class="webapp">
                 <ul class="clear">
                     <li v-for="(item,index) in webappData">
-                        <img :src="item.qrcodeUrl" alt="qrcodeName">
+                        <img :src="item.qrcodeUrl" :alt="item.qrcodeName">
                         <span>{{item.qrcodeName}}</span>
                     </li>
                 </ul>
@@ -57,17 +60,8 @@
         data() {
             return {
                 dragging: null,
-                useData: [
-                    {path: '', name: '首页', imgUrl: img},
-                    {path: '', name: '代理商', imgUrl: img},
-                    {path: '', name: '商户', imgUrl: img},
-                    {path: '', name: '代理商', imgUrl: img},
-                    {path: '', name: '代理商', imgUrl: img},
-                ],
-                messgesData: [
-                    {title: '空腹可以吃饭吗'},
-                    {title: '哪个地方得女人最好看'}
-                ],
+                useData: [{ menuName: '首页' },],
+                messgesData: [{title: '空腹可以吃饭吗'}, {title: '哪个地方得女人最好看'}],
                 webappData: [],
                 marginLeft: 0,
                 leftFlag: true,
@@ -75,6 +69,7 @@
                 firstDrag: null,
                 endDrag: null,
                 endY: '',
+                remove:false
             }
         },
         components: {
@@ -93,15 +88,70 @@
                             this.useData=res.data
                         }
            })
+            this.getIndexInfo(),
+            window.document.body.style.backgroundColor = '#ffffff'
         },
         methods: {
+            end(evt,){
+                console.log(evt.newIndex)
+                if(this.remove){
+                    console.log('内部')
+                }else{
+                    var newArr=[]
+                    for(var i=0;i<this.useData.length;i++){
+                        if(i!=evt.newIndex){
+                         newArr.push(this.useData[i].menuId)
+                        }
+                    }   
+                    var str=newArr.join(',')
+                    this.commonlyUsed(str)
+                    console.log(evt.newIndex)
+                }
+            },
+            // 接收从菜单移动过来的参数
             drop (event) {
-                console.log(event.dataTransfer)
-            let data = event.dataTransfer.getData('item')
-            // this.dropData = data
+                this.remove=true
+                var menuId = event.dataTransfer.getData('menuId')
+                if(menuId){
+                    var newArr=[menuId]
+                    for(var i=0;i<this.useData.length;i++){
+                        if(menuId!=this.useData[i].menuId){
+                            newArr.push(this.useData[i].menuId)
+                        }
+                    }   
+                    var str=newArr.join(',')
+                    this.commonlyUsed(str)
+                }
+            },
+            // 常用调整请求
+            commonlyUsed(str){
+                httpRequest("/managecenter/index/updateCommonFunctions", "post",{menuIds:str})
+                        .then(res => {
+                            if(res.success){
+                                httpRequest("/managecenter/index/getCommonFunctions", "GET")
+                                .then(res => {
+                                    if(res.success){
+                                        this.useData=res.data
+                                        this.remove=false
+                                    }
+                                })
+                            }
+                    })
             },
             dragover (event) {
                 event.preventDefault()
+            },
+            ...mapActions(["GET_STYEMITEM"]),
+            ...mapActions(["GET_ORGAN"]),
+            // 常用发生变化移动的
+            changeAddress(evt){
+                // console.log(evt.element.menuId)
+                var newArr=[]
+                    for(var i=0;i<this.useData.length;i++){
+                         newArr.push(this.useData[i].menuId)
+                    }   
+                    var str=newArr.join(',')
+                    this.commonlyUsed(str)
             },
             getIndexInfo() {
                 httpRequest("/managecenter/index/getUserInfo", "GET")
@@ -112,10 +162,18 @@
                         if (res.success) {
                             this.webappData = res.data;
                         }
-                        return httpRequest("/managecenter/index/getMenuTreeByUser", "GET")
+                        return httpRequest('/managecenter/index/getCommonFunctions',"GET")
                     })
                     .then(res=>{
-                        console.log(res)
+                        if(res.success){
+                            this.useData = res.data;
+                        }
+                        return httpRequest("/managecenter/index/getHotNews","GET")
+                    })
+                    .then(res=>{
+                        if(res.success){
+
+                        }
                     })
             },
             rightRowclick() {
@@ -128,19 +186,29 @@
                     console.log(this.leftFlag)
                 }
             },
-        },
+            leftRowclick() {
+                if (this.getWidth / 2 + this.marginLeft < 0 && this.leftFlag) {
+                    this.marginLeft = this.marginLeft - 220;
+                    this.leftFlag = true
+                } else {
+                    this.marginLeft = this.marginLeft + 220;
+                    this.leftFlag = true
+                    console.log(this.leftFlag)
+                }
+            }
+        
+        
+        }
     }
 </script>
 
 <style lang="scss" scoped>
-
-
     .common-use {
         width: 100%;
         background-color: #ffffff;
-
+        height:180px !important;
+        overflow: hidden;
     }
-
     .indexPage {
         overflow: hidden;
 
@@ -187,8 +255,7 @@
         overflow: hidden;
         position: relative;
         box-sizing: border-box;
-        padding: 30px 150px 30px 10px;
-
+        padding: 30px 150px 30px 60px;
         .el-icon-arrow-right {
             position: absolute;
             right: -15px;
@@ -196,8 +263,16 @@
             color: #CFCFCF;
             top: 50%;
             margin-top: -23px;
+            background: #fff;
         }
-
+        .el-icon-arrow-left {
+            position: absolute;
+            left: 0px;
+            font-size: 45px;
+            color: #CFCFCF;
+            top: 50%;
+            margin-top: -23px;
+        }
         .wrapper {
             transition: all .5s;
             display: flex;
@@ -207,6 +282,7 @@
         }
 
         .item {
+            vertical-align: top;
             display: inline-block;
             text-align: center;
             width: 168px;

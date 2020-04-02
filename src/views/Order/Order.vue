@@ -135,7 +135,7 @@
                 this.searchData.size = e;
                 this.getOrder()
             },
-            handleCurrentChange(){
+            handleCurrentChange(e){
                 this.searchData.currentPage = e;
                 this.getOrder()
             },
@@ -145,6 +145,7 @@
                    .then(res=>{
                        if(res.success){
                            this.tableData = res.data.list;
+                           this.total = res.data.totalCount;
                        }
                    })
                    .finally(res=>{

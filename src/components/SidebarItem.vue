@@ -1,33 +1,29 @@
 <template>
-    <div v-if="item.children">
-        <template v-if="item.children.length == 0">
-            <el-menu-item :index="item.path">
+    <div v-if="item.children"  >
+        <div v-if="item.children.length == 0" draggable="true" @dragstart="drag($event,item.menuId)" @dragend="dragend">
+            <el-menu-item :index="item.menuId.toString()">
                 <i class="el-icon-menu"></i>
-                {{item.title}}
+                {{item.menuName}}
             </el-menu-item>
-        </template>
+        </div>
 
-        <el-submenu v-else :index="item.path" >
-            <template slot="title" >
+
+        <el-submenu v-else :index="item.menuId.toString()" >
+            <template slot="title">
                 <i class="el-icon-menu"></i>
-                {{item.title}}
+                {{item.menuName}}
             </template>
-             
-                    <template v-for="child in item.children">
-                        <vuedraggable class="wrapper" :key="child.path" :data-id='child.path'  :options="{}" @end="drop($event,child)">
-                <transition-group>
-                        <sidebar-item
-                                v-if="child.children&&child.children.length>0"
-                                :item="child"
-                                :key="child.path"/>
-                        <el-menu-item v-else :key="child.path" :index="child.path" draggable="true" @dragstart="drag($event)" @dragend="dragend">
+            <div v-for="(child,index) in item.children" :key="index"  draggable="true" @dragstart="drag($event,child.menuId)" @dragend="dragend">
+                <sidebar-item
+                        v-if="child.children&&child.children.length>0"
+                        :item="child"
+                        :key="child.menuUrl"/>
+                         <!-- draggable="true" @dragstart="drag($event)" @dragend="dragend" -->
+                        <el-menu-item v-else :key="child.menuUrl" :index="child.menuId.toString()" >
                             <i class="el-icon-location"></i>
-                            {{child.title}}
+                            {{child.menuName}}
                         </el-menu-item>
-                         </transition-group>
-                        </vuedraggable>
-                    </template>
-           
+            </div>
         </el-submenu>
     </div>
 </template>
@@ -45,17 +41,12 @@ import vuedraggable from 'vuedraggable';
         components: {vuedraggable},
        
         methods:{
-            // drag (event) {
-            // console.log('1222222222222')
-            // event.dataTransfer.setData('menuId', '10086')
-            // },
+            drag (event,data) {
+            event.dataTransfer.setData('menuId',data)
+            },
             dragend (event) {
                 event.dataTransfer.clearData()
             },
-          drop(e,pash){  // 拖动结束的时候触发
-                console.log(e,pash)  
-                event.dataTransfer.menuId= pash.title
-          }
         }
     }
 </script>

@@ -1,22 +1,18 @@
 <template>
-    <div class="home">
-        <!--        <router-view/>-->
+    <el-container>
+        <el-header>
+            <GlobalHeader></GlobalHeader>
+        </el-header>
         <el-container>
-            <el-aside width="225px" class="aside">
+            <el-aside width="200px;" style="min-height:968px">
                 <GlobalLayout></GlobalLayout>
             </el-aside>
-            <el-main class="clear">
-                <GlobalHeader></GlobalHeader>
-                <div class="centerCont">
-                    <GlobalHistorynav v-if="!this.$route.meta.historyFlag"></GlobalHistorynav>
-                    <transition :name="direction">　　　　　　
-                        <router-view class="child-view"></router-view>
-                        　
-                    </transition>
-                </div>
+            <el-main style="padding:40px; box-sizing: border-box; overflow:auto;">
+                <GlobalHistorynav v-if="!$route.meta.historyFlag"></GlobalHistorynav>
+                <router-view/>
             </el-main>
         </el-container>
-    </div>
+    </el-container>
 </template>
 
 <script>
@@ -26,11 +22,6 @@
 
     export default {
         name: 'Home',
-        data() {
-            return {
-                direction: "slide-right"
-            }
-        },
         components: {
             GlobalHeader,
             GlobalHistorynav,
@@ -39,34 +30,18 @@
     };
 </script>
 <style lang="scss">
-
-    .child-view {
-        width: calc(100% - 300px);
-        position: absolute;
-        height: 100%;
-        transition: all 1s cubic-bezier(.55, 0, .1, 1);
-    }
-
-    .slide-left-enter, .slide-right-leave-active {
-        opacity: 0;
-        -webkit-transform: translate(30px, 0);
-        transform: translate(30px, 0);
-    }
-
-    .slide-left-leave-active, .slide-right-enter {
-        opacity: 0;
-        -webkit-transform: translate(-30px, 0);
-        transform: translate(-30px, 0);
-    }
-
     .el-main {
         padding: 0;
+        overflow: visible;
     }
 
     .centerCont {
         padding: 40px;
         box-sizing: border-box;
         height: auto;
+    }
+    .el-aside{
+        box-shadow:0 2px 10px 8px hsla(0,0%,91.8%,.5); background: #ffffff;
     }
 
     .aside {
