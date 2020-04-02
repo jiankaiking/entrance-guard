@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import state from "../store/state";
 Vue.use(Router);
 
 const router = new Router({
@@ -236,6 +236,22 @@ router.beforeEach((to, from, next) => {
         next({path:'/'})
     }else{
         next()
+        if(state.routerArr.length==0){
+            state.routerArr.push({
+                'title':to.meta.title,
+                'path':to.path
+            })
+        }else{
+            for(var i=0;i<state.routerArr.length;i++){
+                if(state.routerArr[i].path!=to.path){
+                    state.routerArr.push({
+                        'title':to.meta.title,
+                        'path':to.path
+                    })
+                }
+            }
+        }
+
     }
 });
 

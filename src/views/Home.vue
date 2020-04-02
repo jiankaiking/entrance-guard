@@ -6,15 +6,15 @@
             <div class="common-use-title">
                 <span>常用功能</span>
             </div>
-            <div class="useContenner">
-                <i class="el-icon-arrow-left" @click="leftRowclick"></i>
+            <i class="el-icon-arrow-left" @click="leftRowclick"></i>
                 <i class="el-icon-arrow-right" @click="rightRowclick"></i>
+            <div class="useContenner" ref="parentCommonly">
                 <vuedraggable :options="{animation:300}" class="wrapper"
                               @change="changeAddress"
                               @end="end"
-                              :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}" v-model="useData">
+                              :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}" v-model="useData"  ref="commonly">
                     <transition-group>
-                        <div v-for="(item,index) in useData" :key="index" class="item">
+                        <div v-for="(item,index) in useData" :key="index" class="item" @click="router(item.menuUrl)">
                             <img :src="item.menuUrl" alt="">
                             <p>{{item.menuName}}</p>
                         </div>
@@ -81,7 +81,6 @@
             }
         },
         mounted() {
-            // this.getIndexInfo()
             httpRequest("/managecenter/index/getCommonFunctions", "GET")
                     .then(res => {
                         if(res.success){
@@ -92,8 +91,11 @@
             window.document.body.style.backgroundColor = '#ffffff'
         },
         methods: {
+            router(event){
+                this.$router.push({path:event}) 
+            },
+            // 拖拽结束
             end(evt,){
-                console.log(evt.newIndex)
                 if(this.remove){
                     console.log('内部')
                 }else{
@@ -105,7 +107,6 @@
                     }   
                     var str=newArr.join(',')
                     this.commonlyUsed(str)
-                    console.log(evt.newIndex)
                 }
             },
             // 接收从菜单移动过来的参数
@@ -177,23 +178,18 @@
                     })
             },
             rightRowclick() {
-                if (this.getWidth / 2 + this.marginLeft < 0 && this.leftFlag) {
-                    this.marginLeft = this.marginLeft + 220;
-                    this.leftFlag = true
-                } else {
+                var parent=this.$refs.parentCommonly.clientWidth
+                var left=Math.abs(this.marginLeft)
+                var commonly=this.$refs.commonly.$el.clientWidth
+                if (parent + left < this.$refs.commonly.$el.clientWidth) {
                     this.marginLeft = this.marginLeft - 220;
                     this.leftFlag = true
-                    console.log(this.leftFlag)
-                }
+                } 
             },
             leftRowclick() {
-                if (this.getWidth / 2 + this.marginLeft < 0 && this.leftFlag) {
-                    this.marginLeft = this.marginLeft - 220;
-                    this.leftFlag = true
-                } else {
+                var left=this.marginLeft
+                if (left<0) {
                     this.marginLeft = this.marginLeft + 220;
-                    this.leftFlag = true
-                    console.log(this.leftFlag)
                 }
             }
         
@@ -206,8 +202,9 @@
     .common-use {
         width: 100%;
         background-color: #ffffff;
-        height:180px !important;
+        height:200px !important;
         overflow: hidden;
+        position: relative;
     }
     .indexPage {
         overflow: hidden;
@@ -249,19 +246,12 @@
 
         }
     }
-
-    .useContenner {
-        width: 1550px;
-        overflow: hidden;
-        position: relative;
-        box-sizing: border-box;
-        padding: 30px 150px 30px 60px;
-        .el-icon-arrow-right {
+     .el-icon-arrow-right {
             position: absolute;
             right: -15px;
             font-size: 45px;
             color: #CFCFCF;
-            top: 50%;
+            top: 60%;
             margin-top: -23px;
             background: #fff;
         }
@@ -270,9 +260,16 @@
             left: 0px;
             font-size: 45px;
             color: #CFCFCF;
-            top: 50%;
+            top: 60%;
             margin-top: -23px;
         }
+    .useContenner {
+        width: 1500px;
+        overflow: hidden;
+        position: relative;
+        box-sizing: border-box;
+        margin: 30px 50px 30px 60px;
+        padding: 10px 10px;
         .wrapper {
             transition: all .5s;
             display: flex;

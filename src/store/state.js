@@ -6,5 +6,6 @@ const state = {
     iframUrl:sessionStorage.getItem('iframUrl'),
     organArr:JSON.parse(sessionStorage.getItem('organArr')) || '',
     systemArr: JSON.parse(sessionStorage.getItem('systemArr')) || '',
+    routerArr:[]
 }
 export default state
