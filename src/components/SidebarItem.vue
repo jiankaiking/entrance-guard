@@ -18,7 +18,7 @@
                             :item="child"
                             :key="child.menuUrl"/>
                     <el-menu-item v-else :key="child.menuUrl" :index="child.menuUrl" >
-                        <i class="el-icon-location"></i>
+<!--                        <i class="el-icon-location"></i>-->
                         {{child.menuName}}
                     </el-menu-item>
                 </div>
