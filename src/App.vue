@@ -14,10 +14,10 @@
             //接受token
             handleMessage(event) {
 
-                if(event.data.token){
+                if (event.data.token) {
                     console.log(event.data)
                     const data = event.data;
-                    sessionStorage.setItem("token",data.token)
+                    sessionStorage.setItem("token", data.token)
                     this.$store.state.token = data.token;
 
                 }
@@ -27,38 +27,53 @@
 </script>
 
 <style>
-    .tableBox .el-table{
+    .tableBox .el-table {
         margin: 2px;
     }
-    .el-menu-item-group .el-menu-item{
+
+    .el-menu-item-group .el-menu-item {
         text-align: center;
     }
-    .el-menu-item-group__title{
+
+    .el-menu-item-group__title {
         display: none;
     }
-    .el-textarea__inner{
+
+    .el-textarea__inner {
         font-family: '微软雅黑';
     }
-.business-form{
-    background: #ffffff; box-shadow: 0px 1px 6px 4px rgba(242, 242, 242, 1);
-    border-radius: 8px;
-}
-    body .el-table th.gutter{
-        display: table-cell!important;
+
+    .business-form {
+        background: #ffffff;
+        box-shadow: 0px 1px 6px 4px rgba(242, 242, 242, 1);
+        border-radius: 8px;
     }
-    .el-header{
-        padding: 0 !important; height: 70px !important;
+
+    body .el-table th.gutter {
+        display: table-cell !important;
     }
-    .myDefult-btn{
-        background: #38B8EE !important; color: #ffffff !important;
+
+    .el-header {
+        padding: 0 !important;
+        height: 70px !important;
     }
-    .myDefult-btn-plan{
-        background: #ffffff !important; color: #38B8EE !important; border: 1px solid #38B8EE;
+
+    .myDefult-btn {
+        background: #38B8EE !important;
+        color: #ffffff !important;
     }
+
+    .myDefult-btn-plan {
+        background: #ffffff !important;
+        color: #38B8EE !important;
+        border: 1px solid #38B8EE;
+    }
+
     address, caption, cite, code, dfn, em, strong, th, var {
         font-style: normal;
         font-weight: normal;
     }
+
     .el-select {
         width: 100%;
     }

@@ -1,6 +1,10 @@
 <template>
     <div class="banner clear">
         <div class="banner-right clear">
+            <div class="help">
+                <img src="../assets/images/help.png" alt="">
+                <span>帮助</span>
+            </div>
             <div class="banner-userinfo">
                 <el-dropdown @command="handleCommand">
                     <div class="userMsg">
@@ -28,21 +32,21 @@
 </template>
 
 <script>
-    import {mapState,mapActions} from 'vuex';
-            export default {
-                data() {
-            return {
-            }
+    import {mapState, mapActions} from 'vuex';
+
+    export default {
+        data() {
+            return {}
         },
         computed: {
             ...mapState(['user'])
         },
         methods: {
             ...mapActions(["LogOut"]),
-            changePassword(){
+            changePassword() {
                 this.$router.push("/findpassword")
             },
-            myInfo(){
+            myInfo() {
                 this.$router.push("/user")
             },
             handleCommand(command) {
@@ -56,6 +60,24 @@
 
     .el-select .el-input.is-focus .el-input__inner {
         border: none;
+    }
+
+    .help {
+        display: flex;
+        align-items: center;
+        color: #ffffff;
+        line-height: 70px;
+        height: 70px;
+        margin-right: 60px;
+    }
+
+    .help span {
+        padding: 0 20px;
+    }
+
+    .help img {
+        width: 33px;
+        height: 33px;
     }
 
     .el-select .el-input__inner {
@@ -78,6 +100,7 @@
         width: 225px;
         margin: 0 auto;
     }
+
     .banner-left img {
         width: 150px;
         height: 50px;
@@ -86,19 +109,23 @@
 
     .banner-right {
         float: right;
-        min-width: 200px;
+        display: flex;
+        min-width: 300px;
         align-items: center;
         height: 100%;
         position: relative;
     }
+
     .banner-right .changeColor {
         margin-top: 15px;
         margin-right: 25px;
         float: left;
         width: 100px;
     }
+
     .banner-right .banner-userinfo {
-        float: right; cursor: pointer;
+        float: right;
+        cursor: pointer;
     }
 
     .userMsg {
@@ -107,19 +134,23 @@
         height: 70px;
         color: #ffffff;
     }
+
     .userMsg .el-dropdown-link {
         margin: 0 25px;
-        width: 50px;
+
     }
+
     .userMsg .el-icon-arrow-down {
         color: #CFCFCF;
     }
+
     .userMsg .userVia {
         width: 50px;
         height: 50px;
         display: block;
         border-radius: 50%;
     }
+
     .userMsg .el-icon--right {
         width: 15px;
     }
