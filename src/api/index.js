@@ -14,9 +14,9 @@ import router from "../router";
 
 
 const service = axios.create({
+  //  baseURL: 'http://192.168.0.110:8701',   //请求api
     // baseURL: '/sellerManagement',   //请求api
     baseURL: '/api',   //请求api
-
     timeout: 5000,     //请求超时时间
     withCredentials: true //允许携带cookie
 })

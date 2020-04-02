@@ -7,13 +7,9 @@
             <el-aside width="200px;" style="min-height:968px">
                 <GlobalLayout></GlobalLayout>
             </el-aside>
-            <el-main style="padding:40px; box-sizing: border-box; overflow:auto;">
+            <el-main style="padding:40px; box-sizing: border-box; overflow:auto;" class="clear">
                 <GlobalHistorynav v-if="!$route.meta.historyFlag"></GlobalHistorynav>
-                <transition :name="direction">　　　　　　
-                    <router-view class="child-view"></router-view>
-                    　
-                </transition>
-
+                <router-view></router-view>　
             </el-main>
         </el-container>
     </el-container>
@@ -47,7 +43,7 @@
     .child-view {
         width: calc(100% - 306px);
         position: absolute;
-     
+
         transition: all 1s cubic-bezier(.55, 0, .1, 1);
     }
 

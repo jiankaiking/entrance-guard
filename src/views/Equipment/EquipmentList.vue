@@ -41,19 +41,19 @@
                     </el-col>
                     <el-col :span="3">
                         <el-form-item label-width="20px">
-                        <el-select v-model="searchData.deviceTypeId" placeholder="请选择操作人">
+                        <el-select v-model="searchData.operUserId" placeholder="请选择操作人">
                                 <el-option
-                                        v-for="item in deviceTypeList"
-                                        :key="item.deviceTypeId"
-                                        :label="item.deviceTypeCode"
-                                        :value="item.deviceTypeId">
+                                        v-for="item in getAgentPersonIdAndNameByAgentList"
+                                        :key="item.personId"
+                                        :label="item.personName"
+                                        :value="item.personId">
                                 </el-option>
                         </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="3" >
                     <el-form-item label-width="20px">
-                        <el-select v-model="searchData.agentId">
+                        <el-select v-model="searchData.agentId" placeholder="请选择代理商">
                             <el-option v-for="item in selectAgentList" 
                             :key="item.agentId" 
                             :label="item.agentName"
@@ -71,7 +71,7 @@
                     <el-form-item label-width="20px">
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
                         <el-button @click="resetSearch" type="success" plain>重置</el-button>
-                        <el-button  type="warning" plain>导出</el-button>
+                        <el-button  @click="exportData" type="warning" plain>导出</el-button>
                     </el-form-item>
                     </el-col>
                     </el-row>
@@ -132,6 +132,7 @@
                     searchTime: '',  //查询条件
                     deviceTypeId: null,  //上级代理商id\
                     search:'',
+                    operUserId:'',
                     size: 10,
                     page: 1
                 },
@@ -176,9 +177,11 @@
                 selectFactoryList:[],
                 selectAgentList:[],
                 deviceTypeList:[],
+                getAgentPersonIdAndNameByAgentList:[],
                 title:'绑定设备',
                 deviceId:'',
                 dialogTableVisible: false,
+                exportUrl:'/api/managecenter/deviceManage/device/downloadDeviceList',///导出
                 listUrl: '/managecenter/deviceManage/device/getDeviceListByStatus',   //表格数据接口
             }
         },
@@ -197,19 +200,6 @@
                         this.deviceId=row.deviceId
                     })
                     this.title=row.bindStatus
-                    // if(row==''){
-                    //     this.title='设备信息'
-                    // }else{
-                    //     if(row.bindStatus=='绑定申请驳回'){
-                    //         this.title='绑定申请驳回'
-                    //     }else if(row.bindStatus=='解绑申请驳回'){
-                    //         this.title='解绑申请驳回'
-                    //     }else if(row.bindStatus=='已解绑'){
-                    //         this.title='已解绑'
-                    //     }else{
-                    //     this.title='已绑定'
-                    //     }
-                    // }
             },
             untie(data){
                 this.title=data
@@ -233,13 +223,13 @@
                     .then(res => {
                         this.dataInfo = res.data;
                     })
-                    httpRequest("managecenter/deviceManage/deviceType/selectDeviceTypeList", "GET")
-                    .then(res => {
-                        this.deviceTypeList = res.data;
-                    })
                     httpRequest("managecenter/deviceManage/device/selectAgentList", "GET")
                     .then(res => {
                         this.selectAgentList = res.data;
+                    })
+                     httpRequest("/sellerManagement/agentPerson/getAgentPersonIdAndNameByAgentId", "GET")
+                    .then(res => {
+                        this.getAgentPersonIdAndNameByAgentList = res.data;
                     })
             }
 

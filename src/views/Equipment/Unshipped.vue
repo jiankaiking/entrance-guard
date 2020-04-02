@@ -39,8 +39,13 @@
                             </el-date-picker>
                     </el-form-item>
                     <el-form-item label="申请人">
-                        <el-input type="text" v-model="searchData.operation">
-                        </el-input>
+                        <el-select v-model="searchData.operUserId" >
+                         <el-option v-for="item in getAgentPersonIdAndNameByAgentList" 
+                         :key="item.personId" 
+                         :label="item.personName"
+                         :value="item.personId">
+                        </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="代理商名称" label-width="100px">
                          <el-select v-model="searchData.agentId" >
@@ -57,7 +62,7 @@
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
                         <el-button plain typ="info" @click="resetSearch">重置</el-button>
-                        <el-button @click="searchClick" type="warning" plain>导出</el-button>
+                        <el-button @click="exportData" type="warning" plain>导出</el-button>
                         <el-button type="success" @click="showAdd" plain>新增发货</el-button>
                         <el-button @click="batchReview" typ="info" plain>批量审核</el-button>
                     </el-form-item>
@@ -158,7 +163,7 @@
                     payType: "",  //支付类型
                     startTime:'',
                     endTime:'',
-                    operation: '',//申请人
+                    operUserId: '',//申请人
                     size: 10,
                     applyOrderNum:'',
                     page: 1,
@@ -206,9 +211,11 @@
                 tableData: [{}],
                 payList:[],
                 searchTime:[],
+                getAgentPersonIdAndNameByAgentList:[],
                 selectAgentList:[],
                 applyList:[],
                 device_pay_type:[],
+                exportUrl:'/api/managecenter/deviceManage/deviceApply/exportDeviceApply',///导出
                 listUrl: '/managecenter/deviceManage/deviceApply/queryDeviceApply',   //表格数据接口
             }
         },
@@ -231,6 +238,10 @@
                     .then(res => {
                         this.selectAgentList = res.data;
             })
+            httpRequest("/sellerManagement/agentPerson/getAgentPersonIdAndNameByAgentId", "GET")
+                    .then(res => {
+                        this.getAgentPersonIdAndNameByAgentList = res.data;
+                    })
         },
         methods: {
             //确认发货

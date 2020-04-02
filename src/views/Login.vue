@@ -139,8 +139,9 @@
                     }
                 });
             },
-            getCode() {
-                this.codeImg = '/api/managecenter/login/getValidateCode?' + Math.random()
+
+            getCode(){
+                this.codeImg = '/api/managecenter/login/getValidateCode?'+Math.random()
             },
             //切换登录方式
             checkLogin() {

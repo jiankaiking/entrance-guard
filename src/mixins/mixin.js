@@ -7,6 +7,7 @@
 
 
 import httpRequest from "../api/api";
+import exportExcel from "./exportExcel";
 
 export const myMixins = {
     data() {
@@ -110,6 +111,9 @@ export const myMixins = {
                 type: 'error',
                 message: data
             })
+        },
+        exportData(){
+            exportExcel("GET",this.exportUrl,this.$store.state.token,this.searchData)
         }
     }
 }
