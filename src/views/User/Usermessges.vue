@@ -105,7 +105,8 @@
                     .then(res => {
                         if (res.success) {
                             this.userMsg = res.data;
-                            let data = JSON.stringify(res.data)
+                            let data = JSON.stringify(this.userMsg)
+                            console.log(data)
                             this.SET_USERINFO(data)
                         }
                     })
@@ -121,6 +122,7 @@
                 httpRequest("/managecenter/index/updateUserInfo", "POST", data)
                     .then(res => {
                         if (res.success) {
+                            this.$message.success(res.msg)
                             this.getInfo()
                         }
                     })

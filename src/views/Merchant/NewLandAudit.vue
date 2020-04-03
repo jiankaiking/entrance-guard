@@ -90,35 +90,35 @@
         <el-row>
             <ul class="show-image" v-if="tableMsg.newLandImg">
                 <li><img :src="tableMsg.newLandImg.bankCardPhoto" alt="">
-                    <div class="imgText">法人身份证正面照</div>
+                    <div class="imgText">银行卡照片</div>
                 </li>
                 <li><img :src="tableMsg.newLandImg.cashierPhoto" alt="">
-                    <div class="imgText">法人身份证正面照</div>
+                    <div class="imgText">收银台照</div>
                 </li>
                 <li><img :src="tableMsg.newLandImg.comBusUrl" alt="">
-                    <div class="imgText">法人身份证正面照</div>
+                    <div class="imgText">营业执照</div>
                 </li>
                 <li><img :src="tableMsg.newLandImg.idCardFront" alt="">
-                    <div class="imgText">法人身份证正面照</div>
+                    <div class="imgText">法人身份证背面照</div>
                 </li>
                 <li><img :src="tableMsg.newLandImg.idCardReverse" alt="">
                     <div class="imgText">法人身份证正面照</div>
                 </li>
                 <li><img :src="tableMsg.newLandImg.scenePhoto" alt="">
-                    <div class="imgText">法人身份证正面照</div>
+                    <div class="imgText">内景照</div>
                 </li>
                 <li><img :src="tableMsg.newLandImg.settleIdcardContrary" alt="">
-                    <div class="imgText">法人身份证正面照</div>
+                    <div class="imgText">结算人身份证正面照</div>
                 </li>
                 <li><img :src="tableMsg.newLandImg.settleIdcardFront" alt="">
-                    <div class="imgText">法人身份证正面照</div>
+                    <div class="imgText">结算人身份证背面照</div>
                 </li>
                 <li><img :src="tableMsg.newLandImg.storePhoto" alt="">
-                    <div class="imgText">法人身份证正面照</div>
+                    <div class="imgText">门头照(商户与门店 合影照)</div>
                 </li>
                 <li v-for="item in tableMsg.newLandImg.settlPhoto">
                     <img :src="item" alt="">
-                    <div class="imgText">法人身份证正面照</div>
+                    <div class="imgText">补充图片</div>
                 </li>
             </ul>
         </el-row>

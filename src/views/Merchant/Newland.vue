@@ -170,6 +170,14 @@
                 <div class="imgText">法人身份证背面照</div>
             </el-col>
             <el-col :span="2">
+                <img :src="newLandData.newLandImg.settleIdcardFront"  alt=""></img>
+                <div class="imgText">结算人正面照</div>
+            </el-col>
+            <el-col :span="2">
+                <img :src="newLandData.newLandImg.settleIdcardContrary" alt=""></img>
+                <div class="imgText">结算人反面照</div>
+            </el-col>
+            <el-col :span="2">
                 <img :src="newLandData.newLandImg.comBusUrl" alt="">
                 <div class="imgText">营业执照</div>
             </el-col>

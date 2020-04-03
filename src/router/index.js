@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import state from "../store/state";
 
 Vue.use(Router);
 
@@ -272,7 +273,7 @@ const router = new Router({
             name: 'Login1', path: '/findpassword', component: () => import('@/views/User/forgetPassword')
         },
         {
-            name: 'Login', path: '/Login', component: () => import('@/views/Login')
+            name: 'Login', path: '/login', component: () => import('@/views/Login')
         },
     ]
 });
@@ -283,11 +284,27 @@ router.beforeEach((to, from, next) => {
     } else {
         window.document.body.style.backgroundColor = '#f8f8f8'
     }
-    if (to.name == 'Login' && window.sessionStorage.getItem('token')) {
-        next({path: '/'})
-    } else {
+    let token = window.sessionStorage.getItem('token');
+    if(token){
         next()
+    }else{
+      if(to.path != '/login'){
+          next('/login')
+      }else{
+          next()
+      }
     }
+    // let token = window.sessionStorage.getItem('token');
+    // if (to.name == 'Login' && window.sessionStorage.getItem('token')) {
+    //     next({path: '/'})
+    // } else{
+    //     next({path: '/findpassword',})
+    //     // if (!window.sessionStorage.getItem('token')){ // 判断当前的token是否存在
+    //     //     next({path: '/login',})
+    //     // } else {
+    //     //     next()
+    //     // }
+    // }
 });
 
 export default router;

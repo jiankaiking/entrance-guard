@@ -2,13 +2,13 @@
     <div class="indexPage">
         <div class="dataStatic">
         </div>
-        <div class="common-use" @drop="drop" @dragover="dragover">
+        <div class="common-use" @drop="drop" @dragover="dragover" v-if="user.isShowCommonFunc == 1">
             <div class="common-use-title">
                 <span>常用功能</span>
             </div>
             <div class="useContenner">
-                <i class="el-icon-arrow-left" @click="leftRowclick"></i>
-                <i class="el-icon-arrow-right" @click="rightRowclick"></i>
+                <i class="el-icon-arrow-left" v-if="useData.length != 0" @click="leftRowclick"></i>
+                <i class="el-icon-arrow-right" v-if="useData.length != 0" @click="rightRowclick"></i>
                 <vuedraggable :options="{animation:300}" class="wrapper clear"
                               @change="changeAddress"
                               @end="end"
@@ -22,7 +22,7 @@
                 </vuedraggable>
             </div>
         </div>
-        <div class="common-use">
+        <div class="common-use" v-if="user.isShowHotNews == 1">
             <div class="common-use-title">
                 <span>热门信息</span><span class="more">更多....</span>
             </div>
@@ -32,7 +32,7 @@
                 </ul>
             </div>
         </div>
-        <div class="common-use">
+        <div class="common-use" v-if="user.isShowQrcode == 1">
             <div class="common-use-title">
                 <span>移动端</span>
             </div>
@@ -52,7 +52,7 @@
 <script>
     import img from '@/assets/images/active.jpeg'
     import httpRequest from "../api/api";
-    import {mapActions} from 'vuex'
+    import {mapActions, mapState} from 'vuex'
     import vuedraggable from 'vuedraggable'
 
     export default {
@@ -60,7 +60,7 @@
         data() {
             return {
                 dragging: null,
-                useData: [{menuName: '首页'},],
+                useData: [],
                 messgesData: [{title: '空腹可以吃饭吗'}, {title: '哪个地方得女人最好看'}],
                 webappData: [],
                 marginLeft: 0,
@@ -76,6 +76,7 @@
             vuedraggable,
         },
         computed: {
+            ...mapState(['user']),
             getWidth(useData) {
                 return 220 * this.useData.length;
             }
