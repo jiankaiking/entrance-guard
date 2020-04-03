@@ -154,7 +154,7 @@
                 <el-form-item>
                     <div class="formsubmit-btn">
                         <el-button @click="back">取消</el-button>
-                        <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+                        <el-button  class="myDefult-btn" @click="onSubmit('form')">保存</el-button>
                     </div>
                 </el-form-item>
         </el-form>

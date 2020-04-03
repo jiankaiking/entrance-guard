@@ -3,8 +3,10 @@
         <div>
             <ul class="clear">
                 <li @contextmenu.prevent="show($event,index)"
+                    class="hist-menu"
                     ref="box" v-for="(item,index) in this.$store.state.menuTagArr"
                     :key="index"
+                    :class="{'active':$route.path == item.path}"
                     @click="changePath(item.path)">
                     <span>{{item.title}}</span>
                     <i class="el-icon-close close" @click="closeTag(index)"></i>
@@ -24,7 +26,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
+    import {mapState,mapMutations} from 'vuex'
 
     export default {
         name: "GlobalHistorynav",
@@ -32,6 +34,7 @@
             return {
                 historyNav: [{name: '首页'}, {name: '首页'}, {name: '首页'}],
                 showMenu: false,
+                navIndex:'',
                 left: '',
                 top: ''
             }
@@ -47,6 +50,7 @@
             })
         },
         methods: {
+            ...mapMutations(['CLOSE_MENU']),
             changeColor(index) {
                 console.log(1)
             },
@@ -57,19 +61,24 @@
             },
             //关闭右边
             closeRight() {
-
-
+                this.CLOSE_MENU({index:this.navIndex,type:'right'})
+                this.showMenu = false;
             },
             //关闭左边
             closeLeft() {
-
+                this.CLOSE_MENU({index:this.navIndex,type:'left'})
+                this.showMenu = false;
             },
             //关闭其他
             closeAnother() {
+                this.$router.push(this.menuTagArr[this.navIndex].path)
+                this.CLOSE_MENU({index:this.navIndex,type:'other'})
+                this.showMenu = false;
 
             },
+
             changePath(id) {
-                this.$router.push({path:id}) 
+                this.$router.push({path:id})
             },
             closeTag(index){
                 this.$store.state.menuTagArr.splice(index,1);
@@ -77,6 +86,7 @@
             },
             show(e, index) {
                 this.navIndex = index
+
                 this.left = e.clientX + 'px';
                 this.showMenu = true;
                 this.top = e.clientY + 'px'
@@ -93,10 +103,10 @@
         height: 50px;
         overflow: hidden;
     }
-    .histonav .clear li+li{
+    .histonav .hist-menu{
         margin-bottom: 20px;
     }
-    .histonav .clear li {
+    .histonav .hist-menu {
         float: left;
         /* width: 138px; */
         padding: 0 27px;
@@ -114,18 +124,25 @@
         border-radius: 18px;
         position: relative;
     }
+    .histonav .hist-menu.active{
+        background: #38B8EE ;
+        color: #ffffff;
+    }
+    .histonav .hist-menu.active i{
+        color: #ffffff;
+    }
     .histonav .clear li .close{
         position: relative;
         right: -10px;
         bottom: 0px;
     }
-    .histonav .clear li:hover {
+    .histonav .hist-menu:hover {
         cursor: pointer;
         background: #38B8EE;
         color: #ffffff;
     }
 
-    .histonav .clear li:hover i {
+    .histonav .clear > li:hover i {
         color: #ffffff;
     }
 
@@ -146,6 +163,7 @@
     }
 
     .histonav .menucont li i {
+       color: rgba(0, 0, 0, 0.65);
         margin-right: 5px;
         font-size: 16px;
     }

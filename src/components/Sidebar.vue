@@ -31,7 +31,7 @@
         <el-menu
                 unique-opened
                 mode="vertical"
-              
+
                 :default-active="$route.path"
                 router
                 background-color="#fff"
@@ -96,9 +96,9 @@
                             if (id == 3) {
                                 href = 'http://localhost:8081/#/login?token='
                             } else if (id == 1) {
-                                href = 'http://localhost:8083/#/login?token='
-                            } else {
                                 href = 'http://localhost:8080/#/login?token='
+                            } else {
+                                href = 'http://localhost:8082/#/login?token='
                             }
                             window.location.replace(href + this.$store.state.token)
                             sessionStorage.clear()

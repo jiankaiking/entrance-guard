@@ -154,7 +154,7 @@
             <el-form-item>
                 <div style="margin: 0 auto; width: 200px">
                     <el-button @click="cancel">取消</el-button>
-                    <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+                    <el-button class="myDefult-btn" @click="onSubmit('form')" plain>保存</el-button>
                 </div>
             </el-form-item>
         </el-form>

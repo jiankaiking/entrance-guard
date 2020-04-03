@@ -99,7 +99,7 @@
             },
             //删除
             deleteOrgan(row){
-                httpRequest("/managecenter/organManage/offOrNoOrgan","POST",{organId:row.organId})
+                httpRequest("/managecenter/organManage/deleteOrgan","POST",{organId:row.organId})
                     .then(res=>{
                         if(res.success){
                             this.getDataList()

@@ -35,5 +35,15 @@ const mutations = {
     GET_STYEMITEM(state, data) {
         state.systemArr = data;
     },
+    CLOSE_MENU(state,data){
+        if(data.type =='left'){
+            state.menuTagArr.splice(0,data.index)
+        }else if(data.type == 'right'){
+            state.menuTagArr.splice(data.index + 1)
+        }else{
+            state.menuTagArr.splice(data.index + 1)
+            state.menuTagArr.splice(0,data.index)
+        }
+    },
 }
 export default mutations

@@ -18,7 +18,7 @@
                 </el-input>
             </el-form-item>
             <el-form-item prop="code">
-                <el-input placeholder="请输入账号/手机号" v-model="findData.code">
+                <el-input placeholder="请输入手机验证码" v-model="findData.code">
                     <template slot="append">
                         <span class="code" @click="getPhoneCode">{{messageCont}}</span>
                     </template>
@@ -39,7 +39,7 @@
             </el-form-item>
             <p class="text"><i class="el-icon-warning-outline"></i>建议使用字母、数字和符号两种以上的组合，8-20个字符</p>
             <p class="title">再次输入新密码</p>
-            <el-form-item prop="password" >
+            <el-form-item prop="password">
                 <el-input placeholder="请输入密码" v-model="passwordFrom.passwordTrue">
                     <i slot="suffix" class="el-icon-view"></i>
                 </el-input>
@@ -84,28 +84,31 @@
                     phoneNum: '',
                     code: '',
                 },
-                passwordFrom:{
-                    password:'',
-                    passwordTrue:''
+                passwordFrom: {
+                    password: '',
+                    passwordTrue: ''
                 },
                 rules: {
                     smsValidateCode: validate.noEmpty,
                     phoneNum: validate.noEmpty,
                     code: validate.noEmpty,
-                    password:validate.noEmpty,
+                    password: validate.noEmpty,
                     passwordTrue: [
-                        { validator: validatePass, trigger: 'blur', required: true }
+                        {validator: validatePass, trigger: 'blur', required: true}
                     ],
                 },
                 btnDisabled: false,
                 messageCont: "获取短信验证码",
-                codeImg: BASE_URL + '/managecenter/login/getSmsValidateCode',
+                codeImg: '/api/managecenter/login/getSmsValidateCode',
             }
+        },
+        mounted() {
+            this.getCode()
         },
         methods: {
             //刷新验证码
             getCode() {
-                this.codeImg = BASE_URL + '/managecenter/login/getValidateCode?' + Math.random()
+                this.codeImg = '/api/managecenter/login/getValidateCode?' + Math.random()
             },
             //倒计时
             countDown(num) {
@@ -137,6 +140,8 @@
                     .then(res => {
                         if (res.success) {
                             this.countDown(60);
+                        } else {
+                            this.getCode()
                         }
                     })
             },
@@ -164,14 +169,14 @@
                 });
             },
             //密码申请
-            rePassword(){
+            rePassword() {
                 let data = {
-                    phoneNum:this.findData.phoneNum,
-                    password:this.passwordFrom.password,
-                    code:this.findData.code,
+                    phoneNum: this.findData.phoneNum,
+                    password: this.passwordFrom.password,
+                    code: this.findData.code,
                 }
-                httpRequest("/managecenter/login/updatePassWordByPhone","POST",data)
-                    .then(res=>{
+                httpRequest("/managecenter/login/updatePassWordByPhone", "POST", data)
+                    .then(res => {
                         this.status = 2
                     })
             },

@@ -28,7 +28,7 @@
 
 <style>
     .tableBox .el-table {
-        margin: 2px;
+        margin: 1px;
     }
 
     .el-menu-item-group .el-menu-item {
