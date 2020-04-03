@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import State from "../store/state";
+
+import State from '../store/state'
 
 Vue.use(Router);
 
@@ -286,7 +287,6 @@ router.beforeEach((to, from, next) => {if (to.path == '/home/index' || to.path =
     if (to.name == 'Login' && window.sessionStorage.getItem('token')) {
         next({path: '/'})
     } else {
-
         var Arr= JSON.parse(sessionStorage.getItem('menuTagArr'))
         if(Arr==null){
             Arr=[]
@@ -302,7 +302,9 @@ router.beforeEach((to, from, next) => {if (to.path == '/home/index' || to.path =
                 'path':to.path
             })
             const res = new Map();
+
             var NewArr= Arr.filter((Arr) => !res.has(Arr.title) && res.set(Arr.title, 1));
+
             sessionStorage.setItem('menuTagArr',JSON.stringify(NewArr))
             State.menuTagArr=NewArr
         }

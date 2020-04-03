@@ -106,7 +106,7 @@
                         if (res.success) {
                             this.userMsg = res.data;
                             let data = JSON.stringify(this.userMsg)
-                            console.log(data)
+
                             this.SET_USERINFO(data)
                         }
                     })

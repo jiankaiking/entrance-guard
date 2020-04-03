@@ -3,10 +3,11 @@
         <div>
             <ul class="clear">
                 <li @contextmenu.prevent="show($event,index)"
-                    ref="box" v-for="(item,index) in menuTagArr"
-                    @click="changePath(item)">
+                    ref="box" v-for="(item,index) in this.$store.state.menuTagArr"
+                    :key="index"
+                    @click="changePath(item.path)">
                     <span>{{item.title}}</span>
-                    <i class="el-icon-close"></i>
+                    <i class="el-icon-close close" @click="closeTag(index)"></i>
                 </li>
             </ul>
         </div>
@@ -36,14 +37,13 @@
             }
         },
         mounted() {
-            //  console.log(this.$route.path)
+             console.log(this.$route.matched)
             document.addEventListener('click', (e) => {
                 if (e.target.className != 'closeAll') {
                     this.showMenu = false;
                 } else {
                     console.log(1)
                 }
-
             })
         },
         methods: {
@@ -68,8 +68,12 @@
             closeAnother() {
 
             },
-            changePath() {
-
+            changePath(id) {
+                this.$router.push({path:id}) 
+            },
+            closeTag(index){
+                this.$store.state.menuTagArr.splice(index,1);
+                sessionStorage.setItem('menuTagArr',JSON.stringify(this.$store.state.menuTagArr))
             },
             show(e, index) {
                 this.navIndex = index
@@ -85,9 +89,16 @@
 </script>
 
 <style scoped>
+    .histonav .clear{
+        height: 50px;
+        overflow: hidden;
+    }
+    .histonav .clear li+li{
+        margin-bottom: 20px;
+    }
     .histonav .clear li {
         float: left;
-        width: 138px;
+        /* width: 138px; */
         padding: 0 27px;
         box-sizing: border-box;
         display: flex;
@@ -101,8 +112,13 @@
         font-size: 14px;
         color: #4589A5;
         border-radius: 18px;
+        position: relative;
     }
-
+    .histonav .clear li .close{
+        position: relative;
+        right: -10px;
+        bottom: 0px;
+    }
     .histonav .clear li:hover {
         cursor: pointer;
         background: #38B8EE;
