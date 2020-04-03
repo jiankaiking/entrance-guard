@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import state from "../store/state";
+import State from "../store/state";
 
 Vue.use(Router);
 
@@ -278,33 +278,53 @@ const router = new Router({
     ]
 });
 
-router.beforeEach((to, from, next) => {
-    if (to.path == '/home/index' || to.path == '/user') {
-        window.document.body.style.backgroundColor = '#ffffff'
+router.beforeEach((to, from, next) => {if (to.path == '/home/index' || to.path == '/user') {
+    window.document.body.style.backgroundColor = '#ffffff'
+} else {
+    window.document.body.style.backgroundColor = '#f8f8f8'
+}
+    if (to.name == 'Login' && window.sessionStorage.getItem('token')) {
+        next({path: '/'})
     } else {
-        window.document.body.style.backgroundColor = '#f8f8f8'
-    }
-    let token = window.sessionStorage.getItem('token');
-    if(token){
+
+        var Arr= JSON.parse(sessionStorage.getItem('menuTagArr'))
+        if(Arr==null){
+            Arr=[]
+            Arr.push({
+                'title':to.meta.title,
+                'path':to.path
+            })
+            sessionStorage.setItem('menuTagArr',JSON.stringify(Arr))
+            State.menuTagArr=Arr
+        }else{
+            Arr.push({
+                'title':to.meta.title,
+                'path':to.path
+            })
+            const res = new Map();
+            var NewArr= Arr.filter((Arr) => !res.has(Arr.title) && res.set(Arr.title, 1));
+            sessionStorage.setItem('menuTagArr',JSON.stringify(NewArr))
+            State.menuTagArr=NewArr
+        }
         next()
-    }else{
-      if(to.path != '/login'){
-          next('/login')
-      }else{
-          next()
-      }
     }
-    // let token = window.sessionStorage.getItem('token');
-    // if (to.name == 'Login' && window.sessionStorage.getItem('token')) {
-    //     next({path: '/'})
-    // } else{
-    //     next({path: '/findpassword',})
-    //     // if (!window.sessionStorage.getItem('token')){ // 判断当前的token是否存在
-    //     //     next({path: '/login',})
-    //     // } else {
-    //     //     next()
-    //     // }
+
+    // if (to.path == '/home/index' || to.path == '/user') {
+    //     window.document.body.style.backgroundColor = '#ffffff'
+    // } else {
+    //     window.document.body.style.backgroundColor = '#f8f8f8'
     // }
+    // let token = window.sessionStorage.getItem('token');
+    // if(token){
+    //     next()
+    // }else{
+    //   if(to.path != '/login'){
+    //       next('/login')
+    //   }else{
+    //       next()
+    //   }
+    // }
+
 });
 
 export default router;

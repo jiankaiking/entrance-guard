@@ -6,9 +6,10 @@
             <div class="common-use-title">
                 <span>常用功能</span>
             </div>
+            <i class="el-icon-arrow-left"  v-if="useData.length != 0" @click="leftRowclick"></i>
+            <i class="el-icon-arrow-right"  v-if="useData.length != 0" @click="rightRowclick"></i>
+
             <div class="useContenner">
-                <i class="el-icon-arrow-left" v-if="useData.length != 0" @click="leftRowclick"></i>
-                <i class="el-icon-arrow-right" v-if="useData.length != 0" @click="rightRowclick"></i>
                 <vuedraggable :options="{animation:300}" class="wrapper clear"
                               @change="changeAddress"
                               @end="end"
