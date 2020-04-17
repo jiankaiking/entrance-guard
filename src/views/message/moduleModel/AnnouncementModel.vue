@@ -16,7 +16,7 @@
             <span>{{modelFromdata.content}}</span>
         </el-form-item>
         <el-form-item>
-           <el-button @click="close">返回</el-button>
+            <el-button @click="close">返回</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -24,20 +24,18 @@
 <script>
     export default {
         name: "AnnouncementModel",
-        data(){
-            return{
-                modelFromdata:{
-
-                }
+        data() {
+            return {
+                modelFromdata: {}
             }
         },
-        methods:{
-            close(){
+        methods: {
+            close() {
                 this.$emit('close')
             },
-            edit(row){
-                console.log(row)
-                this.modelFromdata = Object.assign(row,this.modelFromdata)
+            edit(row) {
+
+                this.modelFromdata = JSON.parse(JSON.stringify(row))
             },
         },
 

@@ -40,7 +40,7 @@
         },
         methods:{
             edit(row){
-                this.modelFromdata = Object.assign(row,this.modelFromdata)
+                this.modelFromdata = JSON.parse(JSON.stringify(row))
             },
             back(){
                 this.$emit("close")

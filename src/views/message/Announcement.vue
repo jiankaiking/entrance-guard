@@ -30,7 +30,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="searchClick" type="primary" plain>搜索</el-button>
-                    <el-button @click="resetSearch" plain>重置</el-button>
+                    <el-button @click="searchReset" plain>重置</el-button>
                     <el-button type="success" plain @click="headAdd(1)">新增</el-button>
                 </el-form-item>
             </el-form>
@@ -138,6 +138,15 @@
 
             headAdd(type) {
                 this.$router.push({path: '/activeadd', query: {type: type}})
+            },
+            searchReset() {
+                this.searchData.subject = '';
+                this.searchData.createStartTime = '';
+                this.searchData.createEndTime = '';
+                this.searchData.status = '';
+                this.searchData.newsType = '';
+                console.log(1)
+                this.getTableData()
             },
             headDelete(row) {
                 httpRequest("/managecenter/ad/news/center/update", "POST", {id: row.id})
