@@ -2,7 +2,7 @@
     <div class="menuInfo">
         <el-form v-if="type == 'add'" ref="form" :model="modelFromdata" label-width="80px" style="padding: 0 30px; box-sizing: border-box;">
             <el-form-item label="*上级菜单">
-                <el-input v-model="modelFromdata.menuPid" disabled></el-input>
+                <el-input v-model="menuInfo.menuName" disabled></el-input>
             </el-form-item>
             <el-form-item label="*菜单类型">
                 <el-radio-group v-model="modelFromdata.menuType">
@@ -90,7 +90,7 @@
             return {
                 modelFromdata: {
                     menuName: '', //菜单名称
-                    menuStatus: '',//菜单状态
+                    menuStatus: '1',//菜单状态
                     menuPid: '',//菜单父节点ID，根节点0
                     menuType: '',//菜单类型
                     menuUrl: '',//菜单访问路径
@@ -100,6 +100,7 @@
                     systemId: '',//所属业务系统
                     menuIcon: '',//菜单图标URL
                 },
+                menuInfo:{},
                 infoData:{},
                 typeData:[],
                 type: '',
@@ -119,11 +120,12 @@
                 this.modelFromdata.isLadder = 0;
             },
 
-            add(id) {
+            add(menuInfo) {
                 this.type = 'add';
                 this.getType()
                 this.modelDatanull()
-                this.modelFromdata.menuPid = id;
+                this.menuInfo = menuInfo;
+                this.modelFromdata.menuPid = menuInfo.menuId;
             },
             info(id) {
                 this.type = 'info'
@@ -149,6 +151,7 @@
             },
             //新增菜单
             ok(){
+                this.modelFromdata.menuPid = this.modelFromdata.menuPid?this.modelFromdata.menuPid:0;
                 httpRequest(this.url.add,"POST",this.modelFromdata)
                     .then(res=>{
                        if(res.success){

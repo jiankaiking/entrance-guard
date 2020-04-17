@@ -43,7 +43,7 @@
                 </el-table>
             </div>
         </div>
-        <el-dialog :title="title" center   width="50%" :visible.sync="dialogTableVisible">
+        <el-dialog :title="title" :lock-scroll="false" center   width="50%" :visible.sync="dialogTableVisible">
             <MenuaddModel ref="modalForm" @close="close" @ok="modelFormOk"></MenuaddModel>
         </el-dialog>
     </div>
@@ -95,7 +95,7 @@
                 })
             },
             handleCurrentChange(e){
-                this.cliMenuId = e.menuId
+                this.cliMenuId = e
             },
             close(){
                 this.dialogTableVisible = false
@@ -110,7 +110,8 @@
                 })
             },
             modelFormOk(){
-                this.dialogTableVisible = false
+                this.dialogTableVisible = false;
+                this.getTableData()
             },
             //隐藏菜单
             hideMenu(row){

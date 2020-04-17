@@ -27,7 +27,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://192.168.0.199:8888/',//managecenter sellerManagement https://test-gateway.lywlsz.com.cn
+        target: 'http://192.168.0.108:8796',//managecenter sellerManagement https://test-gateway.lywlsz.com.cn
         changeOrigin: true,
         ws: true,
         pathRewrite: {

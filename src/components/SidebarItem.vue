@@ -2,13 +2,13 @@
     <div v-if="item.children"  >
         <div v-if="item.children.length == 0" draggable="true" @dragstart="drag($event,item.menuId)" @dragend="dragend">
             <el-menu-item :index="item.menuUrl">
-                <i class="el-icon-menu"></i>
+<!--                <i class="el-icon-menu"></i>-->
                 {{item.menuName}}
             </el-menu-item>
         </div>
         <el-submenu v-else :index="item.menuUrl" >
             <template slot="title">
-                <i class="el-icon-menu"></i>
+<!--                <i class="el-icon-menu"></i>-->
                 {{item.menuName}}
             </template>
             <el-menu-item-group>

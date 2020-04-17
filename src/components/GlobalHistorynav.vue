@@ -40,7 +40,7 @@
             }
         },
         mounted() {
-             console.log(this.$route.matched)
+             // console.log(this.$route.matched)
             document.addEventListener('click', (e) => {
                 if (e.target.className != 'closeAll') {
                     this.showMenu = false;
@@ -52,12 +52,12 @@
         methods: {
             ...mapMutations(['CLOSE_MENU']),
             changeColor(index) {
-                console.log(1)
+                // console.log(1)
             },
 
             //关闭全部
             closeAll() {
-                console.log(this.menuTagArr)
+                // console.log(this.menuTagArr)
             },
             //关闭右边
             closeRight() {
@@ -78,7 +78,9 @@
             },
 
             changePath(id) {
-                this.$router.push({path:id})
+                if(this.$route.path != id){
+                    this.$router.push({path:id})
+                }
             },
             closeTag(index){
                 this.$store.state.menuTagArr.splice(index,1);

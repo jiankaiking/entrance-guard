@@ -10,9 +10,6 @@
     </el-upload>
 </template>
 <script>
-    var token = localStorage.getItem("token")
-    import BASE_URL from '../../api/config'
-
     export default {
         name: "uploadImg",
         props: {
@@ -20,7 +17,7 @@
         },
         data() {
             return {
-                myHeaders: {Authorization: token},
+                myHeaders: {Authorization: this.$store.state.token},
                 uploadImg: 'api' + '/managecenter/upload/uploadImg',
             }
         },

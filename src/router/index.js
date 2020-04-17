@@ -266,7 +266,43 @@ const router = new Router({
                             component: () => import('@/views/Equipment/Repertory'),
                         }
                     ],
-                }
+                },
+                // 公告中心
+                {
+                    path: '/announcement',
+                    meta: {
+                        title: '公告中心'
+                    },
+                    name: 'announcement',
+                    component: () => import('@/views/message/Announcement'),
+                },
+                // 代理商活动
+                {
+                    path: '/agentactive',
+                    meta: {
+                        title: '代理商活动'
+                    },
+                    name: 'agentactive',
+                    component: () => import('@/views/message/AgentActive'),
+                },
+                // 商户活动
+                {
+                    path: '/businessactive',
+                    meta: {
+                        title: '商户活动'
+                    },
+                    name: 'businessactive',
+                    component: () => import('@/views/message/BusinessActive'),
+                },
+                // 活动新增
+                {
+                    path: '/activeadd',
+                    meta: {
+                        title: '活动新增'
+                    },
+                    name: 'activeadd',
+                    component: () => import('@/views/message/moduleModel/ActiveAdd'),
+                },
             ]
 
         },

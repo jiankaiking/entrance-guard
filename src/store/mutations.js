@@ -44,6 +44,7 @@ const mutations = {
             state.menuTagArr.splice(data.index + 1)
             state.menuTagArr.splice(0,data.index)
         }
+        sessionStorage.setItem('menuTagArr',JSON.stringify(state.menuTagArr))
     },
 }
 export default mutations

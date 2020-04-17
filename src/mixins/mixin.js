@@ -78,8 +78,6 @@ export const myMixins = {
         //新增
         headAdd() {
             this.dialogTableVisible = true;
-            // 要等dom节点渲染结束 在调方法。
-            console.log(this)
             this.$nextTick(() => {
                 this.$refs.modalForm.add();
             })
