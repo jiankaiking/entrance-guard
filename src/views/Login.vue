@@ -163,7 +163,7 @@
             },
 
             getCheck() {
-                this.codeValue = `/managecenter/login/scanLogin?uuid=${this.sweepLoginInfo.uuid}`
+                this.codeValue = `managecenter/login/scanLogin?uuid=${this.sweepLoginInfo.uuid}`
             },
             loopRequset() {
                 httpRequest("managecenter/login/checkScanLoginPool", "POST", this.sweepLoginInfo)
@@ -183,6 +183,10 @@
                         } else if (res.code == 401) {
                             this.timeName = setTimeout(this.loopRequset, 1000)
                         }
+                    })
+                    .catch(err=>{
+                        this.codeValue = '';
+                        clearTimeout(this.timeName)
                     })
             },
             //申请

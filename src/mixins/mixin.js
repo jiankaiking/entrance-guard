@@ -48,7 +48,7 @@ export const myMixins = {
         },
         //数据页数
         handleCurrentChange(e) {
-            this.searchData.page = e;
+            this.searchData.page?this.searchData.page = e:this.searchData.currentPage = e;
             this.getTableData()
         },
         //model框显示

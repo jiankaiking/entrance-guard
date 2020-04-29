@@ -1,5 +1,6 @@
 <template>
     <el-container>
+<!--        <router-view></router-view>-->
         <el-header>
             <GlobalHeader></GlobalHeader>
         </el-header>

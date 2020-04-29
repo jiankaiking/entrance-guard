@@ -17,9 +17,7 @@
                     </el-col>
                 </el-form-item>
                 <el-form-item label="类型" label-width="40px">
-                    <el-select v-model="searchData.newsType">
-                        <el-option :value="1"></el-option>
-                    </el-select>
+                    <CommonSelect :value.sync="searchData.newsType" type="news_merch_activity_type"></CommonSelect>
                 </el-form-item>
                 <el-form-item label="状态" label-width="50px">
                     <el-select v-model="searchData.status">
@@ -88,6 +86,7 @@
     import {myMixins} from "../../mixins/mixin";
     import httpRequest from "../../api/api";
     import ActiveModel from "./moduleModel/ActiveModel";
+    import CommonSelect from "../../components/select/CommonSelect";
 
     export default {
         name: "agentchildlist",
@@ -106,12 +105,13 @@
                 },
                 total: 0,
                 dialogTableVisible: false,
-                tableData: [{}],
+                tableData: [],
                 listUrl: '/managecenter/ad/news/center/list',   //表格数据接口
             }
         },
         components: {
-            ActiveModel
+            ActiveModel,
+            CommonSelect
         },
         methods: {
 

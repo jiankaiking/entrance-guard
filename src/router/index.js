@@ -152,6 +152,9 @@ const router = new Router({
                 {
                     path: '/accounts/commission',
                     name: 'commission',
+                    meta: {
+                        title: '佣金'
+                    },
                     component: () => import('@/views/Settleaccounts/Commission'),
                 },
                 //补贴
@@ -333,16 +336,16 @@ router.beforeEach((to, from, next) => {if (to.path == '/home/index' || to.path =
             sessionStorage.setItem('menuTagArr',JSON.stringify(Arr))
             State.menuTagArr=Arr
         }else{
-            Arr.push({
-                'title':to.meta.title,
-                'path':to.path
-            })
-            const res = new Map();
-
-            var NewArr= Arr.filter((Arr) => !res.has(Arr.title) && res.set(Arr.title, 1));
-
-            sessionStorage.setItem('menuTagArr',JSON.stringify(NewArr))
-            State.menuTagArr=NewArr
+            if(to.meta.title){
+                Arr.push({
+                    'title':to.meta.title,
+                    'path':to.path
+                })
+                const res = new Map();
+                var NewArr= Arr.filter((Arr) => !res.has(Arr.title) && res.set(Arr.title, 1));
+                sessionStorage.setItem('menuTagArr',JSON.stringify(NewArr))
+                State.menuTagArr=NewArr
+            }
         }
         next()
     }

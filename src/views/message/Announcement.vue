@@ -3,19 +3,13 @@
         <div class="searchData">
             <el-form ref="form" :model="searchData" label-width="100px">
                 <el-form-item label="发布机构">
-<!--                    <el-select placeholder="选择机构" v-model="searchData.agentArea">-->
-<!--                        <el-option :value="1"></el-option>-->
-<!--                    </el-select>-->
-                    <el-cascader
-
-                            :options="organArr"
-                            :props="{value:'organId',label:'organName',leaf:'hasChildren',lazy:true,lazyLoad:loadChildLeaf}"
-                            @change="handleChange"></el-cascader>
+                    <el-select placeholder="选择机构" v-model="searchData.organId">
+                        <el-option :value="item.organId" :label="item.organName"
+                                   v-for="(item,index) in organArr.children"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="类型">
-                    <el-select v-model="searchData.newsType">
-                        <el-option :value="1"></el-option>
-                    </el-select>
+                    <CommonSelect :value.sync="searchData.newsType" type="news_notice_type"></CommonSelect>
                 </el-form-item>
                 <el-form-item style="vertical-align: top" label="发布时间" label-width="100px">
                     <el-col :span="10">
@@ -49,7 +43,7 @@
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button type="text" @click="headEdit(scope.row)">详情</el-button>
-                            <el-popconfirm  title="确定删除这条数据吗？" @onConfirm="headDelete(scope.row)">
+                            <el-popconfirm title="确定删除这条数据吗？" @onConfirm="headDelete(scope.row)">
                                 <el-button slot="reference" type="text">删除</el-button>
                             </el-popconfirm>
                         </template>
@@ -76,6 +70,7 @@
 
 <script>
     import {myMixins} from "../../mixins/mixin";
+    import CommonSelect from "../../components/select/CommonSelect";
     import AnnouncementModel from "./moduleModel/AnnouncementModel";
     import httpRequest from "../../api/api";
 
@@ -92,10 +87,10 @@
                     status: '', //活动状态
                     newsType: '',//消息类型
                     size: 10,
-                    organId:'',
+                    organId: '',
                     currentPage: 1
                 },
-                organArr:[],
+                organArr: [],
                 total: 0,
                 dialogTableVisible: false,
                 tableData: [],
@@ -103,36 +98,20 @@
             }
         },
         components: {
-            AnnouncementModel
+            AnnouncementModel,
+            CommonSelect
         },
-        mounted(){
+        mounted() {
             this.getAllOrgan()
         },
         methods: {
-            handleChange(e){
-                this.searchData.organId = e[e.length-1]
-            },
-            loadChildLeaf(node, resolve){
-                if (node.level != 0) {
-                    httpRequest("/managecenter/organManage/getOrganList","get",{organId:node.data.organId})
-                        .then(res => {
-                            res.data.filter(item=>{item.hasChildren = !item.hasChildren;});
-                            resolve(res.data);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-                }
-
-            },
             //获取所有机构
-            getAllOrgan(){
-                httpRequest("/managecenter/organManage/getOrganList","get")
-                    .then(res=>{
-                       if(res.success){
-                           res.data.filter(item=>{item.hasChildren = !item.hasChildren;});
-                           this.organArr = res.data;
-                       }
+            getAllOrgan() {
+                httpRequest("/managecenter/organManage/getOrganDownTree", "get")
+                    .then(res => {
+                        if (res.success) {
+                            this.organArr = res.data;
+                        }
                     })
             },
 

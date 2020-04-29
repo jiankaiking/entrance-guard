@@ -10,7 +10,9 @@
             </el-form-item>
             <el-form-item :label="modelFromdata.newsModule == 1?'公告类型':'活动类型'" prop="newsType">
                 <el-col :span="8">
-                    <el-input placeholder="请输入活动类型" v-model="modelFromdata.newsType"></el-input>
+                    <CommonSelect
+                            :value.sync="modelFromdata.newsType"
+                            :type="modelFromdata.newsType == 1?'news_notice_type':(modelFromdata.newsType == 2?'news_merch_activity_type':'news_agent_activity_type')"></CommonSelect>
                 </el-col>
             </el-form-item>
             <el-form-item label="通知对象" prop="noticeObjectType">
@@ -59,6 +61,7 @@
 <script>
     import uploadImg from "../../../components/uploadImg/uploadImg";
     import httpRequest from "../../../api/api";
+    import CommonSelect from "../../../components/select/CommonSelect";
 
     const cityOptions = [{name: '商户', val: 1}, {name: '子代', val: 2}, {name: '代理商', val: 3}, {
         name: '合伙人',
@@ -96,10 +99,11 @@
             }
         },
         components: {
-            uploadImg
+            uploadImg,
+            CommonSelect
         },
         mounted() {
-            this.modelFromdata.newsModule = this.$route.query.type;
+            this.modelFromdata.newsModule = this.$route.query.type
         },
         methods: {
             //全选

@@ -33,7 +33,7 @@
         <div style="line-height: 48px;padding-left: 35px">共{{total}}条数据</div>
         <div class="tableData">
             <div class="tableBox">
-                <el-table empty-text :headerRowStyle="{color:'#000000'}" :data="tableData"
+                <el-table empty-text :headerRowStyle="{color:'#000000'}" :data="tableData" v-loading="loading"
                         border style="width: 100%;">
                     <el-table-column align="center" type="index" width="50" label="序号"></el-table-column>
                     <el-table-column align="center" prop="agentName" label="代理商名称"></el-table-column>
@@ -70,7 +70,7 @@
         </div>
         <el-dialog :lock-scroll="false" title="补贴详情" width="40%" align="center" :visible.sync="dialogTableVisible"
                   >
-            <CommissionModel ref="modalForm"></CommissionModel>
+            <CommissionModel ref="modalForm" @close="modalClose"></CommissionModel>
         </el-dialog>
     </div>
 </template>
@@ -100,6 +100,7 @@
             CommissionModel
         },
         methods: {
+
         }
 
     }

@@ -13,7 +13,7 @@
         methods: {
             //接受token
             handleMessage(event) {
-
+console.log(event)
                 if (event.data.token) {
                     console.log(event.data)
                     const data = event.data;
@@ -27,6 +27,11 @@
 </script>
 
 <style>
+
+    .main-contenner ,.el-table{
+        width:99.9% !important;
+    }
+
     .tableBox .el-table {
         margin: 1px;
     }
