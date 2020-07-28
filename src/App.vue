@@ -8,26 +8,31 @@
     export default {
         name: 'app',
         mounted() {
-            window.addEventListener('message', this.handleMessage);
+            // window.addEventListener('message', this.handleMessage);
         },
         methods: {
             //接受token
-            handleMessage(event) {
-console.log(event)
-                if (event.data.token) {
-                    console.log(event.data)
-                    const data = event.data;
-                    sessionStorage.setItem("token", data.token)
-                    this.$store.state.token = data.token;
-
-                }
-            },
+//             handleMessage(event) {
+// console.log(event)
+//                 if (event.data.token) {
+//                     console.log(event.data)
+//                     const data = event.data;
+//                     sessionStorage.setItem("token", data.token)
+//                     this.$store.state.token = data.token;
+//
+//                 }
+//             },
         }
     };
 </script>
 
 <style>
-
+  .one-line-clamp{
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: break-all;
+  }
     .main-contenner ,.el-table{
         width:99.9% !important;
     }

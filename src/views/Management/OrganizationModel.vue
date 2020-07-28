@@ -91,7 +91,8 @@
 
             //机构选择获取负责人
             changeOrgan(e){
-                this.modelFromdata.userId = "";
+                  this.modelFromdata.userId = this.modelFromdata.staffId;
+                // console.log( this.modelFromdata.userId)
                 httpRequest("/managecenter/organManage/getChargeUserList","GET",{organId:e})
                     .then(res=>{
                         this.ChargeUserList = res.data;
@@ -131,19 +132,20 @@
             edit(record) {
                 // 员工详情
                 this.modelDatanull()
-                this.changeOrgan(record.organPid)
                 Object.assign(this.modelFromdata,record)
+                this.changeOrgan(record.organPid)
+
 
             },
             handleOk(){
                 const that = this;
-
+                // console.log(this.modelFromdata)
                 // 触发表单验证
                 httpRequest(that.url.add, 'POST', this.modelFromdata)
                     .then((res) => {
                         if(res.success){
                             that.$message.success("修改成功")
-                            that.$emit('ok');
+                            that.$emit('ok',{id:that.modelFromdata.organPid});
                         }
                     })
                     .finally(() => {

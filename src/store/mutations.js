@@ -15,18 +15,18 @@ const mutations = {
         state.status = '';
         state.token = '';
     },
-    SET_USERINFO(state,data){
+    SET_USERINFO(state, data) {
         state.user = JSON.parse(data);
-        sessionStorage.setItem('user',data)
+        sessionStorage.setItem('user', data)
     },
-    SET_TOKEN(state,data){
+    SET_TOKEN(state, data) {
         state.user = data.user;
         state.token = data.token;
     },
-    SET_LOCAL(state,data){
+    SET_LOCAL(state, data) {
         state.localhref = data;
     },
-    SET_IFRAME(state,data){
+    SET_IFRAME(state, data) {
         state.iframUrl = data;
     },
     GET_ORGAN(state, data) {
@@ -35,16 +35,27 @@ const mutations = {
     GET_STYEMITEM(state, data) {
         state.systemArr = data;
     },
-    CLOSE_MENU(state,data){
-        if(data.type =='left'){
-            state.menuTagArr.splice(0,data.index)
-        }else if(data.type == 'right'){
+    CLOSE_MENU(state, data) {
+        if (data.type == 'left') {
+            state.menuTagArr.splice(0, data.index)
+        } else if (data.type == 'right') {
             state.menuTagArr.splice(data.index + 1)
-        }else{
+        } else {
             state.menuTagArr.splice(data.index + 1)
-            state.menuTagArr.splice(0,data.index)
+            state.menuTagArr.splice(0, data.index)
         }
-        sessionStorage.setItem('menuTagArr',JSON.stringify(state.menuTagArr))
+        sessionStorage.setItem('menuTagArr', JSON.stringify(state.menuTagArr))
     },
+
+    ADD_TAG_VIEW(state, data) {
+        if (data.title) {
+            if (!state.menuTagArr.some(item => item.title === data.title)) {
+                state.menuTagArr.push(data)
+                sessionStorage.setItem('menuTagArr', JSON.stringify(state.menuTagArr))
+            }
+        }
+
+    }
+
 }
 export default mutations

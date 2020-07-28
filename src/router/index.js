@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import State from '../store/state'
 
 Vue.use(Router);
 
@@ -74,13 +73,13 @@ const router = new Router({
 
                 //菜单管理
                 {
-                    path: '/menuadmin', name: 'menuadmin',meta: {
+                    path: '/menuadmin', name: 'menuadmin', meta: {
                         title: '菜单管理'
                     }, component: () => import('@/views/Menuadmin/Menuadmin')
                 },
                 //代理商部分
                 {
-                    path: '/agent', name: 'agent',meta: {
+                    path: '/agent', name: 'agent', meta: {
                         title: '代理商管理'
                     }, component: () => import('@/views/Agent/Agentlist'),
                 },
@@ -99,7 +98,7 @@ const router = new Router({
                 },
                 //权限管理  功能
                 {
-                    path: '/management/fucmanagement',meta: {
+                    path: '/management/fucmanagement', meta: {
                         title: '功能权限'
                     },
 
@@ -318,54 +317,25 @@ const router = new Router({
     ]
 });
 
-router.beforeEach((to, from, next) => {if (to.path == '/home/index' || to.path == '/user') {
-    window.document.body.style.backgroundColor = '#ffffff'
-} else {
-    window.document.body.style.backgroundColor = '#f8f8f8'
-}
-    if (to.name == 'Login' && window.sessionStorage.getItem('token')) {
-        next({path: '/'})
+router.beforeEach((to, from, next) => {
+    if (to.path == '/home/index' || to.path == '/user') {
+        window.document.body.style.backgroundColor = '#ffffff'
     } else {
-        var Arr= JSON.parse(sessionStorage.getItem('menuTagArr'))
-        if(Arr==null){
-            Arr=[]
-            Arr.push({
-                'title':to.meta.title,
-                'path':to.path
-            })
-            sessionStorage.setItem('menuTagArr',JSON.stringify(Arr))
-            State.menuTagArr=Arr
-        }else{
-            if(to.meta.title){
-                Arr.push({
-                    'title':to.meta.title,
-                    'path':to.path
-                })
-                const res = new Map();
-                var NewArr= Arr.filter((Arr) => !res.has(Arr.title) && res.set(Arr.title, 1));
-                sessionStorage.setItem('menuTagArr',JSON.stringify(NewArr))
-                State.menuTagArr=NewArr
-            }
-        }
-        next()
+        window.document.body.style.backgroundColor = '#f8f8f8'
     }
-
-    // if (to.path == '/home/index' || to.path == '/user') {
-    //     window.document.body.style.backgroundColor = '#ffffff'
-    // } else {
-    //     window.document.body.style.backgroundColor = '#f8f8f8'
-    // }
-    // let token = window.sessionStorage.getItem('token');
-    // if(token){
-    //     next()
-    // }else{
-    //   if(to.path != '/login'){
-    //       next('/login')
-    //   }else{
-    //       next()
-    //   }
-    // }
-
+    if (sessionStorage.getItem("token")) {
+        if (to.path === "/login") {
+            next({path: '/'})
+        } else {
+            next();
+        }
+    } else {
+        if (to.path === "/login") {
+            next();
+        } else {
+            next({ path: "/login", query: { redirect: to.fullPath } });
+        }
+    }
 });
 
 export default router;

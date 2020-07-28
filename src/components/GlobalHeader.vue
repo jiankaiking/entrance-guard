@@ -15,7 +15,7 @@
                         <i class="el-icon-arrow-down"/>
                     </div>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="logout" @click.native="LogOut($route)">
+                        <el-dropdown-item command="logout" @click.native="loginOut($route)">
                             退出登录
                         </el-dropdown-item>
                         <el-dropdown-item command="logout" @click.native="myInfo">
@@ -43,6 +43,13 @@
         },
         methods: {
             ...mapActions(["LogOut"]),
+            loginOut(route) {
+                this.LogOut(route).then(() => {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 100);
+                });
+            },
             changePassword() {
                 this.$router.push("/findpassword")
             },

@@ -13,7 +13,7 @@
                 </li>
             </ul>
         </div>
-        <p>近店 / 权限管理 / 组织架构管理</p>
+        <p></p>
         <div class="menucont" v-show="showMenu" :style="{left:left,top:top}">
             <ul>
                 <li @click.stop="closeAll()"><i class="el-icon-refresh-left"></i>刷新</li>
@@ -32,7 +32,7 @@
         name: "GlobalHistorynav",
         data() {
             return {
-                historyNav: [{name: '首页'}, {name: '首页'}, {name: '首页'}],
+                historyNav: [],
                 showMenu: false,
                 navIndex:'',
                 left: '',
@@ -88,15 +88,23 @@
             },
             show(e, index) {
                 this.navIndex = index
-
                 this.left = e.clientX + 'px';
                 this.showMenu = true;
                 this.top = e.clientY + 'px'
             },
+            addTagView(){
+                    this.$store.dispatch('addTagView', {path:this.$route.path,title:this.$route.meta.title});
+
+            },
+        },
+        watch:{
+            $route(){
+                this.addTagView()
+            }
         },
         computed: {
             ...mapState(['menuTagArr'])
-        }
+        },
     }
 </script>
 

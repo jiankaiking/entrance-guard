@@ -8,8 +8,8 @@
 
                 <el-form-item label="状态">
                     <el-select v-model="searchData.menuStatus" placeholder="请选择状态">
-                        <el-option label="启动" :value="0"></el-option>
-                        <el-option label="停止" :value="1"></el-option>
+                        <el-option label="隐藏" :value="0"></el-option>
+                        <el-option label="显示" :value="1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -24,6 +24,8 @@
                 <el-table :data="tableData" border style="width: 99.9%"
                           row-key="menuId" lazy :load="loadData"
                           highlight-current-row
+                          ref="table"
+                          v-loading="loading"
                           :indent="10"
                           @current-change="handleCurrentChange"
                           :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -66,6 +68,7 @@
                 dialogTableVisible:false,
                 total: 0,
                 cliMenuId:0,
+                loading:false,
                 title:'',
                 listUrl: '/managecenter/menuManage/getMenuList',
                 tableData: []
@@ -98,7 +101,7 @@
                 this.cliMenuId = e
             },
             close(){
-                this.dialogTableVisible = false
+                this.dialogTableVisible = false;
             },
             //新增菜单
             addMenu(){
@@ -118,23 +121,36 @@
                 httpRequest("/managecenter/menuManage/hideOrShowMenu", "POST", {menuId:row.menuId})
                     .then(res=>{
                         if(res.success){
-
                             this.searchData.menuPid = 0
-                            this.getMenuList()
+                            row.menuPid == 0?this.getMenuList():this.refreshRow(row.menuPid)
                         }
                     })
             },
             //增加菜单
             getMenuList() {
+                this.loading = true;
                 httpRequest(this.listUrl, "GET", this.searchData)
                     .then(res => {
                         this.tableData = res.data;
+                        this.loading = false;
+                    })
+            },
+            refreshRow(id) {
+                // console.log(id)
+                this.loading = true;
+                httpRequest(this.listUrl, "GET", {menuPid: id})
+                    .then(res => {
+                        if (res.success) {
+                            this.$set(this.$refs.table.store.states.lazyTreeNodeMap, id, res.data)
+                            this.loading = false;
+                        }
                     })
             },
             //加载子节点菜单
             loadData(tree, treeNode, resolve){
-                this.searchData.menuPid = tree.menuId
-                httpRequest(this.listUrl, "GET", this.searchData)
+                // console.log(tree)
+                // this.searchData.menuPid = tree.menuId
+                httpRequest(this.listUrl, "GET", {menuPid:tree.menuId})
                     .then(res=>{
                         resolve(res.data)
                     })

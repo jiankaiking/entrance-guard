@@ -2,7 +2,6 @@
 import mutations from "./mutations";
 import httpRequest from "../api/api";
 import {Message} from "element-ui";
-import router from "../router";
 import axios from 'axios'
 const actions = {
     //登录
@@ -67,11 +66,6 @@ const actions = {
                     if(response.success){
                         Message.success(response.msg)
                         sessionStorage.clear()
-                        if(backPath){
-                            router.push({path:'/login',query:{redirect:backPath.fullPath}})
-                        }else{
-                            router.push({path:'/login'})
-                        }
                         commit('logout');
                     }
                     resolve(response);
@@ -80,6 +74,9 @@ const actions = {
                     reject(err)
                 })
         })
+    },
+    addTagView({commit},tag){
+        commit('ADD_TAG_VIEW',tag)
     }
 }
 

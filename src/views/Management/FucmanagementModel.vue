@@ -14,8 +14,9 @@
         </el-form-item>
         <div style="margin: 20px 0;">配置管理</div>
         <el-form-item label-width="0">
-            <treeTransfer title="title" :from_data='fromData' pid="menuPid" node_key="menuId"  :to_data='toData' :defaultProps="{label:'menuName'}"
-                          @right-check-change="rightCheck"     @addBtn='addMove' @removeBtn='remove' mode='transfer' filter openAll>
+            <treeTransfer :from_data='fromData' pid="menuPid" node_key="menuId" :to_data='toData'
+                          :defaultProps="{label:'menuName'}"
+                          @addBtn='addMove' @removeBtn='remove' mode='transfer' filter openAll>
             </treeTransfer>
         </el-form-item>
         <el-form-item label-width="0">
@@ -41,12 +42,12 @@
                     roleRemarks: '',
                     menuIds: [],
                 },
-                menuIds:[],
+                menuIds: [],
                 fromData: [],
                 toData: [],
                 url: {
                     add: '/managecenter/roleManage/addRole',
-                    info:'/managecenter/roleManage/getRoleInfo',
+                    info: '/managecenter/roleManage/getRoleInfo',
                     edit: '/managecenter/roleManage/editRole'
                 },
             };
@@ -61,25 +62,25 @@
                 // console.log("obj:", Array.from(obj.keys));
                 this.modelFromdata.menuIds = this.modelFromdata.menuIds.concat(obj.keys)
             },
-            sortArr(arr){
-               if(arr.length > 0){
-                   arr.forEach(item=>{
+            sortArr(arr) {
+                if (arr.length > 0) {
+                    arr.forEach(item => {
                         this.modelFromdata.menuIds.push(item.menuId)
-                       if(item.children.length > 0){
-                           this.sortArr(item.children)
-                       }
-                   })
-               }
-               //console.log(this.menuIds)
+                        if (item.children.length > 0) {
+                            this.sortArr(item.children)
+                        }
+                    })
+                }
+                //console.log(this.menuIds)
             },
             // 监听穿梭框组件移除
             remove(fromData, toData, obj) {
                 let arr1 = this.modelFromdata.menuIds
                 let arr2 = obj.keys;
 
-                for(let i=0;i<arr2.length;i++){
-                    for(let j=0;j<arr1.length;j++){
-                        if(arr2[i]== arr1[j]){
+                for (let i = 0; i < arr2.length; i++) {
+                    for (let j = 0; j < arr1.length; j++) {
+                        if (arr2[i] == arr1[j]) {
                             let indexs = arr1.indexOf(arr1[j]);
                             arr1.splice(indexs, 1);
                         }
@@ -92,7 +93,7 @@
 
             },
 
-           //获取菜单
+            //获取菜单
             getMenuAll() {
                 httpRequest("/managecenter/menuManage/getMenuTreeToRole", "GET")
                     .then(res => {
@@ -102,26 +103,29 @@
 
             add() {
                 this.getMenuAll()
-                this.toData = []
+                this.modelFromdata.roleName = ''
+                this.modelFromdata.roleStatus = ''
+                this.modelFromdata.roleRemarks = '',
+                    this.toData = []
             },
             //编辑  查询选择未选择的角色菜单
             edit(record) {
-                httpRequest(this.url.info,"GET",{roleId:record.roleId})
-                    .then(res=>{
-                        if(res.success){
-                            this.modelFromdata =Object.assign(this.modelFromdata,res.data)
+                httpRequest(this.url.info, "GET", {roleId: record.roleId})
+                    .then(res => {
+                        if (res.success) {
+                            this.modelFromdata = Object.assign(this.modelFromdata, res.data)
                             this.modelFromdata.menuIds = []
-                           return  httpRequest("/managecenter/menuManage/getUnSelectedMenuTreeByRoleId","GET",{roleId:record.roleId})
+                            return httpRequest("/managecenter/menuManage/getUnSelectedMenuTreeByRoleId", "GET", {roleId: record.roleId})
                         }
                     })
-                    .then(res=>{
-                        if(res.success){
+                    .then(res => {
+                        if (res.success) {
                             this.fromData = res.data;
-                            return  httpRequest("/managecenter/menuManage/getSelectedMenuTreeByRoleId","GET",{roleId:record.roleId})
+                            return httpRequest("/managecenter/menuManage/getSelectedMenuTreeByRoleId", "GET", {roleId: record.roleId})
                         }
                     })
-                    .then(res=>{
-                        if(res.success){
+                    .then(res => {
+                        if (res.success) {
                             this.sortArr(res.data)
                             this.toData = res.data;
                         }

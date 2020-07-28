@@ -26,12 +26,12 @@
                     <el-col :span="6">
                     <el-form-item label="绑定时间" :span="6">
                                 <el-date-picker
-                            v-model="searchData.searchTime"
                             type="daterange"
                             align="right"
                             unlink-panels
                             format='yyyy-MM-dd'
                             value-format="yyyy-MM-dd"
+                            @change="changeTime"
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期"
@@ -54,8 +54,8 @@
                     <el-col :span="3" >
                     <el-form-item label-width="20px">
                         <el-select v-model="searchData.agentId" placeholder="请选择代理商">
-                            <el-option v-for="item in selectAgentList" 
-                            :key="item.agentId" 
+                            <el-option v-for="item in selectAgentList"
+                            :key="item.agentId"
                             :label="item.agentName"
                             :value="item.agentId">
                             </el-option>
@@ -129,7 +129,8 @@
             return {
                 searchData: {
                     bindStatus: 3, //代理区域
-                    searchTime: '',  //查询条件
+                    startTime: '',  //查询条件
+                    entTime:'',
                     deviceTypeId: null,  //上级代理商id\
                     search:'',
                     operUserId:'',
@@ -193,6 +194,15 @@
             EquipmentInfo
         },
         methods: {
+            changeTime(e){
+                if(e){
+                    this.startTime = e[0]
+                    this.endTime = e[1]
+                }else{
+                    this.startTime = ''
+                    this.endTime = ''
+                }
+            },
             detali(row){
                 this.dialogTableVisible = true;
                 this.deviceId=row.deviceId
@@ -216,7 +226,7 @@
                 this.searchData.bindStatus = this.bindStatusArr[index].value;
                 this.getTableData()
             },
-            
+
             //获取总设备数量
             getdevice() {
                 httpRequest("/managecenter/deviceManage/device/selectCountByDeviceStatus", "GET")

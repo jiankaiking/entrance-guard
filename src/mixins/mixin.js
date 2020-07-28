@@ -22,6 +22,7 @@ export const myMixins = {
     methods: {
         //点击搜索
         searchClick() {
+            this.searchData.page = 1;
             this.getTableData()
         },
 

@@ -6,9 +6,9 @@
                     <el-input v-model="searchData.organName"></el-input>
                 </el-form-item>
                 <el-form-item label="状态">
-                    <el-select v-model="searchData.organStatus" placeholder="请选择活动区域">
-                        <el-option label="区域一" value="0"></el-option>
-                        <el-option label="区域二" value="1"></el-option>
+                    <el-select v-model="searchData.organStatus" placeholder="请选择状态">
+                        <el-option label="停用" :value="0"></el-option>
+                        <el-option label="启用" :value="1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -24,8 +24,8 @@
                           ref="table"
                           row-key="organId" lazy :load="loadData"
                           :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                    <el-table-column prop="organName" label="组织机构层级"  ></el-table-column>
-                    <el-table-column prop="organTypeName" label="分类"  align="center"></el-table-column>
+                    <el-table-column prop="organName" label="组织机构层级"></el-table-column>
+                    <el-table-column prop="organTypeName" label="分类" align="center"></el-table-column>
                     <el-table-column align="center" prop="staffFullName" label="主要负责人"></el-table-column>
                     <el-table-column align="center" prop="loginPhone" label="电话"></el-table-column>
                     <el-table-column align="center" prop="personCount" label="人数"></el-table-column>
@@ -34,14 +34,17 @@
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button type="text" @click="headEdit(scope.row)">编辑</el-button>
-                            <el-button type="text" @click="changeStatus(scope.row)">{{scope.row.organStatus == 1?'停用':'启用'}}</el-button>
+                            <el-button type="text" @click="changeStatus(scope.row)">{{scope.row.organStatus ==
+                                1?'停用':'启用'}}
+                            </el-button>
                             <el-button type="text" @click="deleteOrgan(scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
         </div>
-        <el-dialog :lock-scroll="false" class="organnizaDia" title="机构管理" width="30%" center :visible.sync="dialogTableVisible">
+        <el-dialog :lock-scroll="false" class="organnizaDia" title="机构管理" width="30%" center
+                   :visible.sync="dialogTableVisible">
             <OrganizationModel ref="modalForm" @close="close" @ok="modalFormOk"></OrganizationModel>
         </el-dialog>
     </div>
@@ -59,32 +62,33 @@
         data() {
             return {
                 searchData: {
-                    organStatus:'',//状态
-                    organName:'',//机构名称、部门名称
+                    organStatus: '',//状态
+                    organName: '',//机构名称、部门名称
                 },
-                loading:false,
-                listUrl:'/managecenter/organManage/getOrganList',
+                loading: false,
+                listUrl: '/managecenter/organManage/getOrganList',
                 dialogTableVisible: false,
                 tableData: [],
-                abc:false,
+                abc: false,
             }
         },
         components: {
             OrganizationModel
         },
-        mounted(){
+        mounted() {
             this.getDataList()
         },
         methods: {
-            modalFormOk(){
-                this.getDataList()
+            modalFormOk(data) {
+                data.id == 1 ? this.getDataList() : this.refreshRow(data.id)
                 this.close()
             },
-            close(){
+            close() {
                 this.dialogTableVisible = false
             },
             //编辑
             headEdit(record) {
+                // console.log(this.tableData)
                 this.dialogTableVisible = true;
                 this.$nextTick(() => {
                     this.$refs.modalForm.edit(record);
@@ -98,41 +102,54 @@
                 })
             },
             //删除
-            deleteOrgan(row){
-                httpRequest("/managecenter/organManage/deleteOrgan","POST",{organId:row.organId})
-                    .then(res=>{
-                        if(res.success){
+            deleteOrgan(row) {
+                httpRequest("/managecenter/organManage/deleteOrgan", "POST", {organId: row.organId})
+                    .then(res => {
+                        if (res.success) {
                             this.getDataList()
                         }
                     })
             },
-            changeStatus(row){
-                httpRequest("/managecenter/organManage/offOrNoOrgan","POST",{organId:row.organId,organStatus:row.organStatus == 0?1:0})
-                    .then(res=>{
-                        if(res.success){
+            changeStatus(row) {
+                httpRequest("/managecenter/organManage/offOrNoOrgan", "POST", {
+                    organId: row.organId,
+                    organStatus: row.organStatus == 0 ? 1 : 0
+                })
+                    .then(res => {
+                        if (res.success) {
                             console.log(this.$refs.table)
                             this.$refs.table.store.updateTreeData()
-                             this.getDataList()
+                            this.getDataList()
                         }
                     })
             },
-            getDataList(){
+            getDataList() {
                 this.loading = true;
-                httpRequest(this.listUrl,"GET",this.searchData)
-                    .then(res=>{
-                       if(res.success){
-                           this.tableData = res.data;
+                httpRequest(this.listUrl, "GET", this.searchData)
+                    .then(res => {
+                        if (res.success) {
+                            this.tableData = res.data;
 
-                       }
+                        }
                     })
-                    .finally(res=>{
+                    .finally(res => {
                         this.loading = false;
                     })
             },
-            loadData(tree, treeNode, resolve){
+            refreshRow(id) {
+                httpRequest(this.listUrl, "GET", {organId: id})
+                    .then(res => {
+                        if (res.success) {
+                            // console.log(this.$refs.table)
+                            this.$set(this.$refs.table.store.states.lazyTreeNodeMap, id, res.data)
+                        }
+                    })
+            },
+
+            loadData(tree, treeNode, resolve) {
                 // this.searchData.menuPid = tree.organId
-                httpRequest(this.listUrl, "GET", {organId:tree.organId})
-                    .then(res=>{
+                httpRequest(this.listUrl, "GET", {organId: tree.organId})
+                    .then(res => {
                         resolve(res.data)
                     })
             },

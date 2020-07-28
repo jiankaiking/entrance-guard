@@ -82,11 +82,14 @@
             return {
 
                 rules: {  //用户名密码验证
-                    userName: [{required: true, message: '账号不可为空', trigger: 'blur'}],
-                    password: [{required: true, message: '密码不可为空', trigger: 'blur'}],
+                    userName: [{required: true, message: '账号不可为空', trigger: 'blur'},
+                        { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
+                    ],
+                    password: [{required: true, message: '密码不可为空', trigger: 'blur'},
+                        { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }],
                     validateCode: [{required: true, message: '验证码不可为空', trigger: 'blur'}]
                 },
-                saveAccount: false,
+                saveAccount: true,
                 codeImg: '',
                 sweepLogin: false,  //扫码登录切换
                 userInfor: {  //用户名密码，验证码
@@ -146,10 +149,7 @@
                                 if (res.success) {
                                     this.GET_ORGAN()
                                     this.GET_STYEMITEM()
-                                    this.$router.push('/')
-
-                                } else {
-                                    this.getCode()
+                                    this.$route.query.redirect && _that.$router.push(this.$route.query.redirect)
                                 }
                             })
                     } else {
@@ -385,6 +385,7 @@
 
             .login-feature-right {
                 font-size: 12px;
+                cursor: pointer;
 
             }
         }

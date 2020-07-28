@@ -37,7 +37,7 @@
         </div>
         <div class="common-use" v-if="user.isShowQrcode == 1">
             <div class="common-use-title">
-                <span>移动端</span>
+                <span>常用二维码</span>
             </div>
             <div class="webapp">
                 <ul class="clear">

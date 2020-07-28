@@ -1,7 +1,7 @@
 <template>
     <div class="forget-main">
         <div class="forget-top">
-            <img src="../../assets/images/loginlogo.png" alt="">
+            <img @click="go" src="../../assets/images/loginlogo.png" alt="">
             <span>找回密码</span>
         </div>
 
@@ -140,8 +140,6 @@
                     .then(res => {
                         if (res.success) {
                             this.countDown(60);
-                        } else {
-                            this.getCode()
                         }
                     })
             },
@@ -194,6 +192,9 @@
             },
             goLogin() {
                 this.$router.push('/login')
+            },
+            go(){
+                this.$router.go('/')
             }
         }
     }
@@ -227,6 +228,9 @@
         font-size: 82px;
         color: #67C23B;
     }
+    .code{
+        cursor: pointer;
+    }
 
     .forget-main {
         font-family: MicrosoftYaHei;
@@ -244,6 +248,7 @@
 
             img {
                 margin-right: 40px;
+                cursor: pointer;
             }
 
             span {

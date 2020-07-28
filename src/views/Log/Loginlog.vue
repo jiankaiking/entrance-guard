@@ -38,7 +38,13 @@
                     <el-table-column prop="loginOrganName" label="所属部门" align="center"></el-table-column>
                     <el-table-column prop="loginClientIp" align="center" label="IP"></el-table-column>
                     <el-table-column prop="loginStatus" align="center" label="状态"></el-table-column>
-                    <el-table-column prop="loginInfo" align="center" label="操作信息"></el-table-column>
+                    <el-table-column prop="loginInfo" align="center" label="操作信息">
+                        <template slot-scope="scope">
+                            <el-tooltip class="item" effect="dark" :content="scope.row.loginInfo" placement="top-start">
+                                <p class="one-line-clamp">{{scope.row.loginInfo}}</p>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
                     <el-table-column align="center" prop="loginTime" label="操作时间"></el-table-column>
                 </el-table>
             </div>

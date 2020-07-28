@@ -7,8 +7,8 @@
                 </el-form-item>
                 <el-form-item label="角色状态">
                     <el-select v-model="searchData.roleStatus" placeholder="请选择">
-                        <el-option label="停止" value="0"></el-option>
-                        <el-option label="启动" value="1"></el-option>
+                        <el-option label="停止" :value="0"></el-option>
+                        <el-option label="启动" :value="1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -48,7 +48,7 @@
                 </el-pagination>
             </div>
         </div>
-        <el-dialog width="500px" :lock-scroll="false" title="新增角色" align="center" :visible.sync="dialogTableVisible" >
+        <el-dialog width="50%"  title="角色信息" align="center" :visible.sync="dialogTableVisible" >
             <FucmanagementModel ref="modalForm" @close="modalClose" @ok="modalFormOk"></FucmanagementModel>
         </el-dialog>
     </div>

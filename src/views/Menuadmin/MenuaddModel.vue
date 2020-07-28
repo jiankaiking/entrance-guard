@@ -74,7 +74,7 @@
             </el-form-item>
         </el-form>
         <div class="btn-box">
-            <el-button type="primary" @click="ok" plain>立即创建</el-button>
+            <el-button type="primary" v-if="type == 'add'" @click="ok" plain>立即创建</el-button>
             <el-button @click="close">取消</el-button>
         </div>
     </div>

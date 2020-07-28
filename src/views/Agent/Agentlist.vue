@@ -32,12 +32,12 @@
                     <el-table-column align="center" prop="sellerCount" label="商户数量"></el-table-column>
                     <el-table-column align="center" width="150" label="状态">
                         <template slot-scope="scope">
-                            <el-button type="text" @click="changeSonStatus(scope.row,scope.$index,0)">
-                                <el-switch :active-value="'1'" :inactive-value="'0'"
-                                        :value="scope.row.agentStatus" active-text="正常" inactive-text="停用">
-                                </el-switch>
-                            </el-button>
-                        </template>
+                        <el-button type="text" @click="changeSonStatus(scope.row,scope.$index,0)">
+                            <el-switch :active-value="'1'" :inactive-value="'0'"
+                                       :value="scope.row.agentStatus" active-text="正常" inactive-text="停用">
+                            </el-switch>
+                        </el-button>
+                    </template>
                     </el-table-column>
                     <el-table-column align="center" width="150" label="子代功能">
                         <template slot-scope="scope">

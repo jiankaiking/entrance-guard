@@ -10,7 +10,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" plain @click="searchClick">搜索</el-button>
-                    <el-button type="success" plain @click="headAdd">新增</el-button>
+<!--                    <el-button type="success" plain @click="headAdd">新增</el-button>-->
                     <el-button  plain @click="resetSearch">重置</el-button>
                 </el-form-item>
             </el-form>
@@ -20,7 +20,13 @@
                 <el-table empty-text :data="tableData" border style="width: 99.9%">
                     <el-table-column align="center" prop="paramId" label="参数ID"></el-table-column>
                     <el-table-column align="center" prop="paramName" label="参数名"></el-table-column>
-                    <el-table-column align="center" prop="paramValue" label="参数值"></el-table-column>
+                    <el-table-column align="center" prop="paramValue" label="参数值">
+                        <template slot-scope="scope">
+                            <el-tooltip class="item" effect="dark" :content="scope.row.paramValue" placement="top-start">
+                                <p class="one-line-clamp">{{scope.row.paramValue}}</p>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
                     <el-table-column align="center" prop="paramModule" label="所属模块"></el-table-column>
                     <el-table-column align="center" prop="paramDesc" label="说明"></el-table-column>
                     <el-table-column align="center" label="操作">
