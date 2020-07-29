@@ -14,6 +14,7 @@
                 <el-form-item>
                     <el-button @click="getDataList" type="primary" plain>搜索</el-button>
                     <el-button @click="headAdd" type="success" plain>新增</el-button>
+<!--                    <el-button @click="res" type="success" plain>重置</el-button>-->
                 </el-form-item>
             </el-form>
         </div>
@@ -80,7 +81,7 @@
         },
         methods: {
             modalFormOk(data) {
-                data.id == 1 ? this.getDataList() : this.refreshRow(data.id)
+                this.tableData.some(item => item.organPid === data.id) ? this.getDataList() : this.refreshRow(data.id)
                 this.close()
             },
             close() {
@@ -106,7 +107,7 @@
                 httpRequest("/managecenter/organManage/deleteOrgan", "POST", {organId: row.organId})
                     .then(res => {
                         if (res.success) {
-                            this.getDataList()
+                            this.tableData.some(item => item.organPid === row.organPid) ? this.getDataList() : this.refreshRow(row.organPid)
                         }
                     })
             },

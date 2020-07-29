@@ -54,6 +54,7 @@
 <script>
     import httpRequest from "../../api/api";
     import MenuaddModel from './MenuaddModel';
+    import {mapActions} from 'vuex'
 
     export default {
         name: "Menuadmin",
@@ -81,7 +82,7 @@
             this.getMenuList()
         },
         methods: {
-
+            ...mapActions(["menuChange"]),
             //重置
             resetSearch(){
                 Object.keys(this.searchData).forEach(key => this.searchData[key] = '');
@@ -123,6 +124,7 @@
                         if(res.success){
                             this.searchData.menuPid = 0
                             row.menuPid == 0?this.getMenuList():this.refreshRow(row.menuPid)
+                            this.menuChange()
                         }
                     })
             },

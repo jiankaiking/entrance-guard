@@ -16,8 +16,9 @@ const mutations = {
         state.token = '';
     },
     SET_USERINFO(state, data) {
-        state.user = JSON.parse(data);
-        sessionStorage.setItem('user', data)
+        // console.log(data)
+        state.user = data;
+        sessionStorage.setItem('user', JSON.stringify(data))
     },
     SET_TOKEN(state, data) {
         state.user = data.user;

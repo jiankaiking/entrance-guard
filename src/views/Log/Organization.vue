@@ -21,7 +21,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button plain type="primary" @click="searchClick">搜索</el-button>
-                    <el-button type="info" plain>重置</el-button>
+                    <el-button type="info" @click="resetSearch" plain>重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -79,8 +79,20 @@
         },
         methods: {
             changeDate(e) {
-                this.searchData.startDate = e[0]
-                this.searchData.endDate = e[1]
+                if(e){
+                    this.searchData.startDate = e[0]
+                    this.searchData.endDate = e[1]
+                }else{
+                    this.searchData.startDate = ''
+                    this.searchData.endDate = ''
+                }
+            },
+        },
+        watch:{
+            "searchData.startDate"(val,old){
+                if(val === ''){
+                    this.dateValue = ''
+                }
             },
         }
 

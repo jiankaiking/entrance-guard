@@ -9,8 +9,9 @@
                 </div>
                 <!-- 扫码登录 -->
                 <div class="sweep-login">
-                    <p>{{!sweepLogin?'扫码登录':'账号密码登录'}}</p>
-                    <img class="checkimg" @click="checkLogin" :src="sweepLogin?'1.jpg':'2.jpg'" alt="">
+                    <p>{{!sweepLogin?'扫码登录':'账号登录'}}</p>
+                    <div class="post-u"></div>
+                    <img class="checkimg" @click="checkLogin" :src="sweepLogin?'http://qiniutest.lywlsz.com.cn/2020_07_28_13_52_41_870.jpg':'http://qiniutest.lywlsz.com.cn/2020_07_28_11_47_05_868.png'" alt="">
                 </div>
                 <div class="sweep-box" v-show="sweepLogin">
                     <p>请打开手机app扫一扫登录</p>
@@ -253,13 +254,13 @@
         position: relative;
     }
 
-    .checkimg::before {
+    .post-u {
         position: absolute;
         background: #ffffff;
-        content: '';
+        z-index: 3;
         width: 90px;
         height: 50px;
-        left: -38px;
+        left: 15px;
         top: 14px;
         transform: rotateZ(45deg);
         bottom: -10px;
@@ -283,7 +284,7 @@
             p {
                 font-size: 14px;
                 position: relative;
-                z-index: 3;
+                z-index: 99;
                 color: #979797;
                 line-height: 50px;
                 float: left;

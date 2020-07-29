@@ -58,6 +58,17 @@ const actions = {
                 })
         })
     },
+    getUserInfo({commit}){
+        return new Promise((resolve, reject)=>{
+            httpRequest("/managecenter/index/getUserInfo").then(res=>{
+                    if(res.success){
+                        commit('SET_USERINFO',res.data)
+                    }
+                    console.log(res)
+                    resolve(res)
+            }).catch(err=> reject(err))
+        })
+    },
     //登出
     LogOut({commit, state},backPath) {
         return new Promise((resolve, reject) => {
@@ -75,6 +86,7 @@ const actions = {
                 })
         })
     },
+    //面包屑
     addTagView({commit},tag){
         commit('ADD_TAG_VIEW',tag)
     }

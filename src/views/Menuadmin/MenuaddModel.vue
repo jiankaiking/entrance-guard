@@ -1,6 +1,7 @@
 <template>
     <div class="menuInfo">
-        <el-form v-if="type == 'add'" ref="form" :model="modelFromdata" label-width="80px" style="padding: 0 30px; box-sizing: border-box;">
+        <el-form v-if="type == 'add'" ref="form" :model="modelFromdata" label-width="80px"
+                 style="padding: 0 30px; box-sizing: border-box;">
             <el-form-item label="*上级菜单">
                 <el-input v-model="menuInfo.menuName" disabled></el-input>
             </el-form-item>
@@ -11,17 +12,18 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="*菜单名称">
-                <el-input v-model="modelFromdata.menuName"></el-input>
+                <el-input v-model="modelFromdata.menuName" placeholder="请输入菜单名称"></el-input>
             </el-form-item>
             <el-form-item label="请求地址">
-                <el-input v-model="modelFromdata.menuUrl"></el-input>
+                <el-input v-model="modelFromdata.menuUrl" placeholder="请输入请求地址"></el-input>
             </el-form-item>
             <el-form-item label="链接目标">
                 <el-select v-model="modelFromdata.menuMode">
-                    <el-option v-for="(item,index) in typeData" :key="index" :value="item.dataValue" :label="item.dataCode">
+                    <el-option v-for="(item,index) in typeData" :key="index" :value="item.dataValue"
+                               :label="item.dataCode">
                     </el-option>
                 </el-select>
-<!--                <el-input v-model="modelFromdata.menuMode"></el-input>-->
+                <!--                <el-input v-model="modelFromdata.menuMode"></el-input>-->
             </el-form-item>
             <el-form-item label="图标">
                 <el-col :span="3">
@@ -39,7 +41,8 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="备注">
-                <el-input type="textarea" :rows="6" v-model="modelFromdata.menuRemarks"></el-input>
+                <el-input type="textarea" placeholder="字数不能超过50个字符" :rows="6" maxlength="50" show-word-limit
+                          v-model="modelFromdata.menuRemarks"></el-input>
             </el-form-item>
         </el-form>
         <el-form label-width="150px" v-if="type == 'info'" class="menuinfo-form">
@@ -53,7 +56,7 @@
                 <span>{{infoData.menuUrl}}</span>
             </el-form-item>
             <el-form-item label="状态:">
-                <span>{{infoData.menuStatus}}</span>
+                <span>{{infoData.menuStatusName}}</span>
             </el-form-item>
             <el-form-item label="连接目标:">
                 <span>{{infoData.menuModeName}}</span>
@@ -100,13 +103,13 @@
                     systemId: '',//所属业务系统
                     menuIcon: '',//菜单图标URL
                 },
-                menuInfo:{},
-                infoData:{},
-                typeData:[],
+                menuInfo: {},
+                infoData: {},
+                typeData: [],
                 type: '',
-                url:{
-                    add:'/managecenter/menuManage/addMenu',
-                    info:'/managecenter/menuManage/getMenuInfo',
+                url: {
+                    add: '/managecenter/menuManage/addMenu',
+                    info: '/managecenter/menuManage/getMenuInfo',
                 },
                 tableData: [{}]
             }
@@ -129,39 +132,39 @@
             },
             info(id) {
                 this.type = 'info'
-                httpRequest(this.url.info,"GET",{menuId:id})
-                    .then(res=>{
+                httpRequest(this.url.info, "GET", {menuId: id})
+                    .then(res => {
                         this.infoData = res.data
                         this.getOperatingInfo(res.data.menuId)
                     })
             },
             //获取操作信息
-            getOperatingInfo(id){
-                httpRequest("/managecenter/menuManage/getMenuInfoAndRoleList","GET",{menuId:id})
-                    .then(res=>{
-                        this.tableData =res.data.records;
+            getOperatingInfo(id) {
+                httpRequest("/managecenter/menuManage/getMenuInfoAndRoleList", "GET", {menuId: id})
+                    .then(res => {
+                        this.tableData = res.data.records;
                     })
             },
             //获取链接目标类型
-            getType(){
-                httpRequest("/managecenter/sysDict/getDataListByType","GET",{dataType:'menu_mode'})
-                    .then(res=>{
-                       this.typeData = res.data;
+            getType() {
+                httpRequest("/managecenter/sysDict/getDataListByType", "GET", {dataType: 'menu_mode'})
+                    .then(res => {
+                        this.typeData = res.data;
                     })
             },
             //新增菜单
-            ok(){
-                this.modelFromdata.menuPid = this.modelFromdata.menuPid?this.modelFromdata.menuPid:0;
-                httpRequest(this.url.add,"POST",this.modelFromdata)
-                    .then(res=>{
-                       if(res.success){
-                           this.$message.success(res.msg)
-                           this.$emit('ok')
-                       }
+            ok() {
+                this.modelFromdata.menuPid = this.modelFromdata.menuPid ? this.modelFromdata.menuPid : 0;
+                httpRequest(this.url.add, "POST", this.modelFromdata)
+                    .then(res => {
+                        if (res.success) {
+                            this.$message.success(res.msg)
+                            this.$emit('ok')
+                        }
                     })
             },
             //取消
-            close(){
+            close() {
                 this.$emit("close")
             },
         },
@@ -173,7 +176,7 @@
 
 </script>
 <style>
-    .menuInfo .el-table td, .menuInfo .el-table th{
+    .menuInfo .el-table td, .menuInfo .el-table th {
         padding: 0 !important;
     }
 </style>
@@ -186,9 +189,15 @@
         line-height: 50px;
         text-align: center;
     }
-    .btn-box{
-        width: 100%; display: flex; justify-content: center; padding:0 100px; box-sizing: border-box;
+
+    .btn-box {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0 100px;
+        box-sizing: border-box;
     }
+
     /*.menuInfo .el-form-item{*/
     /*    margin-bottom: 0;*/
     /*}*/
@@ -198,7 +207,8 @@
         height: 50px;
         display: block;
     }
-    .menuinfo-form{
+
+    .menuinfo-form {
 
     }
 </style>

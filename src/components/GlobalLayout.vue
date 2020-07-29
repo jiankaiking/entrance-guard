@@ -1,14 +1,11 @@
 <template>
     <div class="menu">
-        <!--        <div class="banner-left">-->
-        <!--            <img src="../assets/images/logowhite.png" alt="运营中台">-->
-        <!--        </div>-->
         <menutree :menuList="menuList"></menutree>
     </div>
 </template>
 
 <script>
-    import httpRequest from "../api/api";
+    import {mapActions,mapState} from 'vuex'
     import menutree from '@/components/Sidebar'
 
     export default {
@@ -16,25 +13,17 @@
         data() {
             return {
                 uniquevalue: true,
-                menuList: [],
                 path: '',
             };
         },
         mounted(){
-            httpRequest("/managecenter/index/getMenuTreeByUser", "GET")
-                .then(res=>{
-                    if(res.success){
-                        res.data.filter((item,index)=>{
-                            if(item.menuUrl == null){
-                                item.menuUrl = index.toString()
-                            }
-                        })
-                        this.menuList = JSON.parse(JSON.stringify(res.data))
-                    }
-                })
+            this.menuChange()
         },
         methods: {
-
+            ...mapActions(["menuChange"]),
+        },
+        computed:{
+            ...mapState({menuList:state=>state.permission.menuList})
         },
         components: {
             menutree

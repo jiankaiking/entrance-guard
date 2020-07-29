@@ -194,7 +194,7 @@
                 this.$router.push('/login')
             },
             go(){
-                this.$router.go('/')
+                this.$router.go(-1)
             }
         }
     }

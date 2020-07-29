@@ -3,7 +3,7 @@
         <div class="searchData">
             <el-form ref="searchFrom" :model="searchData" label-width="80px">
                 <el-form-item label="角色名称">
-                    <el-input v-model="searchData.roleName"  placeholder="请输入部门名称"></el-input>
+                    <el-input v-model="searchData.roleName"  placeholder="请输入角色名称"></el-input>
                 </el-form-item>
                 <el-form-item label="角色状态">
                     <el-select v-model="searchData.roleStatus" placeholder="请选择">
@@ -14,6 +14,7 @@
                 <el-form-item>
                     <el-button @click="searchClick" type="primary" plain>搜索</el-button>
                     <el-button @click="headAdd" type="success" plain>新增</el-button>
+                    <el-button @click="resetSearch"  plain>重置</el-button>
                 </el-form-item>
             </el-form>
         </div>

@@ -4,7 +4,7 @@
             <el-col :span="12">
                 <el-dropdown style="width: 100%">
                     <div style=" height: 50px; text-align: center; line-height: 50px">
-                        <span>管理中台系统</span>
+                        <span>{{}}</span>
                     </div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="jumpSystem(item.systemId)" v-for="(item,index) in systemArr"
@@ -17,7 +17,7 @@
             <el-col :span="12">
                 <el-dropdown style="width: 100%">
                     <div style=" height: 50px; text-align: center; line-height: 50px">
-                        机构
+                        {{user.organId}}
                     </div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="jumporgan(item.organId)" v-for="(item,index) in organArr"
@@ -31,7 +31,6 @@
         <el-menu
                 unique-opened
                 mode="vertical"
-
                 :default-active="$route.path"
                 router
                 background-color="#fff"
@@ -82,8 +81,6 @@
                 let menu = this.menuList.filter(item => item.menuId == keypath[0])[0]
                 let cliMenu = this.findMenu(menu, key)
                 this.$router.push(cliMenu.menuUrl)
-                // this.$store.state.iframUrl = cliMenu.menuUrl;
-                // sessionStorage.setItem("iframUrl", cliMenu.menuUrl)
 
             },
 
@@ -109,10 +106,13 @@
             jumporgan(id) {
                 httpRequest("/managecenter/index/updateLoginOrgan", "POST", {organId: id})
                     .then(res => {
-                        if (this.$route.path != '/home/index') {
-                            this.$router.push("/home/index")
+                        if(res.success){
+                            // if (this.$route.path != '/home/index') {
+                            //     this.$router.push("/home/index")
+                            // }
+                            this.$store.dispatch('getUserInfo')
+                            this.$router.go(0)
                         }
-                        this.$router.go(0)
                     })
             },
         },
@@ -120,17 +120,23 @@
             ...mapState(["systemArr"]),
             ...mapState(["user"]),
             ...mapState(["organArr"]),
-            loginSystem() {
-                let userStystem = ''
-                if (this.user.loginSystemId == 1) {
-                    userStystem = '管理中台系统'
-                } else if (this.user.loginSystemId == 3) {
-                    userStystem = '代理商系统'
-                } else {
-                    userStystem = '商户系统'
-                }
-                return userStystem
-            },
+            // loginSystem() {
+            //     if(this.systemArr.length > 0){
+            //         let userSystemName =  this.systemArr.filter(item=>{
+            //             return item.systemId === this.user.loginSystemId
+            //         })
+            //         return userSystemName[0].systemName
+            //     }
+            //
+            // },
+            // position(){
+            //     if(this.organArr.length > 0){
+            //         let organArrName =  this.organArr.filter(item=>{
+            //             return item.organId === this.user.organId
+            //         })
+            //         return organArrName[0].position
+            //     }
+            // },
         }
     }
 </script>

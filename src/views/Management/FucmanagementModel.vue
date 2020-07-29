@@ -16,8 +16,19 @@
         <el-form-item label-width="0">
             <treeTransfer :from_data='fromData' pid="menuPid" node_key="menuId" :to_data='toData'
                           :defaultProps="{label:'menuName'}"
+                          @left-check-change="leftcheckchange"
+                          ref="menuData"
                           @addBtn='addMove' @removeBtn='remove' mode='transfer' filter openAll>
             </treeTransfer>
+            <el-row>
+                <el-col :span="3" :offset="6">
+                    <el-checkbox @change="changeCheckAll($event,1)">全选</el-checkbox>
+                </el-col>
+                <el-col :span="3" :offset="7">
+                    <el-checkbox @change="changeCheckAll($event,2)">全选</el-checkbox>
+                </el-col>
+            </el-row>
+
         </el-form-item>
         <el-form-item label-width="0">
             <div style="margin: 0 auto; width: 200px">
@@ -57,9 +68,15 @@
         },
         components: {treeTransfer},
         methods: {
+            leftcheckchange(nodeObj, treeObj, checkAll){
+                console.log(nodeObj, treeObj, checkAll)
+                console.log(this.$refs.menuData,this.fromData)
+                 this.$refs.menuData.from_check_keys = this.fromData;
+                 console.log(this.$refs.menuData)
+            },
             // 监听穿梭框组件添加
             addMove(fromData, toData, obj) {
-                // console.log("obj:", Array.from(obj.keys));
+                 console.log("obj:", Array.from(obj.keys));
                 this.modelFromdata.menuIds = this.modelFromdata.menuIds.concat(obj.keys)
             },
             sortArr(arr) {
@@ -100,7 +117,9 @@
                         this.fromData = res.data
                     })
             },
-
+            changeCheckAll(e,index){
+                console.log(e,index)
+            },
             add() {
                 this.getMenuAll()
                 this.modelFromdata.roleName = ''
@@ -165,6 +184,7 @@
     .el-transfer-panel__header {
         display: none;
     }
+
 
     .el-transfer-panel__item .el-checkbox__input {
         .el-transfer-panel__item .el-checkbox__input {

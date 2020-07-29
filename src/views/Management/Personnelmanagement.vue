@@ -34,6 +34,7 @@
                     <el-form-item>
                         <el-button @click="searchClick" type="primary" plain>搜索</el-button>
                         <el-button @click="personnelHeadAdd" type="success" plain>新增</el-button>
+                        <el-button @click="resetSearch"  plain>重置</el-button>
                     </el-form-item>
                 </el-form>
             </div>

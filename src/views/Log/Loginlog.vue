@@ -3,7 +3,7 @@
         <div class="searchData">
             <el-form ref="form" :model="searchData" label-width="80px">
                 <el-form-item label="操作人员" style="width: 220px">
-                    <el-input v-model="searchData.loginStaffName"   placeholder="请输入操作人员"></el-input>
+                    <el-input v-model="searchData.loginUserName"   placeholder="请输入操作人员"></el-input>
                 </el-form-item>
                 <el-form-item label="IP地址" style="width: 310px">
                     <el-input v-model="searchData.loginClientIp"   placeholder="请输入IP地址"></el-input>
@@ -23,6 +23,7 @@
                     <el-select v-model="searchData.loginStatus" placeholder="请选择">
                         <el-option label="成功" value="1"></el-option>
                         <el-option label="失败" value="0"></el-option>
+                        <el-option label="异常" value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -74,7 +75,7 @@
             return {
                 //搜索数据
                 searchData: {
-                    loginStaffName: '',
+                    loginUserName: '',
                     loginClientIp: '',
                     startDate: '',
                     endDate: '',
@@ -94,8 +95,20 @@
         },
         methods: {
             changeDate(e) {
-                this.searchData.startDate = e[0]
-                this.searchData.endDate = e[1]
+                if(e){
+                    this.searchData.startDate = e[0]
+                    this.searchData.endDate = e[1]
+                }else{
+                    this.searchData.startDate = ''
+                    this.searchData.endDate = ''
+                }
+            },
+        },
+        watch:{
+            "searchData.startDate"(val,old){
+                if(val === ''){
+                    this.dateValue = ''
+                }
             },
         }
 

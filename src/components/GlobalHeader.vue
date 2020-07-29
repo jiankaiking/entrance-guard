@@ -41,6 +41,9 @@
         computed: {
             ...mapState(['user'])
         },
+        mounted(){
+            // console.log(JSON.parse(this.user))
+        },
         methods: {
             ...mapActions(["LogOut"]),
             loginOut(route) {

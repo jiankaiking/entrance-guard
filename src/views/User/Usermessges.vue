@@ -110,9 +110,9 @@
                     .then(res => {
                         if (res.success) {
                             this.userMsg = res.data;
-                            let data = JSON.stringify(this.userMsg)
+                            // let data = JSON.stringify(this.userMsg)
 
-                            this.SET_USERINFO(data)
+                            this.SET_USERINFO(res.data)
                         }
                     })
             },

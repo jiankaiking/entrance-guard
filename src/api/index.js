@@ -4,7 +4,7 @@
 *
 */
 
-import {Message,MessageBox} from "element-ui";
+import {Message, MessageBox} from "element-ui";
 import axios from 'axios'
 import qs from 'qs'
 import BASE_URL from './config'
@@ -12,9 +12,8 @@ import store from "../store";
 import router from "../router";
 
 
-
 const service = axios.create({
-  //  baseURL: 'http://192.168.0.110:8701',   //请求api
+    //  baseURL: 'http://192.168.0.110:8701',   //请求api
     // baseURL: '/sellerManagement',   //请求api
     baseURL: '/api',   //请求api
     timeout: 5000,     //请求超时时间
@@ -23,7 +22,7 @@ const service = axios.create({
 
 //请求拦截
 service.interceptors.request.use(config => {
-    if(store.state.token){
+    if (store.state.token) {
         config.headers['Authorization'] = store.state.token
     }
 
@@ -41,13 +40,12 @@ service.interceptors.response.use(
     response => {
         if (!response.data.success) {
             //登录过期
-            if(response.data.code == 401 || response.data.code == 403){
-                let hisUrl = window.location.href.slice(window.location.href.indexOf("#") +1)
-                router.push({path:"/login",query:{redirect:hisUrl}})
+            if (response.data.code == 401 || response.data.code == 403) {
                 sessionStorage.clear()
-            }else{
-                Message.error(response.data.msg)
+                window.location.reload()
             }
+            Message.error(response.data.msg)
+
         }
         return response.data;
     },

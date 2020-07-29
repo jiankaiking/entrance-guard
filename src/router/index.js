@@ -330,7 +330,7 @@ router.beforeEach((to, from, next) => {
             next();
         }
     } else {
-        if (to.path === "/login") {
+        if (to.path === "/login" || to.path === "/findpassword") {
             next();
         } else {
             next({ path: "/login", query: { redirect: to.fullPath } });

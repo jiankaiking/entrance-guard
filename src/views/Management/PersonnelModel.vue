@@ -16,19 +16,19 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="真实姓名:" prop="staffFullName">
-                            <el-input v-model="modelFromdata.staffFullName" placeholder="请输入"></el-input>
+                            <el-input v-model="modelFromdata.staffFullName" placeholder="请输入真实姓名"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="用户名:">
-                            <el-input v-model="modelFromdata.loginUserName"></el-input>
+                            <el-input v-model="modelFromdata.loginUserName" placeholder="请输入用户名"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="昵称(花名):">
-                            <el-input v-model="modelFromdata.staffAlias"></el-input>
+                            <el-input v-model="modelFromdata.staffAlias"  placeholder="请输入花名"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -43,14 +43,14 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="手机号:" prop="staffPhone">
-                            <el-input v-model="modelFromdata.staffPhone"></el-input>
+                            <el-input v-model="modelFromdata.staffPhone"  placeholder="请输入手机号"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="12">
-                        <el-form-item label="初始密码:" prop="loginPwd">
-                            <el-input v-model="modelFromdata.loginPwd"></el-input>
+                        <el-form-item label="初始密码:">
+                            <el-input v-model="modelFromdata.loginPwd" placeholder="输入修改的密码"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12" class="organ-from">
@@ -64,18 +64,6 @@
                                 </el-option>
                             </el-select>
                             <el-input v-model="modelFromdata.position" placeholder="请输入职位" style="width:48%;margin-left:3%"></el-input>
-                            <!-- <el-select
-                                    v-model="modelFromdata.organId"
-                                    style="width:48%;margin-left:3%"
-                                    collapse-tags
-                                    placeholder="请选择">
-                                <el-option
-                                        v-for="item in options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select> -->
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -166,7 +154,7 @@
                     staffAlias: '',//花名
                     staffPhone: '',//手机号
                     loginPwd: '',//初始密码
-                    staffSex: '',//性别（0 女 1 男）
+                    staffSex: 0,//性别（0 女 1 男）
                     staffStatus: '1',//状态（0 停用 1 启用）
                     organId: '',//机构id 所属部门id
                     position: '',//职位
@@ -250,7 +238,7 @@
             },
             edit(record) {
                 this.newBtnStatus=true
-                this.$refs.form.resetFields()
+                // this.$refs.form.resetFields()
                 delete this.rules["loginPwd"];
                 // 员工详情
                 httpRequest(this.url.info, 'get', {staffId: record.staffId})
@@ -278,15 +266,14 @@
             closeMessage(){
                 this.$refs.form.clearValidate();
             },
-            handleOk(modelFromdata) {
+            addStaff(){
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         const that = this;
-                        // 触发表单验证
                         httpRequest(this.url.add, 'post', this.modelFromdata)
                             .then((res) => {
                                 if(res.success){
-                                    that.$message.success("修改成功")
+                                    that.$message.success(res.msg)
                                     this.$emit('ok');
                                 }
                             })
@@ -294,7 +281,22 @@
                         return false;
                     }
                 });
+            },
+            handleOk(modelFromdata) {
+                if(this.modelFromdata.staffId === this.$store.state.user.userId){
+                    this.$confirm('编辑登录账号信息要重新登录', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.addStaff()
+                        this.$store.dispatch('LogOut')
+                    }).catch(() => {
 
+                    });
+                }else{
+                    this.addStaff()
+                }
 
             },
         },
