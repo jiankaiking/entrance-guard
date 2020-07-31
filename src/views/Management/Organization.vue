@@ -14,7 +14,7 @@
                 <el-form-item>
                     <el-button @click="getDataList" type="primary" plain>搜索</el-button>
                     <el-button @click="headAdd" type="success" plain>新增</el-button>
-<!--                    <el-button @click="res" type="success" plain>重置</el-button>-->
+                    <el-button @click="restSearch" plain>重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -80,6 +80,10 @@
             this.getDataList()
         },
         methods: {
+            restSearch(){
+                Object.keys(this.searchData).map(key=> this.searchData[key] = '')
+                this.getDataList()
+            },
             modalFormOk(data) {
                 this.tableData.some(item => item.organPid === data.id) ? this.getDataList() : this.refreshRow(data.id)
                 this.close()
@@ -104,12 +108,20 @@
             },
             //删除
             deleteOrgan(row) {
-                httpRequest("/managecenter/organManage/deleteOrgan", "POST", {organId: row.organId})
-                    .then(res => {
-                        if (res.success) {
-                            this.tableData.some(item => item.organPid === row.organPid) ? this.getDataList() : this.refreshRow(row.organPid)
-                        }
-                    })
+                this.$confirm('删除该部门,包含得下级部门将一并删除,是否继续？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    center:true,
+                    type: 'error'
+                }).then(() => {
+                    httpRequest("/managecenter/organManage/deleteOrgan", "POST", {organId: row.organId})
+                        .then(res => {
+                            if (res.success) {
+                                this.tableData.some(item => item.organPid === row.organPid) ? this.getDataList() : this.refreshRow(row.organPid)
+                            }
+                        })
+                }).catch(() => {
+                });
             },
             changeStatus(row) {
                 httpRequest("/managecenter/organManage/offOrNoOrgan", "POST", {
@@ -118,9 +130,9 @@
                 })
                     .then(res => {
                         if (res.success) {
-                            console.log(this.$refs.table)
-                            this.$refs.table.store.updateTreeData()
-                            this.getDataList()
+                            this.tableData.some(item => item.organPid === row.organPid) ? this.getDataList() : this.refreshRow(row.organPid)
+                            // this.$refs.table.store.updateTreeData()
+                            // this.getDataList()
                         }
                     })
             },

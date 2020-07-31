@@ -33,15 +33,13 @@
         <el-form class="forget-from" ref="resetForm" v-else-if="status == 1" :model="passwordFrom" :rules="rules">
             <p class="title">设置新密码</p>
             <el-form-item style="margin-bottom: 0;padding-bottom: 0;" prop="password">
-                <el-input placeholder="请输入密码 " v-model="passwordFrom.password">
-                    <i slot="suffix" class="el-icon-view"></i>
+                <el-input placeholder="请输入密码 " show-password v-model="passwordFrom.password">
                 </el-input>
             </el-form-item>
             <p class="text"><i class="el-icon-warning-outline"></i>建议使用字母、数字和符号两种以上的组合，8-20个字符</p>
             <p class="title">再次输入新密码</p>
-            <el-form-item prop="password">
-                <el-input placeholder="请输入密码" v-model="passwordFrom.passwordTrue">
-                    <i slot="suffix" class="el-icon-view"></i>
+            <el-form-item  prop="passwordTrue">
+                <el-input placeholder="请输入密码" show-password v-model="passwordFrom.passwordTrue">
                 </el-input>
             </el-form-item>
             <el-form-item>
@@ -71,8 +69,10 @@
                 if (value === '') {
                     callback(new Error('请再次输入密码'));
                 } else if (value !== this.passwordFrom.password) {
-                    console.log(value)
+                    // console.log(value)
                     callback(new Error('密码两次输入不一致!'));
+                }else if(value.length < 6 || value.length > 16){
+                    callback(new Error('输入正确得密码长度!'));
                 } else {
                     callback();
                 }
@@ -108,7 +108,7 @@
         methods: {
             //刷新验证码
             getCode() {
-                this.codeImg = '/api/managecenter/login/getValidateCode?' + Math.random()
+                this.codeImg = '/api/managecenter/login/getSmsValidateCode?' + Math.random()
             },
             //倒计时
             countDown(num) {
@@ -130,7 +130,7 @@
             //获取手机验证码
 
             getPhoneCode() {
-                if (this.btnDisabled) {
+                if (this.btnDisabled || this.findData.phoneNum == '' || this.findData.smsValidateCode == '' ) {
                     return;
                 }
                 httpRequest("/managecenter/login/forgetPassWordByValiCode", "POST", {
@@ -191,7 +191,7 @@
 
             },
             goLogin() {
-                this.$router.push('/login')
+                this.$store.dispatch('LogOut')
             },
             go(){
                 this.$router.go(-1)

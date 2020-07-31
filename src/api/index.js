@@ -16,7 +16,7 @@ const service = axios.create({
     //  baseURL: 'http://192.168.0.110:8701',   //请求api
     // baseURL: '/sellerManagement',   //请求api
     baseURL: '/api',   //请求api
-    timeout: 5000,     //请求超时时间
+    timeout: 50000,     //请求超时时间
     withCredentials: true //允许携带cookie
 })
 
@@ -43,8 +43,9 @@ service.interceptors.response.use(
             if (response.data.code == 401 || response.data.code == 403) {
                 sessionStorage.clear()
                 window.location.reload()
-            }
-            Message.error(response.data.msg)
+            }else if(response.data.code != 407){
+               Message.error(response.data.msg)
+           }
 
         }
         return response.data;

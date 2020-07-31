@@ -1,6 +1,6 @@
 <template>
-    <el-form class="funcmanang-model" label-width="80px" ref="form" :model="modelFromdata">
-        <el-form-item label="角色名称:" class="padding-box">
+    <el-form class="funcmanang-model" label-width="120px" :rules="rules" ref="form" :model="modelFromdata">
+        <el-form-item label="角色名称:" class="padding-box" prop="roleName">
             <el-input v-model="modelFromdata.roleName"/>
         </el-form-item>
         <el-form-item label="角色状态" class="padding-box" style="text-align: left">
@@ -13,19 +13,18 @@
             <el-input type="textarea" :rows="4" v-model="modelFromdata.roleRemarks"/>
         </el-form-item>
         <div style="margin: 20px 0;">配置管理</div>
-        <el-form-item label-width="0">
+        <el-form-item label-width="0"  prop="menuIds">
             <treeTransfer :from_data='fromData' pid="menuPid" node_key="menuId" :to_data='toData'
                           :defaultProps="{label:'menuName'}"
-                          @left-check-change="leftcheckchange"
                           ref="menuData"
                           @addBtn='addMove' @removeBtn='remove' mode='transfer' filter openAll>
             </treeTransfer>
             <el-row>
                 <el-col :span="3" :offset="6">
-                    <el-checkbox @change="changeCheckAll($event,1)">全选</el-checkbox>
+                    <el-checkbox v-model="checkToall" @change="changeCheckAll($event,1)">全选</el-checkbox>
                 </el-col>
                 <el-col :span="3" :offset="7">
-                    <el-checkbox @change="changeCheckAll($event,2)">全选</el-checkbox>
+                    <el-checkbox v-model="checkFormall" @change="changeCheckAll($event,2)">全选</el-checkbox>
                 </el-col>
             </el-row>
 
@@ -33,7 +32,7 @@
         <el-form-item label-width="0">
             <div style="margin: 0 auto; width: 200px">
                 <el-button @click="close">取消</el-button>
-                <el-button type="primary" @click="handleOk">保存</el-button>
+                <el-button type="primary" @click="handleOk('form')">保存</el-button>
             </div>
         </el-form-item>
     </el-form>
@@ -45,14 +44,28 @@
 
 
     export default {
+
         data() {
+            const checkMenuIds = (rule, value, callback) => {
+                if (this.modelFromdata.menuIds.length>0) {
+                    callback()
+                } else {
+                    callback(new Error('请选择菜单'))
+                }
+            }
             return {
                 modelFromdata: {
                     roleName: '',
-                    roleStatus: '',
+                    roleStatus: 1,
                     roleRemarks: '',
                     menuIds: [],
                 },
+                checkToall: false,
+                rules:{
+                    roleName:[{required: true, message: '请输入角色名称', trigger: 'blur'}],
+                    menuIds:[{validator:checkMenuIds,trigger: 'change'}]
+                },
+                checkFormall: false,
                 menuIds: [],
                 fromData: [],
                 toData: [],
@@ -64,19 +77,18 @@
             };
         },
         mounted() {
-
+            this.checkFalse()
         },
         components: {treeTransfer},
         methods: {
-            leftcheckchange(nodeObj, treeObj, checkAll){
-                console.log(nodeObj, treeObj, checkAll)
-                console.log(this.$refs.menuData,this.fromData)
-                 this.$refs.menuData.from_check_keys = this.fromData;
-                 console.log(this.$refs.menuData)
+            checkFalse() {
+                this.checkToall = false
+                this.checkFormall = false
             },
             // 监听穿梭框组件添加
             addMove(fromData, toData, obj) {
-                 console.log("obj:", Array.from(obj.keys));
+                // console.log("obj:", Array.from(obj.keys));
+                this.checkFalse()
                 this.modelFromdata.menuIds = this.modelFromdata.menuIds.concat(obj.keys)
             },
             sortArr(arr) {
@@ -88,10 +100,10 @@
                         }
                     })
                 }
-                //console.log(this.menuIds)
             },
             // 监听穿梭框组件移除
             remove(fromData, toData, obj) {
+                this.checkFalse()
                 let arr1 = this.modelFromdata.menuIds
                 let arr2 = obj.keys;
 
@@ -104,10 +116,6 @@
                     }
                 }
                 this.modelFromdata.menuIds = arr1;
-
-                // this.modelFromdata.menuIds = obj.keys.join(',')
-                // console.log(this.modelFromdata.menuIds)
-
             },
 
             //获取菜单
@@ -117,15 +125,23 @@
                         this.fromData = res.data
                     })
             },
-            changeCheckAll(e,index){
-                console.log(e,index)
+            changeCheckAll(e, index) {
+                if (index === 1) {
+                    this.$refs.menuData.fromAllBoxChange(e)
+                } else {
+                    this.$refs.menuData.toAllBoxChange(e)
+                }
+
+
             },
             add() {
                 this.getMenuAll()
                 this.modelFromdata.roleName = ''
-                this.modelFromdata.roleStatus = ''
-                this.modelFromdata.roleRemarks = '',
-                    this.toData = []
+                this.modelFromdata.roleStatus = 1
+                this.modelFromdata.roleRemarks = ''
+                this.modelFromdata.roleId = null
+                this.modelFromdata.menuIds = []
+                this.toData = []
             },
             //编辑  查询选择未选择的角色菜单
             edit(record) {
@@ -153,11 +169,10 @@
             close() {
                 this.$emit('close');
             },
-            //确认按钮
-            handleOk() {
-                // console.log(this.toData)
+            addEdit(){
                 const that = this;
                 // 触发表单验证
+                console.log(this.modelFromdata.menuIds)
                 this.modelFromdata.menuIds = Array.from(new Set(this.modelFromdata.menuIds)).join(',')
                 let httpurl = '';
                 if (!this.modelFromdata.roleId) {
@@ -175,6 +190,19 @@
                 }).finally(() => {
                     that.close();
                 })
+            },
+            //确认按钮
+            handleOk(fromName) {
+                let that = this;
+                this.$refs[fromName].validate((valid) => {
+                    if (valid) {
+                        that.addEdit()
+                    } else {
+                        return false;
+                    }
+                });
+                // console.log(this.toData)
+
 
             },
         },

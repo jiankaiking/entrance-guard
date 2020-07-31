@@ -27,7 +27,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-      //  target: 'http://192.168.0.102:8796',//managecenter sellerManagement https://test-gateway.lywlsz.com.cn
+       // target: 'http://192.168.0.102:8796',//managecenter sellerManagement https://test-gateway.lywlsz.com.cn
         target:'https://test-gateway.lywlsz.com.cn',
         changeOrigin: true,
         ws: true,

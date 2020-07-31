@@ -150,7 +150,8 @@
                                 if (res.success) {
                                     this.GET_ORGAN()
                                     this.GET_STYEMITEM()
-                                    this.$route.query.redirect && _that.$router.push(this.$route.query.redirect)
+                                    this.$router.push('/')
+                                    // this.$route.query.redirect && _that.$router.push(this.$route.query.redirect)
                                 }
                             })
                     } else {
@@ -169,6 +170,7 @@
             loopRequset() {
                 httpRequest("managecenter/login/checkScanLoginPool", "POST", this.sweepLoginInfo)
                     .then(res => {
+                        // console.log(res)
                         if (res.code == 200) {
                             const token = res.data.token;
                             const userInfo = res.data.userInfo;
@@ -178,10 +180,10 @@
                             this.$router.push('/')
                         } else if (res.code == 300) {
 
-                        } else if (res.code == 403) {
+                        } else if (res.code == 402) {
                             this.codeValue = '';
                             clearTimeout(this.timeName)
-                        } else if (res.code == 401) {
+                        } else if (res.code == 407) {
                             this.timeName = setTimeout(this.loopRequset, 1000)
                         }
                     })

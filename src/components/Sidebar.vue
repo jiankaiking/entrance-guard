@@ -4,7 +4,7 @@
             <el-col :span="12">
                 <el-dropdown style="width: 100%">
                     <div style=" height: 50px; text-align: center; line-height: 50px">
-                        <span>{{}}</span>
+                        <span>{{loginSystem}}</span>
                     </div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="jumpSystem(item.systemId)" v-for="(item,index) in systemArr"
@@ -17,12 +17,12 @@
             <el-col :span="12">
                 <el-dropdown style="width: 100%">
                     <div style=" height: 50px; text-align: center; line-height: 50px">
-                        {{user.organId}}
+                        {{position}}
                     </div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="jumporgan(item.organId)" v-for="(item,index) in organArr"
                                           :key="index">
-                            <span style="padding: 25px; box-sizing: border-box;">{{item.position}}</span>
+                            <span style="padding: 25px; box-sizing: border-box;">{{item.organName}}</span>
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -110,8 +110,10 @@
                             // if (this.$route.path != '/home/index') {
                             //     this.$router.push("/home/index")
                             // }
-                            this.$store.dispatch('getUserInfo')
-                            this.$router.go(0)
+                            this.$store.dispatch('getUserInfo').then(res=>{
+                                this.$router.go(0)
+                            })
+
                         }
                     })
             },
@@ -120,23 +122,28 @@
             ...mapState(["systemArr"]),
             ...mapState(["user"]),
             ...mapState(["organArr"]),
-            // loginSystem() {
-            //     if(this.systemArr.length > 0){
-            //         let userSystemName =  this.systemArr.filter(item=>{
-            //             return item.systemId === this.user.loginSystemId
-            //         })
-            //         return userSystemName[0].systemName
-            //     }
-            //
-            // },
-            // position(){
-            //     if(this.organArr.length > 0){
-            //         let organArrName =  this.organArr.filter(item=>{
-            //             return item.organId === this.user.organId
-            //         })
-            //         return organArrName[0].position
-            //     }
-            // },
+            loginSystem() {
+                if(this.systemArr.length > 0 && this.user.loginSystemId){
+                    let userSystemName =  this.systemArr.filter(item=>{
+                        return item.systemId === this.user.loginSystemId
+                    })
+                    return userSystemName[0].systemName
+                }else{
+                    return '选择系统'
+                }
+
+            },
+            position(){
+                if(this.organArr.length > 0 && this.user.organId){
+                    let organArrName =  this.organArr.filter(item=>{
+                        return item.organId === this.user.organId
+                    })
+                    // console.log(organArrName)
+                    return organArrName.length > 0?organArrName[0].organName:'选择机构'
+                }else{
+                    return '选择角色'
+                }
+            },
         }
     }
 </script>

@@ -227,7 +227,7 @@
                 this.modelFromdata.staffPhotos = res.data
             },
             add() {
-
+                this.newBtnStatus=false
                 for(var key in this.modelFromdata){
                     if(key=='staffStatus'){
                         this.modelFromdata[key] = "1"
@@ -274,7 +274,13 @@
                             .then((res) => {
                                 if(res.success){
                                     that.$message.success(res.msg)
-                                    this.$emit('ok');
+                                    if(this.modelFromdata.staffId === this.$store.state.user.userId){
+                                        this.$store.dispatch('LogOut')
+                                    }else{
+                                        this.$emit('ok');
+                                    }
+                                    // this.modelFromdata.staffId === this.$store.state.user.userId && this.$store.dispatch('LogOut')
+
                                 }
                             })
                     } else {
@@ -290,7 +296,6 @@
                         type: 'warning'
                     }).then(() => {
                         this.addStaff()
-                        this.$store.dispatch('LogOut')
                     }).catch(() => {
 
                     });

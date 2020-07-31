@@ -58,11 +58,11 @@
                                 <el-button type="text" @click="changeStatus(scope.row.staffId,scope.row.staffStatus)">
                                     {{scope.row.staffStatus == '0'?'正常':'停用'}}
                                 </el-button>
-                                <el-button type="text" @click="resetPassword(scope.row)">重置密码</el-button>
+                                <el-button type="text" v-if="scope.row.staffStatus == 1" @click="resetPassword(scope.row)">重置密码</el-button>
                                 <el-dialog :lock-scroll="false" title="重置密码" width="30%" center
                                            :visible.sync="resetModel">
                                     <div style="display: flex; align-items: center; flex-direction: column;">
-                                        <el-input v-model="resetInfo.staffpassword"></el-input>
+                                        <el-input v-model="resetInfo.password"></el-input>
                                         <p style="padding: 25px 0;">注:重置密码后,系统将发送短信给员工</p>
                                         <el-button @click="setPassword()">重置</el-button>
                                     </div>
@@ -109,7 +109,7 @@
                 //     label: 'organName',
                 // },
                 searchData: {
-                    organId: 1,
+                    organId: this.$store.state.user.organId,
                     staffFullName: '',//机构名称、部门名称
                     userStatus: '',//状态
                     page: 1,
@@ -118,7 +118,7 @@
                 treeKeyWords:'', //机构搜索
                 resetInfo:{// 重置密码
                     staffPhone:'',
-                    staffpassword:''
+                    password:''
                 },
                 resetModel: false,
                 total: 0,
@@ -162,7 +162,7 @@
             },
             //机构树形
             getOrganTree() {
-                httpRequest('/managecenter/organManage/getOrganTree', 'GET', {organId: 1})
+                httpRequest('/managecenter/organManage/getOrganTree', 'GET', {organId: this.$store.state.user.organId})
                     .then(res => {
                         this.originData.push(res.data)
                     })
@@ -175,7 +175,11 @@
             //重置密码
             setPassword() {
                 const that = this;
-                httpRequest('/staffManage/resetPassword', 'POST', this.resetInfo)
+                if(this.resetInfo.password.length < 6 || this.resetInfo.password.length > 16){
+                    this.$message.error("请输入6-16位得密码")
+                    return;
+                }
+                httpRequest('/managecenter/staffManage/resetPassword', 'POST', this.resetInfo)
                     .then(res => {
                         if(res.success){
                                 that.$message.success("重置成功")
@@ -186,11 +190,34 @@
             //重置密码
             resetPassword(id) {
                 this.resetInfo.staffPhone=id.staffPhone
-                this.resetInfo.staffpassword=''
+                this.resetInfo.password=''
                 this.resetModel = true;
             },
             //停用启动员工
             changeStatus(id, status) {
+                if(status == 1){
+                    this.$confirm('停用后,该员工将无法登录运营后台,是否继续?', '确定要停用该账号?', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        center:true,
+                        type: 'error'
+                    }).then(() => {
+                        this.changeStatusStaff(id, status)
+                    }).catch(() => {
+
+                    });
+                }else{
+                    this.changeStatusStaff(id, status)
+                }
+                // httpRequest('/managecenter/staffManage/offOrNoStaff', 'POST', {
+                //     staffId: id,
+                //     userStatus: status == 0 ? 1 : '0',
+                // })
+                //     .then(res => {
+                //         this.getTableData()
+                //     })
+            },
+            changeStatusStaff(id, status) {
                 httpRequest('/managecenter/staffManage/offOrNoStaff', 'POST', {
                     staffId: id,
                     userStatus: status == 0 ? 1 : '0',

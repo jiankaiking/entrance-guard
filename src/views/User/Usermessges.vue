@@ -21,9 +21,9 @@
 <!--                <el-button style="margin-left: 50px">注销登录</el-button>-->
             </div>
             <el-form label-width="80px">
-                <el-form-item label="密码">
-                    <i style="color: #333333;font-size: 28px; margin-right: 22px" class="el-icon-edit-outline"></i>
-                    <el-button type="text">修改密码</el-button>
+                <el-form-item >
+<!--                    <i style="color: #333333;font-size: 28px; margin-right: 22px" class="el-icon-edit-outline"></i>-->
+<!--                    <el-button type="text">修改密码</el-button>-->
                 </el-form-item>
                 <el-row :gutter="20">
                     <el-col :span="7">
