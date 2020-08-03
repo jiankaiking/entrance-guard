@@ -228,6 +228,7 @@
             },
             add() {
                 this.newBtnStatus=false
+                this.tabSelected = true;
                 for(var key in this.modelFromdata){
                     if(key=='staffStatus'){
                         this.modelFromdata[key] = "1"
@@ -237,7 +238,8 @@
                 }
             },
             edit(record) {
-                this.newBtnStatus=true
+                this.newBtnStatus=true;
+                this.tabSelected = true;
                 // this.$refs.form.resetFields()
                 delete this.rules["loginPwd"];
                 // 员工详情

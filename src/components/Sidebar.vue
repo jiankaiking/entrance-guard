@@ -141,7 +141,7 @@
                     // console.log(organArrName)
                     return organArrName.length > 0?organArrName[0].organName:'选择机构'
                 }else{
-                    return '选择角色'
+                    return '选择机构'
                 }
             },
         }

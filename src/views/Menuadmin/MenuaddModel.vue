@@ -23,7 +23,6 @@
                                :label="item.dataCode">
                     </el-option>
                 </el-select>
-                <!--                <el-input v-model="modelFromdata.menuMode"></el-input>-->
             </el-form-item>
             <el-form-item label="图标">
                 <el-col :span="3">
@@ -31,8 +30,7 @@
                 </el-col>
             </el-form-item>
             <el-form-item label="显示排序">
-                <el-input-number v-model="modelFromdata.menuSort" :min="1"
-                                 :max="10"></el-input-number>
+                <el-input-number v-model="modelFromdata.menuSort" :min="1"></el-input-number>
             </el-form-item>
             <el-form-item label="*菜单类型">
                 <el-radio-group v-model="modelFromdata.menuStatus">
