@@ -37,14 +37,11 @@ const router = new Router({
                     component: () => import('@/views/Log/Loginlog'),
                     meta: {title: '登录日志'}
                 },
-                //订单管理
                 {
-                    path: '/order/order',
-                    name: 'order',
-                    component: () => import('@/views/Order/Order'),
-                    meta: {
-                        title: '订单管理'
-                    }
+                    path: '/log/equipment',
+                    name: 'equipmentLog',
+                    component: () => import('@/views/Log/equipmentLog'),
+                    meta: {title: '设备日志'}
                 },
                 //系统配置sysconfig
                 {
@@ -77,25 +74,7 @@ const router = new Router({
                         title: '菜单管理'
                     }, component: () => import('@/views/Menuadmin/Menuadmin')
                 },
-                //代理商部分
-                {
-                    path: '/agent', name: 'agent', meta: {
-                        title: '代理商管理'
-                    }, component: () => import('@/views/Agent/Agentlist'),
-                },
-                {
-                    path: '/agentmessges',
-                    component: () => import('@/components/AgentHeader'),
-                },
-                //合作商
-                {
-                    path: '/cooperative', name: 'cooperative', component: () => import('@/views/Agent/Cooperative'),
-                },
-                {
-                    path: '/addcooperative',
-                    name: 'addcooperative',
-                    component: () => import('@/views/Agent/Addcooperative'),
-                },
+
                 //权限管理  功能
                 {
                     path: '/management/fucmanagement', meta: {
@@ -122,152 +101,6 @@ const router = new Router({
                     },
                     name: 'organization',
                     component: () => import('@/views/Management/Organization'),
-                },
-                //数据管理
-                {
-                    path: '/management/datapermission',
-                    meta: {
-                        title: '数据管理'
-                    },
-                    name: 'datapermission',
-                    component: () => import('@/views/Management/Datapermission'),
-                },
-                //结算   结算列表
-                {
-                    path: '/accounts/list',
-                    meta: {
-                        title: '结算列表'
-                    },
-                    name: 'accountslist',
-                    component: () => import('@/views/Settleaccounts/Accountslist'),
-                },
-                {
-                    path: '/accounts/settleamessage',
-
-                    name: 'settleamessage',
-                    component: () => import('@/views/Settleaccounts/Settleamessage'),
-                },
-                //佣金结算
-                {
-                    path: '/accounts/commission',
-                    name: 'commission',
-                    meta: {
-                        title: '佣金'
-                    },
-                    component: () => import('@/views/Settleaccounts/Commission'),
-                },
-                //补贴
-                {
-                    path: '/accounts/subsidy',
-                    meta: {
-                        title: '补贴'
-                    },
-                    name: 'subsidy',
-                    component: () => import('@/views/Settleaccounts/Subsidy'),
-                },
-                //数据导入
-                {
-                    path: '/accounts/dataimporting',
-                    meta: {
-                        title: '数据导入'
-                    },
-                    name: 'dataimporting',
-                    component: () => import('@/views/Settleaccounts/Dataimporting'),
-                },
-                //商户管理
-                {
-                    path: '/merchant/list',
-                    meta: {
-                        title: '商户管理'
-                    },
-                    name: 'MerchantList',
-                    component: () => import('@/views/Merchant/MerchantList'),
-                },
-                {
-                    path: '/newlandaudit',
-                    component: () => import('../views/Merchant/NewLandAudit.vue')
-                },
-                {
-                    path: '/newland/info',
-                    component: () => import('../views/Merchant/Newland.vue')
-                },
-                {
-                    path: '/merchant/info',
-                    component: () => import('../views/Merchant/MerchantInfo.vue')
-                },
-                //设备列表
-                {
-                    path: '/equipment/list',
-                    meta: {
-                        title: '设备列表'
-                    },
-                    name: 'MerchantList',
-                    component: () => import('@/views/Equipment/EquipmentList'),
-                },
-                //设备配置
-                {
-                    path: '/equipment/config',
-                    meta: {
-                        title: '设备配置'
-                    },
-                    name: 'EquipmentConfig',
-                    component: () => import('@/views/Equipment/EquipmentConfig'),
-                },
-                //设备数据
-                {
-                    path: '/equipment/data',
-                    meta: {
-                        title: '设备数据'
-                    },
-                    name: 'EquipmentData',
-                    component: () => import('@/views/Equipment/EquipmentData'),
-                },
-                //收银设备绑定
-                {
-                    path: '/equipment/cashierbind',
-                    meta: {
-                        title: '收银设备绑定'
-                    },
-                    name: 'EquipmentData',
-                    component: () => import('@/views/Equipment/CashierBind'),
-                },
-                //库存管理
-                {
-                    path: '/entrepot',
-                    component: () => import('@/components/EntrepotHeader'),
-                    redirect: '/entrepot/unshipped',
-                    children: [
-                        //出库
-                        {
-                            path: '/entrepot/outrecord',
-                            meta: {
-                                title: '出库管理'
-                            },
-                            component: () => import('@/views/Equipment/EntrepotOut'),
-                        },
-
-                        //入库
-                        {
-                            path: '/entrepot/getrecord',
-                            meta: {
-                                title: '入库管理'
-                            },
-                            component: () => import('@/views/Equipment/EntrepotGet'),
-                        },
-                        //未发货
-                        {
-                            path: '/entrepot/unshipped',
-                            component: () => import('@/views/Equipment/Unshipped'),
-                        },
-                        //设备库存
-                        {
-                            path: '/entrepot/repertory',
-                            meta: {
-                                title: '设备库存'
-                            },
-                            component: () => import('@/views/Equipment/Repertory'),
-                        }
-                    ],
                 },
                 // 公告中心
                 {
@@ -305,6 +138,105 @@ const router = new Router({
                     name: 'activeadd',
                     component: () => import('@/views/message/moduleModel/ActiveAdd'),
                 },
+                //设备类型
+                {
+                    path: '/equipment/type',
+                    name: 'equipmentType',
+                    component: () => import('@/views/Equipment/equipmentType'),
+                    meta: {
+                        title: '设备类型'
+                    }
+                },
+                //界控报警
+                {
+                    path: '/control/info',
+                    name: 'controlInfo',
+                    component: () => import('@/views/Equipment/controlInfo'),
+                    meta: {
+                        title: '界控报警'
+                    }
+                },
+                //区域类型
+                {
+                    path: '/area/type',
+                    name: 'areaType',
+                    component: () => import('@/views/Area/areaType'),
+                    meta: {
+                        title: '区域类型'
+                    }
+                },
+                //视频监控 /equiment/list
+                {
+                    path: '/monitor',
+                    name: 'monitor',
+                    component: () => import('@/views/Equipment/monitor'),
+                    meta: {
+                        title: '视频监控'
+                    }
+                },
+                //视频监控
+                {
+                    path: '/equiment/list',
+                    name: 'equipmentList',
+                    component: () => import('@/views/Equipment/equipmentList'),
+                    meta: {
+                        title: '设备列表'
+                    }
+                },
+                {
+                    path: '/plotlist',
+                    name: 'communityList',
+                    component: () => import('@/views/Community/communityList'),
+                    meta: {
+                        title: '小区列表'
+                    }
+                },
+                {
+                    path: '/residential/admin',
+                    name: 'residentialAdmin',
+                    component: () => import('@/views/Community/residentialAdmin'),
+                    meta: {
+                        title: '住宅楼管理'
+                    }
+                },
+                {
+                    path: '/proprietor/list',
+                    name: 'proprietorList',
+                    component: () => import('@/views/Community/proprietorList'),
+                    meta: {
+                        title: '业主管理'
+                    }
+                },
+                //房间列表
+                {
+                    path: '/room/list',
+                    name: 'roomList',
+                    component: () => import('@/views/Community/roomList'),
+                    meta: {
+                        title: '房间列表'
+                    }
+                },
+                {
+                    path: '/visit/list',
+                    name: 'visitList',
+                    component: () => import('@/views/Community/visitList'),
+                    meta: {
+                        title: '来访管理'
+                    }
+                },
+                {
+                    path: '/visit/invited',
+                    name: 'invited',
+                    component: () => import('@/views/Community/moduleModel/invited'),
+                },
+                {
+                    path: '/area/admin',
+                    name: 'areaAdmin',
+                    component: () => import('@/views/Area/areaAdmin'),
+                    meta: {
+                        title: '区域管理'
+                    }
+                }
             ]
 
         },
@@ -313,6 +245,11 @@ const router = new Router({
         },
         {
             name: 'Login', path: '/login', component: () => import('@/views/Login')
+        },
+        {
+            path: '*',
+            name: 'error',
+            component: () => import('@/views/error-page/404')
         },
     ]
 });
@@ -338,4 +275,7 @@ router.beforeEach((to, from, next) => {
     }
 });
 
+router.afterEach((to,from,next) => {
+    window.scrollTo(0,0);
+})
 export default router;

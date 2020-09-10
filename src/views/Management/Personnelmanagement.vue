@@ -52,9 +52,10 @@
                                 <span>{{scope.row.staffStatus == '1'?'正常':'停用'}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column width="200" align="center" label="操作">
+                        <el-table-column width="250" align="center" label="操作">
                             <template slot-scope="scope">
-                                <el-button type="text" @click="personnelHeadEdit(scope.row)">编辑</el-button>
+                                <el-button type="text" @click="personnelHeadEdit(scope.row,false)">角色授权</el-button>
+                                <el-button type="text" @click="personnelHeadEdit(scope.row,true)">编辑</el-button>
                                 <el-button type="text" @click="changeStatus(scope.row.staffId,scope.row.staffStatus)">
                                     {{scope.row.staffStatus == '0'?'正常':'停用'}}
                                 </el-button>
@@ -142,8 +143,8 @@
         },
         methods: {
             // 编辑
-            personnelHeadEdit(data){
-                this.headEdit(data)
+            personnelHeadEdit(record,flag){
+                this.headEdit({record,flag})
                 this.$nextTick(() => {
                     this.$refs.modalForm.closeMessage()
                 })

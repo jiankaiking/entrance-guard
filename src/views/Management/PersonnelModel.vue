@@ -1,17 +1,15 @@
 <template>
     <div>
             <ul class="tab-li">
-                <li @click="tabClick" v-bind:class="{tabSelect:tabSelected}"><a href="javascript:;">员工信息</a><i></i></li>
-                <li @click="tabClick" v-bind:class="{tabSelect:!tabSelected}" v-show="newBtnStatus"><a href="javascript:;">角色信息</a><i></i></li>
+                <li v-if="tabSelected" v-bind:class="{tabSelect:tabSelected}"><a href="javascript:;">员工信息</a><i></i></li>
+                <li v-if="!tabSelected" v-bind:class="{tabSelect:!tabSelected}" v-show="newBtnStatus"><a href="javascript:;">角色信息</a><i></i></li>
             </ul>
             <el-form v-show="tabSelected" ref="form" :rules="rules" :model="modelFromdata" style="padding: 0 50px; padding-top:50px; box-sizing: border-box" label-width="120px">
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="头像:">
-                            <div style="display: flex; align-items: center; width: 210px; height: 50px">
                                 <uploadImg :imgUrl.sync="modelFromdata.staffPhotos"></uploadImg>
                                 <span style="margin-left: 20px">点击选择头像</span>
-                            </div>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -125,7 +123,7 @@
                     label: 'roleName'
                     }" :data="noRoles"></el-transfer> -->
                     <div style="text-align:center;margin-top:30px;">
-                        <el-button @click="tabClick">取消</el-button>
+                        <el-button @click="handleOk">确认</el-button>
                     </div>
             </div>
     </div>
@@ -195,23 +193,22 @@
             },
             // 角色信息移除
             remove(fromData, toData, obj) {
-                console.log(obj)
+                console.log(obj,this.modelFromdata.roleIds)
                 var roleIdArr=this.modelFromdata.roleIds.split(',')
+                // console.log(roleIdArr)
                 for(var i=0;i<roleIdArr.length;i++){
                     for(var j=0;j<obj.keys.length;j++){
                         if(roleIdArr[i]==obj.keys[j]){
-                            roleIdArr.splice(i)
+                            // console.log(roleIdArr[i],i)
+                             roleIdArr.splice(i,1)
+                            // console.log(roleIdArr)
                         }
                     }
                 }
+                // console.log(roleIdArr)
                 this.modelFromdata.roleIds=roleIdArr.join(',')
             },
             //角色信息切换
-            tabClick(){
-                if(this.newBtnStatus){
-                this.tabSelected=!this.tabSelected
-                }
-            },
             getOrganInfo() {
                 httpRequest('/managecenter/organManage/getOrganInfo', 'get')
             },
@@ -237,9 +234,10 @@
                     }
                 }
             },
-            edit(record) {
+            edit({record,flag}) {
                 this.newBtnStatus=true;
-                this.tabSelected = true;
+                // console.log(flag)
+                this.tabSelected = flag;
                 // this.$refs.form.resetFields()
                 delete this.rules["loginPwd"];
                 // 员工详情
@@ -290,6 +288,19 @@
                     }
                 });
             },
+            // changeRole(){
+            //     httpRequest(this.url.add, 'post', {roleIds:this.modelFromdata.roleIds})
+            //         .then((res) => {
+            //             if(res.success){
+            //                 that.$message.success(res.msg)
+            //                 if(this.modelFromdata.staffId === this.$store.state.user.userId){
+            //                     this.$store.dispatch('LogOut')
+            //                 }else{
+            //                     this.$emit('ok');
+            //                 }
+            //             }
+            //         })
+            // },
             handleOk(modelFromdata) {
                 if(this.modelFromdata.staffId === this.$store.state.user.userId){
                     this.$confirm('编辑登录账号信息要重新登录', '提示', {

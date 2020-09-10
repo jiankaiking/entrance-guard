@@ -76,8 +76,6 @@ const actions = {
                 .then(response => {
                     if(response.success){
                         Message.success(response.msg)
-                        sessionStorage.clear()
-                        window.location.reload()
                         commit('logout');
                     }
                     resolve(response);

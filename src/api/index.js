@@ -44,6 +44,7 @@ service.interceptors.response.use(
                 sessionStorage.clear()
                 window.location.reload()
             }else if(response.data.code != 407){
+                // console.log(response)
                Message.error(response.data.msg)
            }
 

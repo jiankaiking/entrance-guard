@@ -113,9 +113,9 @@
                     this.$refs.modalForm.add(this.cliMenuId);
                 })
             },
-            modelFormOk(){
+            modelFormOk(e){
                 this.dialogTableVisible = false;
-                this.getTableData()
+                e == 0?this.getMenuList():this.refreshRow(e)
             },
             //隐藏菜单
             hideMenu(row){

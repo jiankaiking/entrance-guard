@@ -1,6 +1,6 @@
 <template>
     <el-container>
-<!--        <router-view></router-view>-->
+        <!--        <router-view></router-view>-->
         <el-header>
             <GlobalHeader></GlobalHeader>
         </el-header>
@@ -10,7 +10,9 @@
             </el-aside>
             <el-main style="padding:40px; box-sizing: border-box; overflow:auto;" class="clear">
                 <GlobalHistorynav v-if="!$route.meta.historyFlag"></GlobalHistorynav>
-                <router-view></router-view>　
+                <transition name="slide-left" >
+                    <router-view></router-view>
+                </transition>
             </el-main>
         </el-container>
     </el-container>
@@ -40,7 +42,6 @@
         padding: 0;
         overflow: visible;
     }
-
     .child-view {
         width: calc(100% - 306px);
         position: absolute;

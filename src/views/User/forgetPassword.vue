@@ -191,7 +191,11 @@
 
             },
             goLogin() {
-                this.$store.dispatch('LogOut')
+                this.$store.dispatch('LogOut').then(res=>{
+                    sessionStorage.clear()
+                    this.$router.push('/')
+                    // window.location.reload()
+                })
             },
             go(){
                 this.$router.go(-1)

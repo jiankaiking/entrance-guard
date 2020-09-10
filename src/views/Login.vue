@@ -143,6 +143,7 @@
             //登录按钮  表单验证，验证成功 action提交
             onSubmit(fromName) {
                 let _that = this;
+                console.log(this.userInfor)
                 this.$refs[fromName].validate((valid) => {
                     if (valid) {
                         this.$store.dispatch('Login', this.userInfor)
@@ -163,7 +164,6 @@
             getCode() {
                 this.codeImg = '/api/managecenter/login/getValidateCode?' + Math.random()
             },
-
             getCheck() {
                 this.codeValue = `managecenter/login/scanLogin?uuid=${this.sweepLoginInfo.uuid}`
             },

@@ -87,9 +87,10 @@
             },
             // 监听穿梭框组件添加
             addMove(fromData, toData, obj) {
-                // console.log("obj:", Array.from(obj.keys));
+                // console.log("obj:", obj);
                 this.checkFalse()
-                this.modelFromdata.menuIds = this.modelFromdata.menuIds.concat(obj.keys)
+                this.modelFromdata.menuIds = this.modelFromdata.menuIds.concat(obj.keys,obj.harfKeys)
+                // console.log(this.modelFromdata.menuIds)
             },
             sortArr(arr) {
                 if (arr.length > 0) {
@@ -106,7 +107,6 @@
                 this.checkFalse()
                 let arr1 = this.modelFromdata.menuIds
                 let arr2 = obj.keys;
-
                 for (let i = 0; i < arr2.length; i++) {
                     for (let j = 0; j < arr1.length; j++) {
                         if (arr2[i] == arr1[j]) {

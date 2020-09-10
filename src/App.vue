@@ -4,25 +4,8 @@
     </div>
 </template>
 <script>
-
     export default {
-        name: 'app',
-        mounted() {
-            // window.addEventListener('message', this.handleMessage);
-        },
-        methods: {
-            //接受token
-//             handleMessage(event) {
-// console.log(event)
-//                 if (event.data.token) {
-//                     console.log(event.data)
-//                     const data = event.data;
-//                     sessionStorage.setItem("token", data.token)
-//                     this.$store.state.token = data.token;
-//
-//                 }
-//             },
-        }
+        name: 'app'
     };
 </script>
 

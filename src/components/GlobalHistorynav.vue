@@ -1,8 +1,8 @@
 <template>
     <div class="histonav">
-        <div>
-            <ul class="clear">
-                <li @contextmenu.prevent="show($event,index)"
+        <el-scrollbar ref="scrollbar" :native="false" wrapStyle="" wrapClass="" viewClass="" viewStyle="" tag="section">
+            <div style="display: flex; flex-wrap: nowrap">
+                <div @contextmenu.prevent="show($event,index)"
                     class="hist-menu"
                     ref="box" v-for="(item,index) in this.$store.state.menuTagArr"
                     :key="index"
@@ -10,13 +10,26 @@
                     @click="changePath(item.path)">
                     <span>{{item.title}}</span>
                     <i class="el-icon-close close" @click="closeTag(index)"></i>
-                </li>
-            </ul>
-        </div>
+                </div>
+            </div>
+        </el-scrollbar>
+<!--        <div>-->
+<!--            <ul class="clear">-->
+<!--                <li @contextmenu.prevent="show($event,index)"-->
+<!--                    class="hist-menu"-->
+<!--                    ref="box" v-for="(item,index) in this.$store.state.menuTagArr"-->
+<!--                    :key="index"-->
+<!--                    :class="{'active':$route.path == item.path}"-->
+<!--                    @click="changePath(item.path)">-->
+<!--                    <span>{{item.title}}</span>-->
+<!--                    <i class="el-icon-close close" @click="closeTag(index)"></i>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
         <p></p>
         <div class="menucont" v-show="showMenu" :style="{left:left,top:top}">
             <ul>
-                <li @click.stop="closeAll()"><i class="el-icon-refresh-left"></i>刷新</li>
+                <li @click.stop="undatePage()"><i class="el-icon-refresh-left"></i>刷新</li>
                 <li @click.stop="closeRight()"><i class="el-icon-right"></i>关闭右边</li>
                 <li @click.stop="closeLeft()"><i class="el-icon-back"></i>关闭左边</li>
                 <li @click.stop="closeAnother()"><i class="el-icon-close"></i>关闭其他</li>
@@ -26,7 +39,7 @@
 </template>
 
 <script>
-    import {mapState,mapMutations} from 'vuex'
+    import {mapState, mapMutations} from 'vuex'
 
     export default {
         name: "GlobalHistorynav",
@@ -34,13 +47,13 @@
             return {
                 historyNav: [],
                 showMenu: false,
-                navIndex:'',
+                navIndex: '',
                 left: '',
                 top: ''
             }
         },
         mounted() {
-             // console.log(this.$route.matched)
+            // console.log(this.$route.matched)
             document.addEventListener('click', (e) => {
                 if (e.target.className != 'closeAll') {
                     this.showMenu = false;
@@ -50,41 +63,42 @@
             })
         },
         methods: {
+
             ...mapMutations(['CLOSE_MENU']),
             changeColor(index) {
                 // console.log(1)
             },
 
             //关闭全部
-            closeAll() {
-                // console.log(this.menuTagArr)
+            undatePage() {
+                window.location.reload()
             },
             //关闭右边
             closeRight() {
-                this.CLOSE_MENU({index:this.navIndex,type:'right'})
+                this.CLOSE_MENU({index: this.navIndex, type: 'right'})
                 this.showMenu = false;
             },
             //关闭左边
             closeLeft() {
-                this.CLOSE_MENU({index:this.navIndex,type:'left'})
+                this.CLOSE_MENU({index: this.navIndex, type: 'left'})
                 this.showMenu = false;
             },
             //关闭其他
             closeAnother() {
                 this.$router.push(this.menuTagArr[this.navIndex].path)
-                this.CLOSE_MENU({index:this.navIndex,type:'other'})
+                this.CLOSE_MENU({index: this.navIndex, type: 'other'})
                 this.showMenu = false;
 
             },
 
             changePath(id) {
-                if(this.$route.path != id){
-                    this.$router.push({path:id})
+                if (this.$route.path != id) {
+                    this.$router.push({path: id})
                 }
             },
-            closeTag(index){
-                this.$store.state.menuTagArr.splice(index,1);
-                sessionStorage.setItem('menuTagArr',JSON.stringify(this.$store.state.menuTagArr))
+            closeTag(index) {
+                this.$store.state.menuTagArr.splice(index, 1);
+                sessionStorage.setItem('menuTagArr', JSON.stringify(this.$store.state.menuTagArr))
             },
             show(e, index) {
                 this.navIndex = index
@@ -92,13 +106,13 @@
                 this.showMenu = true;
                 this.top = e.clientY + 'px'
             },
-            addTagView(){
-                    this.$store.dispatch('addTagView', {path:this.$route.path,title:this.$route.meta.title});
+            addTagView() {
+                this.$store.dispatch('addTagView', {path: this.$route.path, title: this.$route.meta.title});
 
             },
         },
-        watch:{
-            $route(){
+        watch: {
+            $route() {
                 this.addTagView()
             }
         },
@@ -107,15 +121,21 @@
         },
     }
 </script>
-
+<style>
+    .el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
+        white-space: nowrap;
+    }
+</style>
 <style scoped>
-    .histonav .clear{
+    .histonav .clear {
         height: 50px;
         overflow: hidden;
     }
-    .histonav .hist-menu{
+
+    .histonav .hist-menu {
         margin-bottom: 20px;
     }
+
     .histonav .hist-menu {
         float: left;
         /* width: 138px; */
@@ -134,18 +154,22 @@
         border-radius: 18px;
         position: relative;
     }
-    .histonav .hist-menu.active{
-        background: #38B8EE ;
+
+    .histonav .hist-menu.active {
+        background: #38B8EE;
         color: #ffffff;
     }
-    .histonav .hist-menu.active i{
+
+    .histonav .hist-menu.active i {
         color: #ffffff;
     }
-    .histonav .clear li .close{
+
+    .histonav .clear li .close {
         position: relative;
         right: -10px;
         bottom: 0px;
     }
+
     .histonav .hist-menu:hover {
         cursor: pointer;
         background: #38B8EE;
@@ -173,7 +197,7 @@
     }
 
     .histonav .menucont li i {
-       color: rgba(0, 0, 0, 0.65);
+        color: rgba(0, 0, 0, 0.65);
         margin-right: 5px;
         font-size: 16px;
     }

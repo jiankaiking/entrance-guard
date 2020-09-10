@@ -157,7 +157,7 @@
                     .then(res => {
                         if (res.success) {
                             this.$message.success(res.msg)
-                            this.$emit('ok')
+                            this.$emit('ok',this.modelFromdata.menuPid)
                         }
                     })
             },

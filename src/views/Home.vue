@@ -3,19 +3,15 @@
         <div class="dataStatic">
         </div>
         <div class="common-use" @drop="drop" @dragover="dragover" v-if="user.isShowCommonFunc == 1">
-            <div class="common-use-title">
-                <span>常用功能</span>
-            </div>
-
-            <i class="el-icon-arrow-left"  v-if="useData.length != 0" @click="leftRowclick"></i>
-            <i class="el-icon-arrow-right"  v-if="useData.length != 0" @click="rightRowclick"></i>
-
-            <div class="useContenner">
-
+            <div class="common-use-title"><span>常用功能</span></div>
+            <i class="el-icon-arrow-left" v-if="useData.length != 0" @click="leftRowclick"></i>
+            <i class="el-icon-arrow-right" v-if="useData.length != 0" @click="rightRowclick"></i>
+            <div class="useContenner" ref="parentCommonly">
                 <vuedraggable :options="{animation:300}" class="wrapper clear"
                               @change="changeAddress"
                               @end="end"
-                              :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}" v-model="useData"  ref="commonly">
+                              :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}" v-model="useData"
+                              ref="commonly">
                     <transition-group>
                         <div v-for="(item,index) in useData" :key="index" class="item" @click="router(item.menuUrl)">
                             <img :src="item.menuIcon?item.menuIcon:image" alt="">
@@ -68,7 +64,7 @@
                 webappData: [],
                 marginLeft: 0,
                 leftFlag: true,
-                image:img,
+                image: img,
                 firstY: '',
                 firstDrag: null,
                 endDrag: null,
@@ -86,23 +82,16 @@
             }
         },
         mounted() {
-            httpRequest("/managecenter/index/getCommonFunctions", "GET")
-                .then(res => {
-                    if (res.success) {
-                        this.useData = res.data
-                    }
-                })
-            this.getIndexInfo(),
-                window.document.body.style.backgroundColor = '#ffffff'
+            this.getIndexInfo();
+            window.document.body.style.backgroundColor = '#ffffff'
         },
         methods: {
-            router(event){
-                this.$router.push({path:event})
+            router(event) {
+                this.$router.push({path: event})
             },
             // 拖拽结束
-            end(evt,){
-                if(this.remove){
-                    console.log('内部')
+            end(evt,) {
+                if (this.remove) {
                 } else {
                     var newArr = []
                     for (var i = 0; i < this.useData.length; i++) {
@@ -151,7 +140,6 @@
             ...mapActions(["GET_ORGAN"]),
             // 常用发生变化移动的
             changeAddress(evt) {
-                // console.log(evt.element.menuId)
                 var newArr = []
                 for (var i = 0; i < this.useData.length; i++) {
                     newArr.push(this.useData[i].menuId)
@@ -183,17 +171,19 @@
                     })
             },
             rightRowclick() {
-                var parent=this.$refs.parentCommonly.clientWidth
-                var left=Math.abs(this.marginLeft)
-                var commonly=this.$refs.commonly.$el.clientWidth
-                if (parent + left < this.$refs.commonly.$el.clientWidth) {
+                var parent = this.$refs.parentCommonly.clientWidth
+                var left = Math.abs(this.marginLeft)
+                if (parent + left < this.$refs.commonly.$el.clientWidth - 220) {
                     this.marginLeft = this.marginLeft - 220;
                     this.leftFlag = true
+                } else {
+                    this.marginLeft = 0;
+                    this.leftFlag = false;
                 }
             },
             leftRowclick() {
-                var left=this.marginLeft
-                if (left<0) {
+                var left = this.marginLeft
+                if (left < 0) {
                     this.marginLeft = this.marginLeft + 220;
                 }
             }
@@ -207,7 +197,7 @@
     .common-use {
         width: 100%;
         background-color: #ffffff;
-        height:200px !important;
+        height: 200px !important;
         overflow: hidden;
         position: relative;
     }
@@ -252,24 +242,26 @@
 
         }
     }
-     .el-icon-arrow-right {
-            position: absolute;
-            right: -15px;
-            font-size: 45px;
-            color: #CFCFCF;
-            top: 60%;
-            margin-top: -23px;
-            background: #fff;
-        }
 
-        .el-icon-arrow-left {
-            position: absolute;
-            left: 0px;
-            font-size: 45px;
-            color: #CFCFCF;
-            top: 60%;
-            margin-top: -23px;
-        }
+    .el-icon-arrow-right {
+        position: absolute;
+        right: -15px;
+        font-size: 45px;
+        color: #CFCFCF;
+        top: 60%;
+        margin-top: -23px;
+        background: #fff;
+    }
+
+    .el-icon-arrow-left {
+        position: absolute;
+        left: 0px;
+        font-size: 45px;
+        color: #CFCFCF;
+        top: 60%;
+        margin-top: -23px;
+    }
+
     .useContenner {
         width: 1500px;
         overflow: hidden;
@@ -277,6 +269,7 @@
         box-sizing: border-box;
         margin: 30px 50px 30px 60px;
         padding: 10px 10px;
+
         .wrapper {
             transition: all .5s;
             display: flex;
@@ -287,6 +280,7 @@
 
         .item {
             vertical-align: top;
+            cursor: pointer;
             display: inline-block;
             text-align: center;
             width: 168px;
