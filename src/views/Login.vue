@@ -1,222 +1,236 @@
 <template>
-    <div class="loginMain" style="background-size: cover">
-        <div class="main-logo"><img src="../assets/images/loginlogo.png" alt=""></div>
-        <div class="login-box">
-            <h2 class="login-title">欢迎登录脸云物连</h2>
-            <div class="loginCneter">
-                <div class="login-logo">
-                    <img src="../assets/images/loginlogo.png" alt="">
-                </div>
-                <!-- 扫码登录 -->
-                <div class="sweep-login">
-                    <p>{{!sweepLogin?'扫码登录':'账号登录'}}</p>
-                    <div class="post-u"></div>
-                    <img class="checkimg" @click="checkLogin" :src="sweepLogin?'http://qiniutest.lywlsz.com.cn/2020_07_28_13_52_41_870.jpg':'http://qiniutest.lywlsz.com.cn/2020_07_28_11_47_05_868.png'" alt="">
-                </div>
-                <div class="sweep-box" v-show="sweepLogin">
-                    <p>请打开手机app扫一扫登录</p>
-                    <div class="code-vue">
-                        <div class="post-code-vue" v-if="codeValue == ''">
-                            <p>二维码已失效</p>
-                            <el-button @click="applyRequest">重新申请</el-button>
-                        </div>
-                        <qrcode-vue :value="codeValue" :size="200" level="H"></qrcode-vue>
-                    </div>
-
-                </div>
-                <!-- 扫码登录end -->
-                <el-form v-show="!sweepLogin" label-width="0" ref="loginForm" :model="userInfor" :rules="rules"
-                         style="padding-top: 20px">
-                    <el-form-item prop="userName">
-                        <el-input placeholder="请输入账号" clearable @keyup.enter.native="search('loginForm')"
-                                  v-model="userInfor.userName">
-                            <i slot="prefix" class="el-icon-user"></i>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item prop="password">
-                        <el-input placeholder="请输入密码" @keyup.enter.native="search('loginForm')" type="password"
-                                  clearable v-model="userInfor.password">
-                            <i slot="prefix" class="el-icon-lock"></i>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item prop="validateCode">
-                        <el-input placeholder="请输入验证码" @keyup.enter.native="search('loginForm')"
-                                  v-model="userInfor.validateCode">
-                            <i slot="prefix" class="el-icon-lock"></i>
-                            <template slot="suffix">
-                                <div class="login-code"><img @click="getCode" :src="codeImg" alt=""></div>
-                            </template>
-                        </el-input>
-                    </el-form-item>
-                    <div class="login-feature">
-                        <div class="login-feature-left">
-                            <el-checkbox v-model="saveAccount">保存用户和密码</el-checkbox>
-                        </div>
-                        <div class="login-feature-right">
-                            <span @click="fogetPassword">忘记密码</span>
-                        </div>
-                    </div>
-                </el-form>
-                <div class="logingbtn">
-                    <div class="btnLogin" v-show="!sweepLogin">
-                        <el-button class="loginBtn" @click="onSubmit('loginForm')">登录</el-button>
-                    </div>
-                    <p class="developerNum">开发商加版本号</p>
-                </div>
-
-            </div>
-        </div>
+  <div class="loginMain" style="background-size: cover">
+    <div class="main-logo">
+<!--      <img src="../assets/images/loginlogo.png" alt="">-->
     </div>
+    <div class="login-box">
+      <h2 class="login-title">管理员登录</h2>
+      <div class="loginCneter">
+        <div class="login-logo">
+<!--          <img src="../assets/images/loginlogo.png" alt="">-->
+        </div>
+        <!-- 扫码登录 -->
+        <div class="sweep-login">
+          <p>{{ !sweepLogin?'扫码登录':'账号登录' }}</p>
+          <div class="post-u" />
+          <img class="checkimg" :src="sweepLogin?'http://qiniutest.lywlsz.com.cn/2020_07_28_13_52_41_870.jpg':'http://qiniutest.lywlsz.com.cn/2020_07_28_11_47_05_868.png'" alt="" @click="checkLogin">
+        </div>
+        <div v-show="sweepLogin" class="sweep-box">
+          <p>请打开手机app扫一扫登录</p>
+          <div class="code-vue">
+            <div v-if="codeValue === ''" class="post-code-vue">
+              <p>二维码已失效</p>
+              <el-button @click="applyRequest">重新申请</el-button>
+            </div>
+            <qrcode-vue :value="codeValue" :size="200" level="H" />
+          </div>
+
+        </div>
+        <!-- 扫码登录end -->
+        <el-form
+          v-show="!sweepLogin"
+          ref="loginForm"
+          label-width="0"
+          :model="userInfor"
+          :rules="rules"
+          style="padding-top: 20px"
+        >
+          <el-form-item prop="userName">
+            <el-input
+              v-model="userInfor.userName"
+              placeholder="请输入账号"
+              clearable
+              @keyup.enter.native="search('loginForm')"
+            >
+              <i slot="prefix" class="el-icon-user" />
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+              v-model="userInfor.password"
+              placeholder="请输入密码"
+              type="password"
+              clearable
+              @keyup.enter.native="search('loginForm')"
+            >
+              <i slot="prefix" class="el-icon-lock" />
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="validateCode">
+            <el-input
+              v-model="userInfor.validateCode"
+              placeholder="请输入验证码"
+              @keyup.enter.native="search('loginForm')"
+            >
+              <i slot="prefix" class="el-icon-lock" />
+              <template slot="suffix">
+                <div class="login-code"><img :src="codeImg" alt="" @click="getCode"></div>
+              </template>
+            </el-input>
+          </el-form-item>
+          <div class="login-feature">
+            <div class="login-feature-left">
+              <el-checkbox v-model="saveAccount">保存用户和密码</el-checkbox>
+            </div>
+            <div class="login-feature-right">
+              <span @click="fogetPassword">忘记密码</span>
+            </div>
+          </div>
+        </el-form>
+        <div class="logingbtn">
+          <div v-show="!sweepLogin" class="btnLogin">
+            <el-button class="loginBtn" @click="onSubmit('loginForm')">登录</el-button>
+          </div>
+          <p class="developerNum">开发商加版本号</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-    import {mapActions, mapMutations} from 'vuex'
-    import qrcodeVue from 'qrcode-vue'
-    import httpRequest from "../api/api";
-    import BASE_URL from '../api/config';
+import { mapActions, mapMutations } from 'vuex'
+import qrcodeVue from 'qrcode-vue'
+import httpRequest from '../api/api'
 
-    import axios from 'axios'
+import axios from 'axios'
 
-    export default {
-        name: "Login",
-        data() {
-            return {
+export default {
+  name: 'Login',
+  components: {
+    qrcodeVue
+  },
+  data() {
+    return {
 
-                rules: {  //用户名密码验证
-                    userName: [{required: true, message: '账号不可为空', trigger: 'blur'},
-                        { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
-                    ],
-                    password: [{required: true, message: '密码不可为空', trigger: 'blur'},
-                        { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }],
-                    validateCode: [{required: true, message: '验证码不可为空', trigger: 'blur'}]
-                },
-                saveAccount: true,
-                codeImg: '',
-                sweepLogin: false,  //扫码登录切换
-                userInfor: {  //用户名密码，验证码
-                    userName: '',  //用户名
-                    password: '', //密码
-                    loginClient: 'PC',
-                    businessSystemID: 1,
-                    loginSncode: 'dhaskdj132132',
-                    validateCode: '' //验证码
-                },
-                sweepLoginInfo: {
-                    uuid: '',
-                    loginClient: 'PC'
-                },
-                codeValue: '',
-                timeName: null,
+      rules: { // 用户名密码验证
+        userName: [{ required: true, message: '账号不可为空', trigger: 'blur' },
+          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
+        ],
+        password: [{ required: true, message: '密码不可为空', trigger: 'blur' },
+          { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }],
+        validateCode: [{ required: true, message: '验证码不可为空', trigger: 'blur' }]
+      },
+      saveAccount: true,
+      codeImg: '',
+      sweepLogin: false, // 扫码登录切换
+      userInfor: { // 用户名密码，验证码
+        userName: '', // 用户名
+        password: '', // 密码
+        loginClient: 'PC',
+        businessSystemID: 1,
+        loginSncode: 'dhaskdj132132',
+        validateCode: '' // 验证码
+      },
+      sweepLoginInfo: {
+        uuid: '',
+        loginClient: 'PC'
+      },
+      codeValue: '',
+      timeName: null
 
-            }
-        },
-        components: {
-            qrcodeVue
-        },
-        mounted() {
-            let that = this;
-            let token = this.$route.query.token;
-            if (token) {
-                sessionStorage.setItem('token', token);
-                axios.get("/api/managecenter/index/getUserInfo", {headers: {'Authorization': token}})
-                    .then(res => {
-                        if (res.data.success) {
-                            let userInfo = res.data.data;
-                            window.sessionStorage.setItem("user", JSON.stringify(userInfo))
-                            that.auth_success({token, userInfo})
-                            this.GET_ORGAN()
-                            this.GET_STYEMITEM()
-                            this.$router.push('/')
-                        }
-                    })
-            } else {
-                this.getCode()
-            }
-        },
-        methods: {
-
-            search(fromName) {
-                this.onSubmit(fromName)
-            },
-            ...mapMutations(['auth_success']),
-            ...mapActions(['GET_ORGAN', 'GET_STYEMITEM']),
-            //登录按钮  表单验证，验证成功 action提交
-            onSubmit(fromName) {
-                let _that = this;
-                console.log(this.userInfor)
-                this.$refs[fromName].validate((valid) => {
-                    if (valid) {
-                        this.$store.dispatch('Login', this.userInfor)
-                            .then(res => {
-                                if (res.success) {
-                                    this.GET_ORGAN()
-                                    this.GET_STYEMITEM()
-                                    this.$router.push('/')
-                                    // this.$route.query.redirect && _that.$router.push(this.$route.query.redirect)
-                                }
-                            })
-                    } else {
-                        return false;
-                    }
-                });
-            },
-
-            getCode() {
-                this.codeImg = '/api/managecenter/login/getValidateCode?' + Math.random()
-            },
-            getCheck() {
-                this.codeValue = `managecenter/login/scanLogin?uuid=${this.sweepLoginInfo.uuid}`
-            },
-            loopRequset() {
-                httpRequest("managecenter/login/checkScanLoginPool", "POST", this.sweepLoginInfo)
-                    .then(res => {
-                        // console.log(res)
-                        if (res.code == 200) {
-                            const token = res.data.token;
-                            const userInfo = res.data.userInfo;
-                            sessionStorage.setItem('token', token);
-                            sessionStorage.setItem('user', JSON.stringify(userInfo));
-                            this.auth_success({token, userInfo})
-                            this.$router.push('/')
-                        } else if (res.code == 300) {
-
-                        } else if (res.code == 402) {
-                            this.codeValue = '';
-                            clearTimeout(this.timeName)
-                        } else if (res.code == 407) {
-                            this.timeName = setTimeout(this.loopRequset, 1000)
-                        }
-                    })
-                    .catch(err=>{
-                        this.codeValue = '';
-                        clearTimeout(this.timeName)
-                    })
-            },
-            //申请
-            applyRequest() {
-                httpRequest("managecenter/login/getScanLoginUuid", "get")
-                    .then(res => {
-                        if (res.success) {
-                            this.sweepLoginInfo.uuid = res.data;
-                            this.getCheck()
-                            this.loopRequset()
-                        }
-                    })
-            },
-            //切换登录方式
-            checkLogin() {
-                clearTimeout(this.timeName)
-                if (!this.sweepLogin) {
-                    this.applyRequest()
-                }
-                this.sweepLogin = !this.sweepLogin
-            },
-            //忘记密码
-            fogetPassword() {
-                this.$router.push('/findpassword')
-            },
-        }
     }
+  },
+  mounted() {
+    const that = this
+    const token = this.$route.query.token
+    if (token) {
+      sessionStorage.setItem('token', token)
+      axios.get('/api/managecenter/index/getUserInfo', { headers: { 'Authorization': token }})
+        .then(res => {
+          if (res.data.success) {
+            const userInfo = res.data.data
+            window.sessionStorage.setItem('user', JSON.stringify(userInfo))
+            that.auth_success({ token, userInfo })
+            this.GET_ORGAN()
+            this.GET_STYEMITEM()
+            this.$router.push('/')
+          }
+        })
+    } else {
+      this.getCode()
+    }
+  },
+  methods: {
+
+    search(fromName) {
+      this.onSubmit(fromName)
+    },
+    ...mapMutations(['auth_success']),
+    ...mapActions(['GET_ORGAN', 'GET_STYEMITEM']),
+    // 登录按钮  表单验证，验证成功 action提交
+    onSubmit(fromName) {
+      this.$refs[fromName].validate((valid) => {
+        if (valid) {
+          this.$store.dispatch('Login', this.userInfor)
+            .then(res => {
+              if (res.success) {
+                this.GET_ORGAN()
+                this.GET_STYEMITEM()
+                this.$router.push('/')
+                // this.$route.query.redirect && _that.$router.push(this.$route.query.redirect)
+              }
+            })
+        } else {
+          return false
+        }
+      })
+    },
+
+    getCode() {
+      this.codeImg = '/api/managecenter/login/getValidateCode?' + Math.random()
+    },
+    getCheck() {
+      this.codeValue = `managecenter/login/scanLogin?uuid=${this.sweepLoginInfo.uuid}`
+    },
+    loopRequset() {
+      httpRequest('managecenter/login/checkScanLoginPool', 'POST', this.sweepLoginInfo)
+        .then(res => {
+          // console.log(res)
+          if (res.code === 200) {
+            const token = res.data.token
+            const userInfo = res.data.userInfo
+            sessionStorage.setItem('token', token)
+            sessionStorage.setItem('user', JSON.stringify(userInfo))
+            this.auth_success({ token, userInfo })
+            this.$router.push('/')
+          } else if (res.code === 402) {
+            this.codeValue = ''
+            clearTimeout(this.timeName)
+          } else if (res.code === 407) {
+            this.timeName = setTimeout(this.loopRequset, 1000)
+          }
+        })
+        .catch(() => {
+          this.codeValue = ''
+          clearTimeout(this.timeName)
+        })
+    },
+    // 申请
+    applyRequest() {
+      httpRequest('managecenter/login/getScanLoginUuid', 'get')
+        .then(res => {
+          if (res.success) {
+            this.sweepLoginInfo.uuid = res.data
+            this.getCheck()
+            this.loopRequset()
+          }
+        })
+    },
+    // 切换登录方式
+    checkLogin() {
+      clearTimeout(this.timeName)
+      if (!this.sweepLogin) {
+        this.applyRequest()
+      }
+      this.sweepLogin = !this.sweepLogin
+    },
+    // 忘记密码
+    fogetPassword() {
+      this.$router.push('/findpassword')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -317,7 +331,6 @@
         }
     }
 
-
     .btnLogin {
         padding: 0 60px;
         box-sizing: border-box;
@@ -361,7 +374,9 @@
         min-width: 500px;
         position: absolute;
         right: 582px;
-        padding: 0px 35px 15px 35px;
+        padding: 0 35px 15px 35px;
+        top: 50%;
+        margin-top: -300px;
         border-radius: 10px;
 
         .el-form-item {
@@ -426,6 +441,5 @@
             }
         }
     }
-
 
 </style>

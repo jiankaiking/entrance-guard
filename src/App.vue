@@ -1,12 +1,13 @@
 <template>
-    <div id="app">
-        <router-view/>
-    </div>
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 <script>
-    export default {
-        name: 'app'
-    };
+
+export default {
+  name: 'App'
+}
 </script>
 
 <style>
@@ -71,7 +72,6 @@
         width: 100%;
     }
 
-
     .el-select-dropdown__item {
         padding: 0 20px;
     }
@@ -79,7 +79,6 @@
     .el-dropdown-menu__item {
         padding: 5px 15px;
     }
-
 
     body, html, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
         margin: 0;
@@ -187,7 +186,6 @@
         justify-content: flex-end;
         padding-right: 30px;
     }
-
 
     .avatar-uploader .el-upload:hover {
         border-color: #409EFF;

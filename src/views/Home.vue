@@ -1,196 +1,193 @@
 <template>
-    <div class="indexPage">
-        <div class="dataStatic">
-        </div>
-        <div class="common-use" @drop="drop" @dragover="dragover" v-if="user.isShowCommonFunc == 1">
-            <div class="common-use-title"><span>常用功能</span></div>
-            <i class="el-icon-arrow-left" v-if="useData.length != 0" @click="leftRowclick"></i>
-            <i class="el-icon-arrow-right" v-if="useData.length != 0" @click="rightRowclick"></i>
-            <div class="useContenner" ref="parentCommonly">
-                <vuedraggable :options="{animation:300}" class="wrapper clear"
-                              @change="changeAddress"
-                              @end="end"
-                              :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}" v-model="useData"
-                              ref="commonly">
-                    <transition-group>
-                        <div v-for="(item,index) in useData" :key="index" class="item" @click="router(item.menuUrl)">
-                            <img :src="item.menuIcon?item.menuIcon:image" alt="">
-                            <p>{{item.menuName}}</p>
-                        </div>
-                    </transition-group>
-                </vuedraggable>
+  <div class="indexPage">
+    <div class="dataStatic" />
+    <div v-if="user.isShowCommonFunc == 1" class="common-use" @drop="drop" @dragover="dragover">
+      <div class="common-use-title"><span>常用功能</span></div>
+      <i v-if="useData.length != 0" class="el-icon-arrow-left" @click="leftRowclick" />
+      <i v-if="useData.length != 0" class="el-icon-arrow-right" @click="rightRowclick" />
+      <div ref="parentCommonly" class="useContenner">
+        <vuedraggable
+          ref="commonly"
+          v-model="useData"
+          :options="{animation:300}"
+          class="wrapper clear"
+          :style="{width:getWidth + 'px',marginLeft:marginLeft + 'px'}"
+          @change="changeAddress"
+          @end="end"
+        >
+          <transition-group>
+            <div v-for="(item,index) in useData" :key="index" class="item" @click="router(item.menuUrl)">
+              <img :src="item.menuIcon?item.menuIcon:image" alt="">
+              <p>{{ item.menuName }}</p>
             </div>
-        </div>
-        <div class="common-use" v-if="user.isShowHotNews == 1">
-            <div class="common-use-title">
-                <span>热门信息</span><span class="more">更多....</span>
-            </div>
-            <div class="hotMessge">
-                <ul class="clear">
-                    <li v-for="(item,index) in messgesData" :key="index">{{item.title}}</li>
-                </ul>
-            </div>
-        </div>
-        <div class="common-use" v-if="user.isShowQrcode == 1">
-            <div class="common-use-title">
-                <span>常用二维码</span>
-            </div>
-            <div class="webapp">
-                <ul class="clear">
-                    <li v-for="(item,index) in webappData" :key="index">
-                        <img :src="item.qrcodeUrl" :alt="item.qrcodeName">
-                        <span>{{item.qrcodeName}}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
+          </transition-group>
+        </vuedraggable>
+      </div>
     </div>
+    <div v-if="user.isShowHotNews == 1" class="common-use">
+      <div class="common-use-title">
+        <span>热门信息</span><span class="more">更多....</span>
+      </div>
+      <div class="hotMessge">
+        <ul class="clear">
+          <li v-for="(item,index) in messgesData" :key="index">{{ item.title }}</li>
+        </ul>
+      </div>
+    </div>
+    <div v-if="user.isShowQrcode == 1" class="common-use">
+      <div class="common-use-title">
+        <span>常用二维码</span>
+      </div>
+      <div class="webapp">
+        <ul class="clear">
+          <li v-for="(item,index) in webappData" :key="index">
+            <img :src="item.qrcodeUrl" :alt="item.qrcodeName">
+            <span>{{ item.qrcodeName }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </template>
 
-
 <script>
-    import img from '@/assets/images/active.jpeg'
-    import httpRequest from "../api/api";
-    import {mapActions, mapState} from 'vuex'
-    import vuedraggable from 'vuedraggable'
+import img from '@/assets/images/active.jpeg'
+import httpRequest from '../api/api'
+import { mapActions, mapState } from 'vuex'
+import vuedraggable from 'vuedraggable'
 
-    export default {
-        name: 'IndexPage',
-        data() {
-            return {
-                dragging: null,
-                useData: [],
-                messgesData: [{title: '空腹可以吃饭吗'}, {title: '哪个地方得女人最好看'}],
-                webappData: [],
-                marginLeft: 0,
-                leftFlag: true,
-                image: img,
-                firstY: '',
-                firstDrag: null,
-                endDrag: null,
-                endY: '',
-                remove: false
-            }
-        },
-        components: {
-            vuedraggable,
-        },
-        computed: {
-            ...mapState(['user']),
-            getWidth(useData) {
-                return 220 * this.useData.length;
-            }
-        },
-        mounted() {
-            this.getIndexInfo();
-            window.document.body.style.backgroundColor = '#ffffff'
-        },
-        methods: {
-            router(event) {
-                this.$router.push({path: event})
-            },
-            // 拖拽结束
-            end(evt,) {
-                if (this.remove) {
-                } else {
-                    var newArr = []
-                    for (var i = 0; i < this.useData.length; i++) {
-                        if (i != evt.newIndex) {
-                            newArr.push(this.useData[i].menuId)
-                        }
-                    }
-                    var str = newArr.join(',')
-                    this.commonlyUsed(str)
-                }
-            },
-            // 接收从菜单移动过来的参数
-            drop(event) {
-                this.remove = true
-                var menuId = event.dataTransfer.getData('menuId')
-                if (menuId) {
-                    var newArr = [menuId]
-                    for (var i = 0; i < this.useData.length; i++) {
-                        if (menuId != this.useData[i].menuId) {
-                            newArr.push(this.useData[i].menuId)
-                        }
-                    }
-                    var str = newArr.join(',')
-                    this.commonlyUsed(str)
-                }
-            },
-            // 常用调整请求
-            commonlyUsed(str) {
-                httpRequest("/managecenter/index/updateCommonFunctions", "post", {menuIds: str})
-                    .then(res => {
-                        if (res.success) {
-                            httpRequest("/managecenter/index/getCommonFunctions", "GET")
-                                .then(res => {
-                                    if (res.success) {
-                                        this.useData = res.data
-                                        this.remove = false
-                                    }
-                                })
-                        }
-                    })
-            },
-            dragover(event) {
-                event.preventDefault()
-            },
-            ...mapActions(["GET_STYEMITEM"]),
-            ...mapActions(["GET_ORGAN"]),
-            // 常用发生变化移动的
-            changeAddress(evt) {
-                var newArr = []
-                for (var i = 0; i < this.useData.length; i++) {
-                    newArr.push(this.useData[i].menuId)
-                }
-                var str = newArr.join(',')
-                this.commonlyUsed(str)
-            },
-            getIndexInfo() {
-                httpRequest("/managecenter/index/getUserInfo", "GET")
-                    .then(res => {
-                        return httpRequest("/managecenter/index/getCommonQrcode", "GET")
-                    })
-                    .then(res => {
-                        if (res.success) {
-                            this.webappData = res.data;
-                        }
-                        return httpRequest('/managecenter/index/getCommonFunctions', "GET")
-                    })
-                    .then(res => {
-                        if (res.success) {
-                            this.useData = res.data;
-                        }
-                        return httpRequest("/managecenter/index/getHotNews", "GET")
-                    })
-                    .then(res => {
-                        if (res.success) {
-
-                        }
-                    })
-            },
-            rightRowclick() {
-                var parent = this.$refs.parentCommonly.clientWidth
-                var left = Math.abs(this.marginLeft)
-                if (parent + left < this.$refs.commonly.$el.clientWidth - 220) {
-                    this.marginLeft = this.marginLeft - 220;
-                    this.leftFlag = true
-                } else {
-                    this.marginLeft = 0;
-                    this.leftFlag = false;
-                }
-            },
-            leftRowclick() {
-                var left = this.marginLeft
-                if (left < 0) {
-                    this.marginLeft = this.marginLeft + 220;
-                }
-            }
-
-
-        }
+export default {
+  name: 'IndexPage',
+  components: {
+    vuedraggable
+  },
+  data() {
+    return {
+      dragging: null,
+      useData: [],
+      messgesData: [{ title: '空腹可以吃饭吗' }, { title: '哪个地方得女人最好看' }],
+      webappData: [],
+      marginLeft: 0,
+      leftFlag: true,
+      image: img,
+      firstY: '',
+      firstDrag: null,
+      endDrag: null,
+      endY: '',
+      remove: false
     }
+  },
+  computed: {
+    ...mapState(['user']),
+    getWidth(useData) {
+      return 220 * this.useData.length
+    }
+  },
+  mounted() {
+    this.getIndexInfo()
+    window.document.body.style.backgroundColor = '#ffffff'
+  },
+  methods: {
+    router(event) {
+      this.$router.push({ path: event })
+    },
+    // 拖拽结束
+    end(evt) {
+      if (!this.remove) {
+        var newArr = []
+        for (var i = 0; i < this.useData.length; i++) {
+          if (i !== evt.newIndex) {
+            newArr.push(this.useData[i].menuId)
+          }
+        }
+        var str = newArr.join(',')
+        this.commonlyUsed(str)
+      }
+    },
+    // 接收从菜单移动过来的参数
+    drop(event) {
+      this.remove = true
+      var menuId = event.dataTransfer.getData('menuId')
+      if (menuId) {
+        var newArr = [menuId]
+        for (var i = 0; i < this.useData.length; i++) {
+          if (menuId !== this.useData[i].menuId) {
+            newArr.push(this.useData[i].menuId)
+          }
+        }
+        var str = newArr.join(',')
+        this.commonlyUsed(str)
+      }
+    },
+    // 常用调整请求
+    commonlyUsed(str) {
+      httpRequest('/managecenter/index/updateCommonFunctions', 'post', { menuIds: str })
+        .then(res => {
+          if (res.success) {
+            httpRequest('/managecenter/index/getCommonFunctions', 'GET')
+              .then(res => {
+                if (res.success) {
+                  this.useData = res.data
+                  this.remove = false
+                }
+              })
+          }
+        })
+    },
+    dragover(event) {
+      event.preventDefault()
+    },
+    ...mapActions(['GET_STYEMITEM']),
+    ...mapActions(['GET_ORGAN']),
+    // 常用发生变化移动的
+    changeAddress(evt) {
+      var newArr = []
+      for (var i = 0; i < this.useData.length; i++) {
+        newArr.push(this.useData[i].menuId)
+      }
+      var str = newArr.join(',')
+      this.commonlyUsed(str)
+    },
+    getIndexInfo() {
+      httpRequest('/managecenter/index/getUserInfo', 'GET')
+        .then(res => {
+          return httpRequest('/managecenter/index/getCommonQrcode', 'GET')
+        })
+        .then(res => {
+          if (res.success) {
+            this.webappData = res.data
+          }
+          return httpRequest('/managecenter/index/getCommonFunctions', 'GET')
+        })
+        .then(res => {
+          if (res.success) {
+            this.useData = res.data
+          }
+          return httpRequest('/managecenter/index/getHotNews', 'GET')
+        })
+        .then(res => {
+        })
+    },
+    rightRowclick() {
+      var parent = this.$refs.parentCommonly.clientWidth
+      var left = Math.abs(this.marginLeft)
+      if (parent + left < this.$refs.commonly.$el.clientWidth - 220) {
+        this.marginLeft = this.marginLeft - 220
+        this.leftFlag = true
+      } else {
+        this.marginLeft = 0
+        this.leftFlag = false
+      }
+    },
+    leftRowclick() {
+      var left = this.marginLeft
+      if (left < 0) {
+        this.marginLeft = this.marginLeft + 220
+      }
+    }
+
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -345,6 +342,5 @@
             }
         }
     }
-
 
 </style>

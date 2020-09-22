@@ -1,41 +1,41 @@
 <template>
+  <el-container>
+    <!--        <router-view></router-view>-->
+    <el-header>
+      <GlobalHeader />
+    </el-header>
     <el-container>
-        <!--        <router-view></router-view>-->
-        <el-header>
-            <GlobalHeader></GlobalHeader>
-        </el-header>
-        <el-container>
-            <el-aside width="200px;" style="min-height:968px">
-                <GlobalLayout></GlobalLayout>
-            </el-aside>
-            <el-main style="padding:40px; box-sizing: border-box; overflow:auto;" class="clear">
-                <GlobalHistorynav v-if="!$route.meta.historyFlag"></GlobalHistorynav>
-                <transition name="slide-left" >
-                    <router-view></router-view>
-                </transition>
-            </el-main>
-        </el-container>
+      <el-aside width="200px;" style="min-height:968px">
+        <GlobalLayout />
+      </el-aside>
+      <el-main style="padding:40px; box-sizing: border-box; overflow:auto;" class="clear">
+        <GlobalHistorynav v-if="!$route.meta.historyFlag" />
+        <transition name="slide-left">
+          <router-view />
+        </transition>
+      </el-main>
     </el-container>
+  </el-container>
 </template>
 
 <script>
-    import GlobalHeader from "../components/GlobalHeader";
-    import GlobalHistorynav from "../components/GlobalHistorynav";
-    import GlobalLayout from "../components/GlobalLayout";
+import GlobalHeader from '../components/GlobalHeader'
+import GlobalHistorynav from '../components/GlobalHistorynav'
+import GlobalLayout from '../components/GlobalLayout'
 
-    export default {
-        name: 'Home',
-        data() {
-            return {
-                direction: "slide-right"
-            }
-        },
-        components: {
-            GlobalHeader,
-            GlobalHistorynav,
-            GlobalLayout
-        },
-    };
+export default {
+  name: 'Home',
+  components: {
+    GlobalHeader,
+    GlobalHistorynav,
+    GlobalLayout
+  },
+  data() {
+    return {
+      direction: 'slide-right'
+    }
+  }
+}
 </script>
 <style lang="scss">
     .el-main {
@@ -60,7 +60,6 @@
         -webkit-transform: translate(-30px, 0);
         transform: translate(-30px, 0);
     }
-
 
     .centerCont {
         padding: 40px;

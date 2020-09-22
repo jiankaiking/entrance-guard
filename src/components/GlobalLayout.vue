@@ -1,35 +1,35 @@
 <template>
-    <div class="menu">
-        <menutree :menuList="menuList"></menutree>
-    </div>
+  <div class="menu">
+    <menutree :menu-list="menuList" />
+  </div>
 </template>
 
 <script>
-    import {mapActions,mapState} from 'vuex'
-    import menutree from '@/components/Sidebar'
+import { mapActions, mapState } from 'vuex'
+import menutree from '@/components/Sidebar'
 
-    export default {
+export default {
 
-        data() {
-            return {
-                uniquevalue: true,
-                path: '',
-            };
-        },
-        mounted(){
-            this.menuChange()
-        },
-        methods: {
-            ...mapActions(["menuChange"]),
-        },
-        computed:{
-            ...mapState({menuList:state=>state.permission.menuList})
-        },
-        components: {
-            menutree
-        },
+  data() {
+    return {
+      uniquevalue: true,
+      path: ''
     }
-    ;
+  },
+  mounted() {
+    this.menuChange()
+  },
+  methods: {
+    ...mapActions(['menuChange'])
+  },
+  computed: {
+    ...mapState({ menuList: state => state.permission.menuList })
+  },
+  components: {
+    menutree
+  }
+}
+
 </script>
 
 <style>
@@ -39,7 +39,6 @@
         width: 225px;
         height: 70px;
         background: #38B8EE;
-
 
     }
 

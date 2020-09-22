@@ -1,51 +1,51 @@
 <template>
-    <el-dialog title="设备日志 " :visible.sync="centerDialogVisible" width="45%" center>
-        <div class="log-box">
-            <div class="log-header">
-                <span>设备sn码：12334948484833</span>
-                <span>创建时间：2020-02-02  12:22:22</span>
-            </div>
-            <div class="log-table">
-                <div class="log-content">
-                    <div class="log-item">
-                        <p>设备关闭</p>
-                        <p>关闭时间：2020-02-02  12:22:22</p>
-                    </div>
-                    <div class="log-item">
-                        <p>设备异常</p>
-                        <p>
-                            <span>关闭时间：2020-02-02  12:22:22</span>
-                            <span>关闭时间：2020-02-02  12:22:22</span>
-                            <span>关闭时间：2020-02-02  12:22:22</span>
-                            <span>关闭时间：2020-02-02  12:22:22</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
+  <el-dialog title="设备日志 " :visible.sync="centerDialogVisible" width="45%" center>
+    <div class="log-box">
+      <div class="log-header">
+        <span>设备sn码：12334948484833</span>
+        <span>创建时间：2020-02-02  12:22:22</span>
+      </div>
+      <div class="log-table">
+        <div class="log-content">
+          <div class="log-item">
+            <p>设备关闭</p>
+            <p>关闭时间：2020-02-02  12:22:22</p>
+          </div>
+          <div class="log-item">
+            <p>设备异常</p>
+            <p>
+              <span>关闭时间：2020-02-02  12:22:22</span>
+              <span>关闭时间：2020-02-02  12:22:22</span>
+              <span>关闭时间：2020-02-02  12:22:22</span>
+              <span>关闭时间：2020-02-02  12:22:22</span>
+            </p>
+          </div>
         </div>
-    </el-dialog>
+      </div>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
-    import httpRequest from "../../../api/api";
-    export default {
-        data() {
-            return {
-                centerDialogVisible: false,
 
-            }
-        },
-        mounted() {
-
-        },
-        methods: {
-            info() {
-                this.centerDialogVisible = true;
-            },
-
-        },
+export default {
+  data() {
+    return {
+      centerDialogVisible: false
 
     }
+  },
+  mounted() {
+
+  },
+  methods: {
+    info() {
+      this.centerDialogVisible = true
+    }
+
+  }
+
+}
 </script>
 
 <style scoped>

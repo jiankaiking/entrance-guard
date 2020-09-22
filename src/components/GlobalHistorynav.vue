@@ -1,125 +1,107 @@
 <template>
-    <div class="histonav">
-        <el-scrollbar ref="scrollbar" :native="false" wrapStyle="" wrapClass="" viewClass="" viewStyle="" tag="section">
-            <div style="display: flex; flex-wrap: nowrap">
-                <div @contextmenu.prevent="show($event,index)"
-                    class="hist-menu"
-                    ref="box" v-for="(item,index) in this.$store.state.menuTagArr"
-                    :key="index"
-                    :class="{'active':$route.path == item.path}"
-                    @click="changePath(item.path)">
-                    <span>{{item.title}}</span>
-                    <i class="el-icon-close close" @click="closeTag(index)"></i>
-                </div>
-            </div>
-        </el-scrollbar>
-<!--        <div>-->
-<!--            <ul class="clear">-->
-<!--                <li @contextmenu.prevent="show($event,index)"-->
-<!--                    class="hist-menu"-->
-<!--                    ref="box" v-for="(item,index) in this.$store.state.menuTagArr"-->
-<!--                    :key="index"-->
-<!--                    :class="{'active':$route.path == item.path}"-->
-<!--                    @click="changePath(item.path)">-->
-<!--                    <span>{{item.title}}</span>-->
-<!--                    <i class="el-icon-close close" @click="closeTag(index)"></i>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-        <p></p>
-        <div class="menucont" v-show="showMenu" :style="{left:left,top:top}">
-            <ul>
-                <li @click.stop="undatePage()"><i class="el-icon-refresh-left"></i>刷新</li>
-                <li @click.stop="closeRight()"><i class="el-icon-right"></i>关闭右边</li>
-                <li @click.stop="closeLeft()"><i class="el-icon-back"></i>关闭左边</li>
-                <li @click.stop="closeAnother()"><i class="el-icon-close"></i>关闭其他</li>
-            </ul>
+  <div class="histonav">
+    <el-scrollbar ref="scrollbar" :vertical="false" view-class="width:100%" view-style="" tag="section">
+      <div style="display: flex; flex-wrap: nowrap">
+        <div
+          v-for="(item,index) in this.$store.state.menuTagArr"
+          ref="box"
+          :key="index"
+          class="hist-menu"
+          :class="{'active':$route.path === item.path}"
+          @contextmenu.prevent="show($event,index)"
+          @click="changePath(item.path)"
+        >
+          <span>{{ item.title }}</span>
+          <i class="el-icon-close close" @click="closeTag(index)" />
         </div>
+      </div>
+    </el-scrollbar>
+    <p />
+    <div v-show="showMenu" class="menucont" :style="{left:left,top:top}">
+      <ul>
+        <li @click.stop="undatePage()"><i class="el-icon-refresh-left" />刷新</li>
+        <li @click.stop="closeRight()"><i class="el-icon-right" />关闭右边</li>
+        <li @click.stop="closeLeft()"><i class="el-icon-back" />关闭左边</li>
+        <li @click.stop="closeAnother()"><i class="el-icon-close" />关闭其他</li>
+      </ul>
     </div>
+  </div>
 </template>
 
 <script>
-    import {mapState, mapMutations} from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
-    export default {
-        name: "GlobalHistorynav",
-        data() {
-            return {
-                historyNav: [],
-                showMenu: false,
-                navIndex: '',
-                left: '',
-                top: ''
-            }
-        },
-        mounted() {
-            // console.log(this.$route.matched)
-            document.addEventListener('click', (e) => {
-                if (e.target.className != 'closeAll') {
-                    this.showMenu = false;
-                } else {
-                    console.log(1)
-                }
-            })
-        },
-        methods: {
-
-            ...mapMutations(['CLOSE_MENU']),
-            changeColor(index) {
-                // console.log(1)
-            },
-
-            //关闭全部
-            undatePage() {
-                window.location.reload()
-            },
-            //关闭右边
-            closeRight() {
-                this.CLOSE_MENU({index: this.navIndex, type: 'right'})
-                this.showMenu = false;
-            },
-            //关闭左边
-            closeLeft() {
-                this.CLOSE_MENU({index: this.navIndex, type: 'left'})
-                this.showMenu = false;
-            },
-            //关闭其他
-            closeAnother() {
-                this.$router.push(this.menuTagArr[this.navIndex].path)
-                this.CLOSE_MENU({index: this.navIndex, type: 'other'})
-                this.showMenu = false;
-
-            },
-
-            changePath(id) {
-                if (this.$route.path != id) {
-                    this.$router.push({path: id})
-                }
-            },
-            closeTag(index) {
-                this.$store.state.menuTagArr.splice(index, 1);
-                sessionStorage.setItem('menuTagArr', JSON.stringify(this.$store.state.menuTagArr))
-            },
-            show(e, index) {
-                this.navIndex = index
-                this.left = e.clientX + 'px';
-                this.showMenu = true;
-                this.top = e.clientY + 'px'
-            },
-            addTagView() {
-                this.$store.dispatch('addTagView', {path: this.$route.path, title: this.$route.meta.title});
-
-            },
-        },
-        watch: {
-            $route() {
-                this.addTagView()
-            }
-        },
-        computed: {
-            ...mapState(['menuTagArr'])
-        },
+export default {
+  name: 'GlobalHistorynav',
+  data() {
+    return {
+      historyNav: [],
+      showMenu: false,
+      navIndex: '',
+      left: '',
+      top: ''
     }
+  },
+  mounted() {
+    // console.log(this.$refs.scrollbar)
+    document.addEventListener('click', (e) => {
+      if (e.target.className !== 'closeAll') {
+        this.showMenu = false
+      }
+    })
+  },
+  methods: {
+    ...mapMutations(['CLOSE_MENU']),
+
+    // 刷新
+    undatePage() {
+      window.location.reload()
+    },
+    // 关闭右边
+    closeRight() {
+      this.CLOSE_MENU({ index: this.navIndex, type: 'right' })
+      this.showMenu = false
+    },
+    // 关闭左边
+    closeLeft() {
+      this.CLOSE_MENU({ index: this.navIndex, type: 'left' })
+      this.showMenu = false
+    },
+    // 关闭其他
+    closeAnother() {
+      this.$router.push(this.menuTagArr[this.navIndex].path)
+      this.CLOSE_MENU({ index: this.navIndex, type: 'other' })
+      this.showMenu = false
+    },
+
+    changePath(id) {
+      if (this.$route.path !== id) {
+        this.$router.push({ path: id })
+      }
+    },
+    closeTag(index) {
+      this.$store.state.menuTagArr.splice(index, 1)
+      sessionStorage.setItem('menuTagArr', JSON.stringify(this.$store.state.menuTagArr))
+    },
+    show(e, index) {
+      this.navIndex = index
+      this.left = e.clientX + 'px'
+      this.showMenu = true
+      this.top = e.clientY + 'px'
+    },
+    addTagView() {
+      this.$store.dispatch('addTagView', { path: this.$route.path, title: this.$route.meta.title })
+    }
+  },
+  watch: {
+    $route() {
+      this.addTagView()
+    }
+  },
+  computed: {
+    ...mapState(['menuTagArr'])
+  }
+}
 </script>
 <style>
     .el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
@@ -148,7 +130,7 @@
         line-height: 36px;
         height: 36px;
         background: white;
-        box-shadow: 0px 1px 6px 4px #f2f2f2;
+        box-shadow: 0 1px 6px 4px #f2f2f2;
         font-size: 14px;
         color: #4589A5;
         border-radius: 18px;
@@ -167,7 +149,7 @@
     .histonav .clear li .close {
         position: relative;
         right: -10px;
-        bottom: 0px;
+        bottom: 0;
     }
 
     .histonav .hist-menu:hover {

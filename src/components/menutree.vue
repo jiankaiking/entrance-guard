@@ -1,74 +1,74 @@
 <template>
-    <div class="menutree">
-        <div v-for="menu in data " :key="menu.index">
-            <el-submenu :index="menu.index"
-                v-if="menu.children"
-                :class="menu_index == menu.index ? 'menu_item' : 'menu_item menu_hidden'"
-                @click.native="selected_menu(menu.index, menu.name, 1)"
-            >
-                <template slot="title">
-                    <img :src="menu.img">{{menu.name}}
-                </template>
-                <menutree :data="menu.children"></menutree>
-            </el-submenu>
-            <el-menu-item v-else-if="menu.index*1>0"
-                :index="menu.index"
-                class="menu_tree"
-                @click.native.stop="selected_menu_child(menu.index, menu.name, menu.index*1>0?0:1)"
-                :class="menu_index == menu.index ? 'menu_item' : 'menu_item menu_hidden'"
-            >
-                <template slot="title">
-                    <img :src="menu.img">{{menu.name}}
-                </template>
-            </el-menu-item>
-            <template v-else>
-                <el-menu-item :index="menu.index"
-                    @click.native="selected_menu_child(menu.index,menu.path, menu.name, menu.index*1>0?0:1)"
-                    :class="cont == menu.index ? 'menu_child_item' : 'menu_child_item menu_child_hidden'"
-                >
-                    {{menu.name}}
-                </el-menu-item>
-            </template>
-        </div>
+  <div class="menutree">
+    <div v-for="menu in data " :key="menu.index">
+      <el-submenu
+        v-if="menu.children"
+        :index="menu.index"
+        :class="menu_index == menu.index ? 'menu_item' : 'menu_item menu_hidden'"
+        @click.native="selected_menu(menu.index, menu.name, 1)"
+      >
+        <template slot="title">
+          <img :src="menu.img">{{ menu.name }}
+        </template>
+        <menutree :data="menu.children" />
+      </el-submenu>
+      <el-menu-item
+        v-else-if="menu.index*1>0"
+        :index="menu.index"
+        class="menu_tree"
+        :class="menu_index == menu.index ? 'menu_item' : 'menu_item menu_hidden'"
+        @click.native.stop="selected_menu_child(menu.index, menu.name, menu.index*1>0?0:1)"
+      >
+        <template slot="title">
+          <img :src="menu.img">{{ menu.name }}
+        </template>
+      </el-menu-item>
+      <template v-else>
+        <el-menu-item
+          :index="menu.index"
+          :class="cont == menu.index ? 'menu_child_item' : 'menu_child_item menu_child_hidden'"
+          @click.native="selected_menu_child(menu.index,menu.path, menu.name, menu.index*1>0?0:1)"
+        >
+          {{ menu.name }}
+        </el-menu-item>
+      </template>
     </div>
-
+  </div>
 </template>
-
 <script>
-    import menutree from "./menutree";
-    import {mapState} from 'vuex'
+import menutree from './menutree'
+import { mapState } from 'vuex'
 
-    export default {
-        name: "menutree",
-        data() {
-            return {
-            };
-        },
-        components: {
-            menutree: menutree
-        },
-        props: ["data"],
+export default {
+  name: 'Menutree',
+  components: {
+    menutree: menutree
+  },
+  props: ['data'],
+  data() {
+    return {
+    }
+  },
 
-        computed:{
-            ...mapState(['cont','menu_index'])
-        },
-        methods: {
-            selected_menu(index, name, cur_state) {
-                this.$store.state.menu_index = index
-            },
-            selected_menu_child(index,path, name, cur_state) {
+  computed: {
+    ...mapState(['cont', 'menu_index'])
+  },
+  methods: {
+    selected_menu(index, name, cur_state) {
+      this.$store.state.menu_index = index
+    },
+    selected_menu_child(index, path, name, cur_state) {
+      if (cur_state === 0) {
+        this.$store.state.menu_index = index
+        this.$store.state.cont = 0
+      } else {
+        this.$store.state.cont = index
+      }
 
-                if(cur_state == 0){
-                    this.$store.state.menu_index = index
-                    this.$store.state.cont = 0
-                }else{
-                    this.$store.state.cont = index
-                }
-
-                this.$router.push(path)
-            },
-        },
-    };
+      this.$router.push(path)
+    }
+  }
+}
 </script>
 
 <style>

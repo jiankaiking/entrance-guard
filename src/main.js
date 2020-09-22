@@ -4,17 +4,16 @@ import router from './router'
 import store from './store'
 
 import './plugins/element.js'
-import * as filters from "./util/filter";
+import * as filters from './util/filter'
 
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key]);
-});
+  Vue.filter(key, filters[key])
+})
 
-Vue.config.productionTip = false;
-
+Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
-  render: h => h(App),
+  render: h => h(App)
 }).$mount('#app')
